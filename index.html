@@ -1,44 +1,1155 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Schema Technical | Content Manager</title>
-    <!-- Include Netlify Identity widget to handle authentication -->
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  </head>
-  <body>
-    <!-- Include the script that builds the page and powers Decap CMS -->
-    <!-- Moved to the body to ensure the DOM is loaded before it tries to attach elements -->
-    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schema Technical | Serviceability Architecture</title>
+	<meta name="description" content="Schema Technical helps MedTech startups build audit-ready Service Architectures. Specialists in ISO 13485 Clause 7.5, Service Design Reviews, and Post-Market Surveillance.">
+	<meta property="og:title" content="Schema Technical | ISO 13485 Service Architecture">
+	<meta property="og:description" content="Stop dragging R&D into support. We build the Service Network & Compliance strategy for MedTech scale-ups.">
     
-    <!-- Manual Initialization: This completely replaces the need for a separate config.yml file and prevents fetch errors -->
-    <script>
-      CMS.init({
-        config: {
-          backend: {
-            name: 'git-gateway',
-            branch: 'main' // Change to 'master' if your GitHub uses the older naming convention
-          },
-          media_folder: "images/blog",
-          public_folder: "/images/blog",
-          collections: [
-            {
-              name: "blog",
-              label: "Articles",
-              folder: "blog",
-              create: true,
-              slug: "{{year}}-{{month}}-{{day}}-{{slug}}",
-              fields: [
-                { label: "Title", name: "title", widget: "string" },
-                { label: "Publish Date", name: "date", widget: "datetime" },
-                { label: "Featured Image", name: "thumbnail", widget: "image", required: false },
-                { label: "Body", name: "body", widget: "markdown" }
-              ]
-            }
-          ]
+    <!-- Netlify Identity Widget -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    
+    <!-- Markdown Parser for Blog Articles -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <style>
+        /* --- CSS STYLES --- */
+        :root {
+            --navy: #0f172a;      /* Deep Navy */
+            --slate: #475569;     /* Slate Grey */
+            --blue: #2563eb;      /* Tech Blue Highlight */
+            --light: #f8fafc;     /* Background White */
+            --white: #ffffff;
         }
-      });
+
+        html { scroll-behavior: smooth; }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--navy);
+            line-height: 1.6;
+        }
+
+        /* Layout Utilities */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Standard Blue Button */
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: var(--blue);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: background 0.3s;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            background-color: var(--navy);
+        }
+
+        /* Solid White Button */
+        .btn-white {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: var(--white);
+            color: var(--navy);
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 700;
+            transition: all 0.3s;
+            margin-left: 10px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .btn-white:hover {
+            background-color: #e2e8f0;
+            transform: translateY(-2px);
+        }
+
+        /* Header */
+        header {
+            background: var(--white);
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 80px; 
+            width: auto;
+            display: block;
+        }
+
+        .nav-links a {
+            margin-left: 25px;
+            text-decoration: none;
+            color: var(--slate);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--blue);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 120px 0;
+            background: linear-gradient(135deg, var(--navy) 0%, #1e293b 100%);
+            color: var(--white);
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 25px;
+            line-height: 1.2;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: #cbd5e1;
+            max-width: 700px;
+            margin: 0 auto 40px auto;
+        }
+
+        /* About Section */
+        .about {
+            padding: 100px 0;
+            background: var(--white);
+            text-align: center; 
+        }
+
+        .about h2 {
+            font-size: 2.2rem;
+            margin-bottom: 40px;
+            color: var(--navy);
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: left; 
+        }
+
+        .about p {
+            color: var(--slate);
+            font-size: 1.1rem;
+            margin-bottom: 20px; 
+        }
+
+        .about strong {
+            color: var(--navy);
+        }
+
+        /* Services Section */
+        .services {
+            padding: 100px 0;
+            background: var(--light);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title h2 {
+            font-size: 2.2rem;
+            color: var(--navy);
+            margin-bottom: 10px;
+        }
+
+        .section-subtitle {
+            color: var(--slate);
+            font-size: 1.1rem;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        .service-card {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            border-top: 4px solid var(--blue);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.1);
+        }
+
+        /* Custom SVG Icon Styling */
+        .icon-box svg {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 20px;
+            fill: none;
+            stroke: var(--blue);
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .service-card h3 {
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        .service-tag {
+            display: inline-block;
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            width: fit-content;
+            text-transform: uppercase;
+        }
+
+        .service-card p {
+            color: var(--slate);
+            margin-bottom: 20px;
+        }
+
+        /* Expanding Section Styles */
+        .service-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+            background-color: #f8fafc;
+            border-radius: 4px;
+        }
+
+        .service-details.open {
+            margin-top: 15px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            /* Allow scrolling within the expanded article if it gets too long */
+            max-height: 60vh; 
+            overflow-y: auto;
+        }
+
+        .service-details h4 {
+            font-size: 0.9rem;
+            color: var(--navy);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .service-details ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .service-details li {
+            font-size: 0.95rem;
+            color: var(--slate);
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .service-details li::before {
+            content: "•";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .expand-btn {
+            background: none;
+            border: none;
+            color: var(--blue);
+            font-weight: 600;
+            cursor: pointer;
+            text-align: left;
+            padding: 0;
+            margin-top: auto; 
+            display: flex;
+            align-items: center;
+        }
+
+        .expand-btn:hover {
+            text-decoration: underline;
+        }
+
+        .expand-btn::after {
+            content: "+";
+            margin-left: 8px;
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+
+        /* Markdown Article Content Styling */
+        .article-content {
+            font-size: 0.95rem;
+            color: var(--slate);
+            line-height: 1.7;
+        }
+        
+        .article-content h1, 
+        .article-content h2, 
+        .article-content h3, 
+        .article-content h4 {
+            color: var(--navy);
+            margin: 20px 0 10px;
+            line-height: 1.3;
+        }
+        
+        .article-content h1 { font-size: 1.5rem; }
+        .article-content h2 { font-size: 1.3rem; }
+        .article-content h3 { font-size: 1.1rem; }
+        
+        .article-content p {
+            margin-bottom: 15px;
+        }
+        
+        .article-content ul, 
+        .article-content ol {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .article-content li {
+            margin-bottom: 5px;
+        }
+        
+        .article-content li::before {
+            display: none; /* Override the service-details bullet */
+        }
+        
+        .article-content blockquote {
+            border-left: 4px solid var(--blue);
+            padding-left: 15px;
+            font-style: italic;
+            color: #64748b;
+            margin-bottom: 15px;
+            background: #f1f5f9;
+            padding: 10px 15px;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .article-content code {
+            background: #e2e8f0;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #b91c1c;
+        }
+
+        /* --- RESOURCES SECTION --- */
+        .resources-section {
+            padding: 100px 0;
+            background: var(--white);
+        }
+
+        .resource-form {
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding-top: 20px;
+        }
+
+        .resource-form input[type="email"] {
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            width: 100%;
+        }
+
+        .resource-form input[type="email"]:focus {
+            outline: none;
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .resource-form button {
+            width: 100%;
+            text-align: center;
+        }
+
+        .form-success {
+            margin-top: auto;
+            padding-top: 20px;
+            color: #059669; /* Green */
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-align: center;
+        }
+
+        /* --- CALCULATOR SECTION --- */
+        .calculator-wrapper {
+            margin-top: 80px;
+            background: var(--light);
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+
+        .calc-header {
+            background: var(--navy);
+            color: var(--white);
+            padding: 30px;
+            text-align: center;
+            border-bottom: 4px solid var(--blue);
+        }
+
+        .calc-header h3 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .calc-header p {
+            color: #cbd5e1;
+            font-size: 1.05rem;
+        }
+
+        .calc-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .calc-inputs {
+            padding: 40px;
+        }
+
+        .calc-input-group {
+            margin-bottom: 20px;
+        }
+
+        .calc-input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--navy);
+            font-size: 0.9rem;
+        }
+
+        .calc-input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            font-size: 1rem;
+            background: var(--white);
+            color: var(--navy);
+        }
+
+        .calc-input-group input:focus {
+            outline: none;
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .calc-outputs {
+            background: var(--navy);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .calc-output-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 6px;
+            border-left: 4px solid var(--blue);
+        }
+
+        .calc-output-card.highlight {
+            background: rgba(37, 99, 235, 0.15);
+            border-color: #60a5fa;
+        }
+
+        .calc-output-card h4 {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .calc-output-card .val {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .calc-output-card.highlight .val {
+            color: #60a5fa;
+            font-size: 2.2rem;
+        }
+        
+        /* --- ARTICLES SECTION --- */
+        .articles-section {
+            padding: 100px 0;
+            background: var(--light);
+        }
+
+        /* --- CONTACT FORM SECTION --- */
+        .contact-section {
+            padding: 100px 0;
+            background: var(--white);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .contact-text h2 {
+            font-size: 2.5rem;
+            color: var(--navy);
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .contact-text p {
+            color: var(--slate);
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .contact-form {
+            background: var(--light);
+            padding: 40px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--navy);
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            font-size: 1rem;
+            background: var(--white);
+            color: var(--navy);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        /* Hide the honeypot field from real users */
+        .hidden-honeypot {
+            display: none;
+        }
+
+        /* Footer */
+        footer {
+            background: #020617;
+            color: #94a3b8;
+            padding: 60px 0;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 900px) {
+            .contact-grid { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+            .hero { padding: 80px 0; }
+            .nav-links { display: none; } 
+            .logo img { height: 60px; margin: 0 auto; } 
+            nav { justify-content: center; }
+            .services-grid { grid-template-columns: 1fr; }
+            .btn-white { display: block; margin: 15px auto 0 auto; width: fit-content; }
+            .calc-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <img src="Company logo.jpg" alt="Schema Technical Logo"> 
+                </div>
+                <div class="nav-links">
+                    <a href="#about">About</a>
+                    <a href="#services">Services</a>
+                    <a href="#resources">Resources</a>
+                    <a href="#articles">Articles</a>
+                    <a href="#contact">Contact</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Stop dragging R&D Engineers<br>into Field Support.</h1>
+            <p>Schema Technical builds the service architecture (Compliance, SOPs, Training) that allows MedTech startups to scale without the R&D distraction.</p>
+            <div class="cta-group">
+                <a href="#services" class="btn">Explore Services</a>
+                <a href="https://outlook.office.com/book/SchemaTechnicalLtd@schematechnical.co.uk/" target="_blank" class="btn-white">Book Discovery Call</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="about" id="about">
+        <div class="container">
+            <h2>Bridge the Gap Between Lab & Field.</h2>
+            <div class="about-content">
+                <p><strong>Founded by Dan Howes (ex-Bio-Rad, Thermo Fisher, RAF), Schema Technical brings the rigour of aerospace logistics to MedTech.</strong></p>
+                
+                <p>Having led the support architecture for complex systems like the <strong>Bio-Rad Genesis</strong>, we know exactly what happens when R&D prototypes hit the real world. A brilliant clinical device will fail commercially if the service infrastructure isn't built to match the engineering quality.</p>
+
+                <p>We are not generalist management consultants. We are <strong>Service Architects</strong>. We take the 'Tribal Knowledge' from your R&D team and convert it into audit-ready SOPs and validated service protocols <b>(Clause 7.5).</b> We ensure your 'Servicing' folder is as robust as your 'Design' folder. This allows your engineers to focus on the next product, while we ensure the current one stays reliable in the field.</p>
+                
+                <div style="text-align: center; margin-top: 40px;">
+                    <a href="https://www.linkedin.com/in/danhowes1/" target="_blank" class="btn">View LinkedIn Profile</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="services" id="services">
+        <div class="container">
+            <div class="section-title">
+                <h2>Serviceability Engineering as a Service</h2>
+                <p class="section-subtitle">A modular framework to protect your R&D team and scale your support.</p>
+            </div>
+            
+            <div class="services-grid">
+                <!-- SDR -->
+                <div class="service-card">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <span class="service-tag">PRE-LAUNCH | ISO 13485:7.5.1</span>
+                    <h3>Service Design Review (SDR)</h3>
+                    <p>Ensure your "Design Transfer" includes Serviceability. We perform forensic teardowns to identify maintenance risks and validate repair access <b>before</b> you freeze the design.</p>
+                    <button class="expand-btn" onclick="toggleDetails(this, 'View Deliverables')">View Deliverables</button>
+                    <div class="service-details">
+                        <h4>What We Deliver:</h4>
+                        <ul>
+                            <li><strong>Risk Assessment:</strong> Component-level failure risk ranking.</li>
+                            <li><strong>Accessibility Analysis:</strong> Time-to-repair optimisation.</li>
+                            <li><strong>The "Red Flag" Report:</strong> Critical changes needed before tooling freeze.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- SNA -->
+                <div class="service-card">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 16V8l-9-5l-9 5v8l9 5z" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 22v-6" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 8v6" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 10l4 2 4-2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <span class="service-tag">ROLLOUT | ISO 13485:7.5.3</span>
+                    <h3>Service Network Architecture</h3>
+                    <p>Scale without headcount. We build the "Turnkey" support package that allows you to hand over support to distributors or 3rd parties.</p>
+                    <button class="expand-btn" onclick="toggleDetails(this, 'View Deliverables')">View Deliverables</button>
+                    <div class="service-details">
+                        <h4>What We Deliver:</h4>
+                        <ul>
+                            <li><strong>SOP Engineering:</strong> Converting "Tribal Knowledge" into field manuals.</li>
+                            <li><strong>Logistics Index:</strong> Defining Van Stock vs. Depot Stock.</li>
+                            <li><strong>"Train the Trainer":</strong> Certifying your first external partners.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- RCA -->
+                <div class="service-card">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 16V12" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <span class="service-tag">SUSTAINING | ISO 13485:8.2.1</span>
+                    <h3>Post-Market Surveillance (RCA)</h3>
+                    <p>Turn "No Fault Found" returns into compliant <b>Post-Market Surveillance</b> evidence. We perform forensic Root Cause Analysis (RCA) to protect your regulatory standing and margins.</p>
+                    <button class="expand-btn" onclick="toggleDetails(this, 'View Deliverables')">View Deliverables</button>
+                    <div class="service-details">
+                        <h4>What We Deliver:</h4>
+                        <ul>
+                            <li><strong>Root Cause Analysis:</strong> Deep-dive into early failed units.</li>
+                            <li><strong>Engineering Feedback:</strong> Data translation for R&D teams.</li>
+                            <li><strong>Spare Parts Forecast:</strong> Usage-based inventory optimisation.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- DOCS -->
+                <div class="service-card">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-linecap="round" stroke-linejoin="round"/><polyline points="14 2 14 8 20 8" stroke-linecap="round" stroke-linejoin="round"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    </div>
+                    <span class="service-tag">DOCUMENTATION | ISO 13485:7.5</span>
+                    <h3>Service Documentation</h3>
+                    <p>We fill the compliance gap. We convert R&D data into audit-ready Technical Service Manuals, IQ/OQ protocols, and detailed Maintenance Checklists.</p>
+                    <button class="expand-btn" onclick="toggleDetails(this, 'View Deliverables')">View Deliverables</button>
+                    <div class="service-details">
+                        <h4>What We Deliver:</h4>
+                        <ul>
+                            <li><strong>Technical Service Manual (TSM):</strong> The definitive guide for repair.</li>
+                            <li><strong>Install Guides & Site Readiness:</strong> Protocols for first-time safe deployments.</li>
+                            <li><strong>IQ/OQ Protocols:</strong> Installation and Operational Qualification validation.</li>
+                            <li><strong>PPM Schedules & Checklists:</strong> Preventative maintenance for field engineering.</li>
+                            <li><strong>Service Software Validation (SSV):</strong> Proof of reliability for diagnostic tools.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- --- RESOURCES SECTION --- -->
+    <section class="resources-section" id="resources">
+        <div class="container">
+            <div class="section-title">
+                <h2>Free Resources & Templates</h2>
+                <p class="section-subtitle">Downloadable frameworks and tools to help you build your service architecture.</p>
+                <p class="section-subtitle" style="font-size: 0.9rem; margin-top: 15px;"><em>Email addresses are used solely for delivering the requested document. We do not collect, store, or distribute your data.</em></p>
+            </div>
+            
+            <div class="services-grid">
+                <!-- Resource 1 -->
+                <div class="service-card">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><path d="m9 15 2 2 4-4"></path></svg>
+                    </div>
+                    <span class="service-tag">PDF GUIDE</span>
+                    <h3>Pre-Production Serviceability Audit</h3>
+                    <p>A 20-point engineering checklist to identify and eliminate catastrophic serviceability risks before you freeze your design and cut tooling.</p>
+                    
+                    <form class="resource-form" name="resource_request" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+                        <p class="hidden-honeypot">
+                            <label>Don’t fill this out if you're human: <input name="bot-field" /></label>
+                        </p>
+                        <input type="hidden" name="form-name" value="resource_request">
+                        <input type="hidden" name="document_requested" value="Pre-Production Serviceability Audit">
+                        <input type="email" name="email" placeholder="Enter work email..." required>
+                        <button type="submit" class="btn">Email me this PDF</button>
+                    </form>
+                </div>
+
+                <!-- Resource 2 -->
+                <div class="service-card">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><circle cx="12" cy="14" r="2"></circle><path d="M12 11v1"></path><path d="M12 16v1"></path><path d="M14.6 12.5l-.87.5"></path><path d="M10.27 15l-.87.5"></path><path d="M14.6 15.5l-.87-.5"></path><path d="M10.27 13l-.87-.5"></path></svg>
+                    </div>
+                    <span class="service-tag">PDF GUIDE</span>
+                    <h3>The QMS Service Bridge</h3>
+                    <p>Learn how to align your R&D engineering data with ISO 13485 and MDR Compliance to satisfy QA/RA auditors during Post-Market deployment.</p>
+                    
+                    <form class="resource-form" name="resource_request" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+                        <p class="hidden-honeypot">
+                            <label>Don’t fill this out if you're human: <input name="bot-field" /></label>
+                        </p>
+                        <input type="hidden" name="form-name" value="resource_request">
+                        <input type="hidden" name="document_requested" value="The QMS Service Bridge">
+                        <input type="email" name="email" placeholder="Enter work email..." required>
+                        <button type="submit" class="btn">Email me this PDF</button>
+                    </form>
+                </div>
+
+                <!-- Resource 3 -->
+                <div class="service-card">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                    </div>
+                    <span class="service-tag">PDF DOCUMENT</span>
+                    <h3>Schema Capability Statement</h3>
+                    <p>A concise one-page breakdown of our fractional service architecture offerings, deliverables, and how we engage with MedTech startups.</p>
+                    
+                    <form class="resource-form" name="resource_request" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+                        <p class="hidden-honeypot">
+                            <label>Don’t fill this out if you're human: <input name="bot-field" /></label>
+                        </p>
+                        <input type="hidden" name="form-name" value="resource_request">
+                        <input type="hidden" name="document_requested" value="Schema Capability Statement">
+                        <input type="email" name="email" placeholder="Enter work email..." required>
+                        <button type="submit" class="btn">Email me this PDF</button>
+                    </form>
+                </div>
+
+                <!-- Resource 4 -->
+                <div class="service-card">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    </div>
+                    <span class="service-tag">DOCX TEMPLATE</span>
+                    <h3>Technical Service Manual</h3>
+                    <p>An ISO 13485 compliant boilerplate template for authoring your field service manuals, complete with troubleshooting and parts catalogue formatting.</p>
+                    
+                    <form class="resource-form" name="resource_request" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+                        <p class="hidden-honeypot">
+                            <label>Don’t fill this out if you're human: <input name="bot-field" /></label>
+                        </p>
+                        <input type="hidden" name="form-name" value="resource_request">
+                        <input type="hidden" name="document_requested" value="Technical Service Manual Template">
+                        <input type="email" name="email" placeholder="Enter work email..." required>
+                        <button type="submit" class="btn">Email me this Template</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Embedded Calculator -->
+            <div class="calculator-wrapper">
+                <div class="calc-header">
+                    <h3>Warranty Bleed Calculator</h3>
+                    <p>Calculate your hidden field service exposure based on MTBF and repair times.</p>
+                </div>
+                <div class="calc-grid">
+                    <div class="calc-inputs">
+                        <div class="calc-input-group">
+                            <label>Installed Base (Number of Units)</label>
+                            <input type="number" id="calc-base" value="1000" oninput="calculateWarranty()">
+                        </div>
+                        <div class="calc-input-group">
+                            <label>Target MTBF (Months)</label>
+                            <input type="number" id="calc-mtbf" value="24" oninput="calculateWarranty()">
+                        </div>
+                        <div class="calc-input-group">
+                            <label>FSE Daily Rate (£)</label>
+                            <input type="number" id="calc-rate" value="800" oninput="calculateWarranty()">
+                        </div>
+                        <div class="calc-input-group">
+                            <label>Mean Time To Repair (Hours)</label>
+                            <input type="number" id="calc-mttr" value="4" oninput="calculateWarranty()">
+                        </div>
+                        <div class="calc-input-group">
+                            <label>Cost of Spare Part (£)</label>
+                            <input type="number" id="calc-part" value="5" oninput="calculateWarranty()">
+                        </div>
+                    </div>
+                    
+                    <div class="calc-outputs">
+                        <div class="calc-output-card">
+                            <h4>Expected Failures Per Year</h4>
+                            <div class="val" id="out-failures">500</div>
+                        </div>
+                        <div class="calc-output-card">
+                            <h4>True Labour Cost per Repair</h4>
+                            <div class="val" id="out-labour">£400.00</div>
+                        </div>
+                        <div class="calc-output-card">
+                            <h4>Total Cost Per Incident</h4>
+                            <div class="val" id="out-incident">£405.00</div>
+                        </div>
+                        <div class="calc-output-card highlight">
+                            <h4>Annual Warranty Bleed</h4>
+                            <div class="val" id="out-bleed">£202,500</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- --- DYNAMIC ARTICLES SECTION --- -->
+    <section class="articles-section" id="articles">
+        <div class="container">
+            <div class="section-title">
+                <h2>Technical Articles</h2>
+                <p class="section-subtitle">Insights on Design for Service, ISO 13485 compliance, and MedTech architecture.</p>
+            </div>
+            
+            <div class="services-grid" id="blog-container">
+                <div class="service-card" style="grid-column: 1 / -1; text-align: center;">
+                    <p style="margin-bottom: 0;">Loading technical insights from repository...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-text">
+                    <h2>Book a Service Readiness Review.</h2>
+                    <p>Find out if your device is ready for the field before your first customer complains. </p>
+                    <p>Fill out the form to request a confidential discovery call with Dan.</p>
+                    <p style="margin-top: 20px;">
+                        <strong>Direct Email:</strong><br>
+                        <a href="mailto:dan@schematechnical.co.uk" style="color:var(--blue); text-decoration:none;">dan@schematechnical.co.uk</a>
+                    </p>
+                </div>
+
+                <form class="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+                    <p class="hidden-honeypot">
+                        <label>Don’t fill this out if you're human: <input name="bot-field" /></label>
+                    </p>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" name="name" required placeholder="John Smith">
+                        </div>
+                        <div class="form-group">
+                            <label>Work Email</label>
+                            <input type="email" name="email" required placeholder="john@company.com">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Company Name</label>
+                            <input type="text" name="company" placeholder="Company Ltd">
+                        </div>
+                        <div class="form-group">
+                            <label>Device Classification</label>
+                            <select name="classification">
+                                <option value="Class I">Class I (Low Risk)</option>
+                                <option value="Class IIa/b">Class IIa/b (Medium Risk)</option>
+                                <option value="Class III">Class III (High Risk/PMA)</option>
+                                <option value="Unknown">Not sure yet</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Stage of Development</label>
+                        <select name="stage">
+                            <option value="Prototyping">Prototyping / R&D</option>
+                            <option value="Clinical Trials">Clinical Trials</option>
+                            <option value="Commercial Scale-up">Commercial Scale-up</option>
+                            <option value="Legacy Support">Legacy Support / PMS</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>How can we help?</label>
+                        <textarea name="message" rows="4" placeholder="Tell us about your device stage (e.g., Prototype, Clinical Trial, Commercial)..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn" style="width:100%;">Request Call</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+    <div class="container">
+        <p>&copy; 2026 Schema Technical. All rights reserved.</p>
+        <p class="footer-links">
+            <a href="privacy.html">Privacy Policy</a> | 
+            <a href="mailto:dan@schematechnical.co.uk">Contact</a>
+        </p>
+    </div>
+</footer>
+
+    <script>
+        // Expanding Cards Logic
+        function toggleDetails(btn, defaultText = "Read Article") {
+            const details = btn.nextElementSibling;
+            if (details.style.maxHeight) {
+                details.style.maxHeight = null;
+                details.classList.remove('open');
+                btn.innerHTML = defaultText; 
+            } else {
+                details.classList.add('open');
+                details.style.maxHeight = details.scrollHeight + "px";
+                btn.innerHTML = "Close"; 
+            }
+        }
+
+        // Handle AJAX form submission for the resource downloads
+        document.querySelectorAll('.resource-form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                
+                // Submit to Netlify without reloading the page
+                fetch("/", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: new URLSearchParams(formData).toString()
+                }).then(() => {
+                    this.innerHTML = '<div class="form-success">Request received! The document will be sent to your inbox shortly.</div>';
+                }).catch((error) => {
+                    console.error("Form submission error:", error);
+                    alert("There was an error submitting your request. Please try again.");
+                });
+            });
+        });
+
+        // Warranty Bleed Calculator Logic
+        function calculateWarranty() {
+            const installedBase = parseFloat(document.getElementById('calc-base').value) || 0;
+            const mtbf = parseFloat(document.getElementById('calc-mtbf').value) || 0;
+            const dailyRate = parseFloat(document.getElementById('calc-rate').value) || 0;
+            const mttr = parseFloat(document.getElementById('calc-mttr').value) || 0;
+            const partCost = parseFloat(document.getElementById('calc-part').value) || 0;
+
+            if(mtbf > 0) {
+                const expectedFailures = (installedBase / mtbf) * 12;
+                const hourlyRate = dailyRate / 8;
+                const labourCost = hourlyRate * mttr;
+                const costPerIncident = labourCost + partCost;
+                const annualBleed = expectedFailures * costPerIncident;
+
+                document.getElementById('out-failures').innerText = Math.round(expectedFailures).toLocaleString('en-GB');
+                document.getElementById('out-labour').innerText = '£' + labourCost.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                document.getElementById('out-incident').innerText = '£' + costPerIncident.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                document.getElementById('out-bleed').innerText = '£' + annualBleed.toLocaleString('en-GB', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+            }
+        }
+        calculateWarranty();
+
+        // GITHUB BLOG FETCH LOGIC
+        async function loadGitHubBlogPosts() {
+            const blogContainer = document.getElementById('blog-container');
+            const repoApiUrl = 'https://api.github.com/repos/schematechnical/schema-technical-website/contents/blog?ref=main';
+
+            try {
+                const response = await fetch(repoApiUrl);
+                
+                if (!response.ok) {
+                    throw new Error(`GitHub API responded with status: ${response.status}`);
+                }
+                
+                const files = await response.json();
+                
+                // Filter for Markdown files
+                const mdFiles = files.filter(file => file.name.endsWith('.md'));
+                
+                if (mdFiles.length === 0) {
+                    blogContainer.innerHTML = '<div class="service-card" style="grid-column: 1 / -1; text-align: center;"><p>No articles published yet. Check back soon.</p></div>';
+                    return;
+                }
+
+                blogContainer.innerHTML = ''; // Clear loading message
+
+                for (const file of mdFiles) {
+                    const contentResponse = await fetch(file.download_url);
+                    const mdContent = await contentResponse.text();
+
+                    let title = file.name.replace('.md', '').replace(/-/g, ' ');
+                    let date = 'Technical Article';
+                    let description = '';
+                    let body = mdContent;
+
+                    // Extract YAML Frontmatter if it exists
+                    const frontmatterRegex = /^---\n([\s\S]*?)\n---\n([\s\S]*)$/;
+                    const match = mdContent.match(frontmatterRegex);
+                    
+                    if (match) {
+                        const frontmatter = match[1];
+                        body = match[2]; // The rest of the markdown
+                        
+                        const titleMatch = frontmatter.match(/title:\s*["']?(.*?)["']?$/m);
+                        const dateMatch = frontmatter.match(/date:\s*["']?(.*?)["']?$/m);
+                        const descMatch = frontmatter.match(/description:\s*["']?(.*?)["']?$/m);
+                        
+                        if (titleMatch) title = titleMatch[1];
+                        if (dateMatch) date = new Date(dateMatch[1]).toLocaleDateString('en-GB');
+                        if (descMatch) description = descMatch[1];
+                    }
+
+                    // Fallback description if none provided in frontmatter
+                    if (!description) {
+                        description = body.replace(/[#*`_\[\]]/g, '').split('\n').filter(line => line.trim().length > 0)[0] || 'Read full article...';
+                        if (description.length > 120) description = description.substring(0, 120) + '...';
+                    }
+
+                    // Parse the Markdown body into HTML
+                    const htmlBody = window.marked ? marked.parse(body) : `<pre style="white-space: pre-wrap; font-family: inherit;">${body}</pre>`;
+
+                    // Build the card
+                    const articleCard = document.createElement('div');
+                    articleCard.className = 'service-card';
+                    articleCard.innerHTML = `
+                        <span class="service-tag">${date}</span>
+                        <h3>${title}</h3>
+                        <p>${description}</p>
+                        <button class="expand-btn" onclick="toggleDetails(this, 'Read Article')">Read Article</button>
+                        <div class="service-details">
+                            <div class="article-content" style="margin-top: 15px; border-top: 1px solid #e2e8f0; padding-top: 15px;">
+                                ${htmlBody}
+                            </div>
+                        </div>
+                    `;
+                    blogContainer.appendChild(articleCard);
+                }
+
+            } catch (error) {
+                console.error('Error fetching blog articles:', error);
+                blogContainer.innerHTML = '<div class="service-card" style="grid-column: 1 / -1; text-align: center;"><p>Currently unable to load engineering articles. Please check back later.</p></div>';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadGitHubBlogPosts);
+
+        // REMOVED FORCED REDIRECT:
+        // We removed the window.netlifyIdentity.on("login") block that was automatically
+        // pushing sessions to "/admin/". The widget will now just silently handle the token.
     </script>
-  </body>
+
+</body>
 </html>
