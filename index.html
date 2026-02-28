@@ -77,6 +77,7 @@
             transition: all 0.3s;
             margin-left: 10px;
             border: 1px solid #e2e8f0;
+            cursor: pointer;
         }
 
         .btn-white:hover {
@@ -251,7 +252,7 @@
             margin-bottom: 20px;
         }
 
-        /* Expanding Section Styles */
+        /* Expanding Section Styles (Used for Services only) */
         .service-details {
             max-height: 0;
             overflow: hidden;
@@ -264,9 +265,6 @@
             margin-top: 15px;
             padding: 20px;
             border: 1px solid #e2e8f0;
-            /* Allow scrolling within the expanded article if it gets too long */
-            max-height: 60vh; 
-            overflow-y: auto;
         }
 
         .service-details h4 {
@@ -322,11 +320,116 @@
             line-height: 1;
         }
 
-        /* Markdown Article Content Styling */
-        .article-content {
-            font-size: 0.95rem;
+        /* Read Article Button Styles (Right Arrow) */
+        .read-btn {
+            background: none;
+            border: none;
+            color: var(--blue);
+            font-weight: 600;
+            cursor: pointer;
+            text-align: left;
+            padding: 0;
+            margin-top: auto; 
+            display: inline-flex;
+            align-items: center;
+            font-size: 1rem;
+        }
+
+        .read-btn:hover {
+            text-decoration: underline;
+        }
+
+        .read-btn::after {
+            content: "→";
+            margin-left: 8px;
+            font-size: 1.2rem;
+            line-height: 1;
+            transition: transform 0.2s ease;
+        }
+
+        .read-btn:hover::after {
+            transform: translateX(5px);
+        }
+
+        /* --- ARTICLE MODAL STYLES --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.85); /* Navy background with opacity */
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: var(--white);
+            width: 100%;
+            max-width: 850px;
+            max-height: 90vh;
+            border-radius: 8px;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            padding: 50px;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #f1f5f9;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.5rem;
             color: var(--slate);
-            line-height: 1.7;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: #e2e8f0;
+            color: var(--navy);
+        }
+
+        .modal-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .modal-header h2 {
+            font-size: 2.2rem;
+            color: var(--navy);
+            margin-top: 15px;
+            line-height: 1.2;
+        }
+
+        /* Markdown Article Content Styling inside Modal */
+        .article-content {
+            font-size: 1.05rem;
+            color: var(--slate);
+            line-height: 1.8;
         }
         
         .article-content h1, 
@@ -334,46 +437,42 @@
         .article-content h3, 
         .article-content h4 {
             color: var(--navy);
-            margin: 20px 0 10px;
+            margin: 30px 0 15px;
             line-height: 1.3;
         }
         
-        .article-content h1 { font-size: 1.5rem; }
-        .article-content h2 { font-size: 1.3rem; }
-        .article-content h3 { font-size: 1.1rem; }
+        .article-content h1 { font-size: 1.8rem; }
+        .article-content h2 { font-size: 1.5rem; }
+        .article-content h3 { font-size: 1.2rem; }
         
         .article-content p {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
         
         .article-content ul, 
         .article-content ol {
             margin-left: 20px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
         
         .article-content li {
-            margin-bottom: 5px;
-        }
-        
-        .article-content li::before {
-            display: none; /* Override the service-details bullet */
+            margin-bottom: 8px;
         }
         
         .article-content blockquote {
             border-left: 4px solid var(--blue);
-            padding-left: 15px;
+            padding-left: 20px;
             font-style: italic;
             color: #64748b;
-            margin-bottom: 15px;
-            background: #f1f5f9;
-            padding: 10px 15px;
+            margin-bottom: 20px;
+            background: #f8fafc;
+            padding: 15px 20px;
             border-radius: 0 4px 4px 0;
         }
         
         .article-content code {
-            background: #e2e8f0;
-            padding: 2px 4px;
+            background: #f1f5f9;
+            padding: 2px 6px;
             border-radius: 4px;
             font-family: monospace;
             font-size: 0.9em;
@@ -629,6 +728,7 @@
             .services-grid { grid-template-columns: 1fr; }
             .btn-white { display: block; margin: 15px auto 0 auto; width: fit-content; }
             .calc-grid { grid-template-columns: 1fr; }
+            .modal-content { padding: 30px 20px; }
         }
     </style>
 </head>
@@ -926,6 +1026,11 @@
                     <p style="margin-bottom: 0;">Loading technical insights from repository...</p>
                 </div>
             </div>
+
+            <!-- "View All" button container -->
+            <div id="blog-load-more" style="text-align: center; margin-top: 40px; display: none;">
+                <button class="btn-white" onclick="renderAllArticles()">View All Articles</button>
+            </div>
         </div>
     </section>
 
@@ -1002,11 +1107,25 @@
             <a href="mailto:dan@schematechnical.co.uk">Contact</a>
         </p>
     </div>
-</footer>
+    </footer>
+
+    <!-- ARTICLE READING MODAL OVERLAY -->
+    <div class="modal-overlay" id="article-modal" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal(event)">&times;</button>
+            <div class="modal-header">
+                <span class="service-tag" id="modal-date"></span>
+                <h2 id="modal-title"></h2>
+            </div>
+            <div class="article-content" id="modal-body">
+                <!-- Blog content injected here -->
+            </div>
+        </div>
+    </div>
 
     <script>
-        // Expanding Cards Logic
-        function toggleDetails(btn, defaultText = "Read Article") {
+        // Expanding Cards Logic for Services
+        function toggleDetails(btn, defaultText = "Read More") {
             const details = btn.nextElementSibling;
             if (details.style.maxHeight) {
                 details.style.maxHeight = null;
@@ -1062,7 +1181,10 @@
         }
         calculateWarranty();
 
-        // GITHUB BLOG FETCH LOGIC
+
+        // --- DYNAMIC GITHUB BLOG FETCH & MODAL LOGIC ---
+        let allArticlesData = [];
+
         async function loadGitHubBlogPosts() {
             const blogContainer = document.getElementById('blog-container');
             const repoApiUrl = 'https://api.github.com/repos/schematechnical/schema-technical-website/contents/blog?ref=main';
@@ -1075,8 +1197,6 @@
                 }
                 
                 const files = await response.json();
-                
-                // Filter for Markdown files
                 const mdFiles = files.filter(file => file.name.endsWith('.md'));
                 
                 if (mdFiles.length === 0) {
@@ -1086,6 +1206,7 @@
 
                 blogContainer.innerHTML = ''; // Clear loading message
 
+                // Fetch and parse all articles
                 for (const file of mdFiles) {
                     const contentResponse = await fetch(file.download_url);
                     const mdContent = await contentResponse.text();
@@ -1095,13 +1216,13 @@
                     let description = '';
                     let body = mdContent;
 
-                    // Extract YAML Frontmatter if it exists
+                    // Extract YAML Frontmatter
                     const frontmatterRegex = /^---\n([\s\S]*?)\n---\n([\s\S]*)$/;
                     const match = mdContent.match(frontmatterRegex);
                     
                     if (match) {
                         const frontmatter = match[1];
-                        body = match[2]; // The rest of the markdown
+                        body = match[2]; 
                         
                         const titleMatch = frontmatter.match(/title:\s*["']?(.*?)["']?$/m);
                         const dateMatch = frontmatter.match(/date:\s*["']?(.*?)["']?$/m);
@@ -1112,30 +1233,22 @@
                         if (descMatch) description = descMatch[1];
                     }
 
-                    // Fallback description if none provided in frontmatter
                     if (!description) {
                         description = body.replace(/[#*`_\[\]]/g, '').split('\n').filter(line => line.trim().length > 0)[0] || 'Read full article...';
                         if (description.length > 120) description = description.substring(0, 120) + '...';
                     }
 
-                    // Parse the Markdown body into HTML
                     const htmlBody = window.marked ? marked.parse(body) : `<pre style="white-space: pre-wrap; font-family: inherit;">${body}</pre>`;
 
-                    // Build the card
-                    const articleCard = document.createElement('div');
-                    articleCard.className = 'service-card';
-                    articleCard.innerHTML = `
-                        <span class="service-tag">${date}</span>
-                        <h3>${title}</h3>
-                        <p>${description}</p>
-                        <button class="expand-btn" onclick="toggleDetails(this, 'Read Article')">Read Article</button>
-                        <div class="service-details">
-                            <div class="article-content" style="margin-top: 15px; border-top: 1px solid #e2e8f0; padding-top: 15px;">
-                                ${htmlBody}
-                            </div>
-                        </div>
-                    `;
-                    blogContainer.appendChild(articleCard);
+                    allArticlesData.push({ title, date, description, htmlBody });
+                }
+
+                // Render only the first 2 articles to keep the page clean
+                renderArticles(0, 2);
+
+                // If there are more articles, show the "View All" button
+                if (allArticlesData.length > 2) {
+                    document.getElementById('blog-load-more').style.display = 'block';
                 }
 
             } catch (error) {
@@ -1144,11 +1257,57 @@
             }
         }
 
+        function renderArticles(startIndex, limit) {
+            const blogContainer = document.getElementById('blog-container');
+            const articlesToRender = allArticlesData.slice(startIndex, startIndex + limit);
+
+            articlesToRender.forEach((article, idx) => {
+                const globalIndex = startIndex + idx;
+                const articleCard = document.createElement('div');
+                articleCard.className = 'service-card';
+                articleCard.innerHTML = `
+                    <span class="service-tag">${article.date}</span>
+                    <h3>${article.title}</h3>
+                    <p>${article.description}</p>
+                    <button class="read-btn" onclick="openArticleModal(${globalIndex})">Read Article</button>
+                `;
+                blogContainer.appendChild(articleCard);
+            });
+        }
+
+        function renderAllArticles() {
+            // Render everything after the first 2
+            renderArticles(2, allArticlesData.length - 2);
+            // Hide the load more button
+            document.getElementById('blog-load-more').style.display = 'none';
+        }
+
+        // Modal Controls
+        function openArticleModal(index) {
+            const article = allArticlesData[index];
+            document.getElementById('modal-date').innerText = article.date;
+            document.getElementById('modal-title').innerText = article.title;
+            document.getElementById('modal-body').innerHTML = article.htmlBody;
+            
+            document.getElementById('article-modal').classList.add('active');
+            document.body.style.overflow = 'hidden'; // Stop background from scrolling
+        }
+
+        function closeModal(e) {
+            if (e) e.stopPropagation();
+            document.getElementById('article-modal').classList.remove('active');
+            document.body.style.overflow = ''; // Restore background scrolling
+        }
+
+        // Close modal on Escape key press
+        document.addEventListener('keydown', function(e) {
+            if (e.key === "Escape" && document.getElementById('article-modal').classList.contains('active')) {
+                closeModal();
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', loadGitHubBlogPosts);
 
-        // REMOVED FORCED REDIRECT:
-        // We removed the window.netlifyIdentity.on("login") block that was automatically
-        // pushing sessions to "/admin/". The widget will now just silently handle the token.
     </script>
 
 </body>
