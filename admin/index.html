@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Schema Technical | Content Manager</title>
+    <!-- Include Netlify Identity widget to handle authentication -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  </head>
+  <body>
+    <!-- Include the script that builds the page and powers Decap CMS -->
+    <!-- Moved to the body to ensure the DOM is loaded before it tries to attach elements -->
+    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+    
+    <!-- Manual Initialization: This completely replaces the need for a separate config.yml file and prevents fetch errors -->
+    <script>
+      CMS.init({
+        config: {
+          backend: {
+            name: 'git-gateway',
+            branch: 'main' // Change to 'master' if your GitHub uses the older naming convention
+          },
+          media_folder: "images/blog",
+          public_folder: "/images/blog",
+          collections: [
+            {
+              name: "blog",
+              label: "Articles",
+              folder: "blog",
+              create: true,
+              slug: "{{year}}-{{month}}-{{day}}-{{slug}}",
+              fields: [
+                { label: "Title", name: "title", widget: "string" },
+                { label: "Publish Date", name: "date", widget: "datetime" },
+                { label: "Featured Image", name: "thumbnail", widget: "image", required: false },
+                { label: "Body", name: "body", widget: "markdown" }
+              ]
+            }
+          ]
+        }
+      });
+    </script>
+  </body>
+</html>
