@@ -320,6 +320,16 @@
             line-height: 1;
         }
 
+        /* --- BLOG SPECIFIC STYLES --- */
+        .service-card-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            background-color: #f1f5f9;
+        }
+
         /* Read Article Button Styles (Right Arrow) */
         .read-btn {
             background: none;
@@ -425,6 +435,15 @@
             line-height: 1.2;
         }
 
+        .modal-hero-img {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-top: 25px;
+            background-color: #f8fafc;
+        }
+
         /* Markdown Article Content Styling inside Modal */
         .article-content {
             font-size: 1.05rem;
@@ -477,6 +496,16 @@
             font-family: monospace;
             font-size: 0.9em;
             color: #b91c1c;
+        }
+
+        /* Constraints for inline markdown images */
+        .article-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            margin: 25px 0;
+            display: block;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
 
         /* --- RESOURCES SECTION --- */
@@ -1116,6 +1145,8 @@
             <div class="modal-header">
                 <span class="service-tag" id="modal-date"></span>
                 <h2 id="modal-title"></h2>
+                <!-- Container for the featured header image -->
+                <div id="modal-image-container"></div>
             </div>
             <div class="article-content" id="modal-body">
                 <!-- Blog content injected here -->
@@ -1214,6 +1245,7 @@
                     let title = file.name.replace('.md', '').replace(/-/g, ' ');
                     let date = 'Technical Article';
                     let description = '';
+                    let image = '';
                     let body = mdContent;
 
                     // Extract YAML Frontmatter
@@ -1228,9 +1260,15 @@
                         const dateMatch = frontmatter.match(/date:\s*["']?(.*?)["']?$/m);
                         const descMatch = frontmatter.match(/description:\s*["']?(.*?)["']?$/m);
                         
+                        // Check for either 'image' or 'thumbnail' in the CMS frontmatter
+                        const imgMatch = frontmatter.match(/image:\s*["']?(.*?)["']?$/m);
+                        const thumbMatch = frontmatter.match(/thumbnail:\s*["']?(.*?)["']?$/m);
+                        
                         if (titleMatch) title = titleMatch[1];
                         if (dateMatch) date = new Date(dateMatch[1]).toLocaleDateString('en-GB');
                         if (descMatch) description = descMatch[1];
+                        if (imgMatch) image = imgMatch[1];
+                        else if (thumbMatch) image = thumbMatch[1];
                     }
 
                     if (!description) {
@@ -1240,7 +1278,7 @@
 
                     const htmlBody = window.marked ? marked.parse(body) : `<pre style="white-space: pre-wrap; font-family: inherit;">${body}</pre>`;
 
-                    allArticlesData.push({ title, date, description, htmlBody });
+                    allArticlesData.push({ title, date, description, image, htmlBody });
                 }
 
                 // Render only the first 2 articles to keep the page clean
@@ -1265,7 +1303,12 @@
                 const globalIndex = startIndex + idx;
                 const articleCard = document.createElement('div');
                 articleCard.className = 'service-card';
+                
+                // Construct the image HTML if an image exists
+                const imageHtml = article.image ? `<img src="${article.image}" alt="${article.title}" class="service-card-img">` : '';
+
                 articleCard.innerHTML = `
+                    ${imageHtml}
                     <span class="service-tag">${article.date}</span>
                     <h3>${article.title}</h3>
                     <p>${article.description}</p>
@@ -1288,6 +1331,14 @@
             document.getElementById('modal-date').innerText = article.date;
             document.getElementById('modal-title').innerText = article.title;
             document.getElementById('modal-body').innerHTML = article.htmlBody;
+            
+            // Inject the header image if it exists
+            const imageContainer = document.getElementById('modal-image-container');
+            if (article.image) {
+                imageContainer.innerHTML = `<img src="${article.image}" alt="${article.title}" class="modal-hero-img">`;
+            } else {
+                imageContainer.innerHTML = '';
+            }
             
             document.getElementById('article-modal').classList.add('active');
             document.body.style.overflow = 'hidden'; // Stop background from scrolling
