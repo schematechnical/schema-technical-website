@@ -1144,6 +1144,7 @@
             <button class="modal-close" onclick="closeModal(event)">&times;</button>
             <div class="modal-header">
                 <span class="service-tag" id="modal-date"></span>
+                <button id="copy-link-btn" class="btn-white" style="float: right; padding: 6px 12px; font-size: 0.8rem; margin: 0; margin-top: -5px;" onclick="copyArticleLink()">Copy Link</button>
                 <h2 id="modal-title"></h2>
                 <!-- Container for the featured header image -->
                 <div id="modal-image-container"></div>
@@ -1277,8 +1278,9 @@
                     }
 
                     const htmlBody = window.marked ? marked.parse(body) : `<pre style="white-space: pre-wrap; font-family: inherit;">${body}</pre>`;
+                    const slug = file.name.replace('.md', '');
 
-                    allArticlesData.push({ title, date, description, image, htmlBody });
+                    allArticlesData.push({ title, date, description, image, htmlBody, slug });
                 }
 
                 // Render only the first 2 articles to keep the page clean
@@ -1287,6 +1289,18 @@
                 // If there are more articles, show the "View All" button
                 if (allArticlesData.length > 2) {
                     document.getElementById('blog-load-more').style.display = 'block';
+                }
+
+                // Check URL for a specific article to open automatically
+                const urlParams = new URLSearchParams(window.location.search);
+                const articleParam = urlParams.get('article');
+                if (articleParam) {
+                    const targetIndex = allArticlesData.findIndex(a => a.slug === articleParam);
+                    if (targetIndex !== -1) {
+                        // Scroll to articles section and open the modal
+                        document.getElementById('articles').scrollIntoView();
+                        openArticleModal(targetIndex);
+                    }
                 }
 
             } catch (error) {
@@ -1339,6 +1353,10 @@
             } else {
                 imageContainer.innerHTML = '';
             }
+
+            // Update the URL to enable direct linking
+            const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?article=' + article.slug;
+            window.history.pushState({path: newUrl}, '', newUrl);
             
             document.getElementById('article-modal').classList.add('active');
             document.body.style.overflow = 'hidden'; // Stop background from scrolling
@@ -1348,6 +1366,30 @@
             if (e) e.stopPropagation();
             document.getElementById('article-modal').classList.remove('active');
             document.body.style.overflow = ''; // Restore background scrolling
+
+            // Revert the URL when the modal closes
+            const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+            window.history.pushState({path: cleanUrl}, '', cleanUrl);
+        }
+
+        // Copy link to clipboard
+        function copyArticleLink() {
+            const url = window.location.href;
+            const btn = document.getElementById('copy-link-btn');
+            
+            // Fallback for older browsers or restricted iframe environments
+            const textArea = document.createElement("textarea");
+            textArea.value = url;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                btn.innerText = 'Copied!';
+                setTimeout(() => btn.innerText = 'Copy Link', 2000);
+            } catch (err) {
+                console.error('Failed to copy', err);
+            }
+            document.body.removeChild(textArea);
         }
 
         // Close modal on Escape key press
