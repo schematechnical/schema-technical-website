@@ -4,15 +4,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Schema Technical | Content Manager</title>
+    <!-- Include Netlify Identity widget to handle authentication -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   </head>
   <body>
-    <!-- Disable automatic initialization so it doesn't look for config.yml -->
-    <script>
-      window.CMS_MANUAL_INIT = true;
-    </script>
-
     <!-- Include the script that builds the page and powers Decap CMS -->
-    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+    <!-- Added data-manual to prevent auto-fetching of config.yml -->
+    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js" data-manual></script>
     
     <!-- Manual Initialization: This completely replaces the need for a separate config.yml file and prevents fetch errors -->
     <script>
@@ -22,6 +20,8 @@
             name: 'git-gateway',
             branch: 'main' // Change to 'master' if your GitHub uses the older naming convention
           },
+          // Enables saving drafts without publishing immediately to the live site
+          publish_mode: 'editorial_workflow',
           media_folder: "images/blog",
           public_folder: "/images/blog",
           collections: [
