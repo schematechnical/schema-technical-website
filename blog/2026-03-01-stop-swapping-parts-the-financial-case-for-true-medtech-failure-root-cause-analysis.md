@@ -24,6 +24,20 @@ Another example involves a system designed purely on a lab bench, with zero thou
 
 The fix was to remove the magnet entirely from future builds.
 
+### The Forensic Teardown: How to Actually Find the Root Cause
+
+When a device is bleeding margin in the field, a true forensic Root Cause Analysis cannot rely on guesswork. It requires a systematic teardown that strips away the symptoms to find the architectural flaw.
+
+1. Service Ticket Auditing (Pattern Recognition)
+Before touching a screwdriver, you have to audit the field data. A £10 gear snapping once is an anomaly. A £10 gear snapping across twelve different hospital trusts in the exact same week is a structural failure. You must identify the environmental or operational common denominator that the bench testing missed.
+
+2. Environmental Stress Replication
+Lab benches are static, climate-controlled, and safe. The back of a transit van or a chaotic clinical floor is not. The forensic process involves taking the device out of the ideal environment and replicating the exact physical stresses it faces in the real world, whether that is transit vibration, user mishandling, or thermal load.
+
+3. Adjacent Architecture Analysis
+The component that broke is rarely the component that caused the failure. A forensic teardown looks at the surrounding sub-assemblies. Is a poorly routed cable applying undue tension? Is a heat sink transferring thermal load onto a fragile connector? You have to analyse the mechanical relationship between components, not just the broken part in isolation.
+
+
 ## Engineering the Permanent Fix and Reducing Medical Device Downtime
 
 These examples prove that repetitive field failures are almost always design flaws, not component faults. Proper RCA is the only way to capture this data and feed it back into the R&D loop for a permanent structural redesign.
