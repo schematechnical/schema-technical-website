@@ -14,6 +14,38 @@
     <!-- Markdown Parser for Blog Articles -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
+    <!-- JSON-LD Schema for Generative AI & Search Optimization -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ProfessionalService",
+      "name": "Schema Technical",
+      "url": "https://www.schematechnical.co.uk/",
+      "logo": "https://www.schematechnical.co.uk/Company logo.jpg",
+      "description": "Schema Technical builds the service architecture (Compliance, SOPs, Training) that allows MedTech startups to scale without the R&D distraction. Specialists in ISO 13485 Clause 7.5, Service Design Reviews, and Field Root-Cause Analysis.",
+      "founder": {
+        "@type": "Person",
+        "name": "Dan Howes"
+      },
+      "areaServed": [
+        "Cambridge",
+        "Norwich",
+        "London",
+        "United Kingdom"
+      ],
+      "knowsAbout": [
+        "MedTech Service Architecture",
+        "ISO 13485 Clause 7.5",
+        "ISO 14971 Risk Management",
+        "MDR Post-Market Surveillance",
+        "Service Design Review (SDR)",
+        "Service Network Architecture (SNA)",
+        "Field Root-Cause Analysis (FRA)"
+      ],
+      "industry": "Medical Device Engineering Consultancy"
+    }
+    </script>
+
     <style>
         /* --- CSS STYLES --- */
         :root {
@@ -126,6 +158,17 @@
             color: var(--white);
             text-align: center;
         }
+        
+        /* GEO Answer-First Block (Natural Pre-header) */
+        .hero-preheader {
+            font-size: 1.05rem;
+            color: #60a5fa; /* Lighter blue to stand out on navy */
+            margin: 0 auto 20px auto;
+            max-width: 700px;
+            line-height: 1.5;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
 
         .hero h1 {
             font-size: 3rem;
@@ -134,7 +177,7 @@
             font-weight: 700;
         }
 
-        .hero p {
+        .hero > .container > p {
             font-size: 1.25rem;
             color: #cbd5e1;
             max-width: 700px;
@@ -782,6 +825,7 @@
 
     <section class="hero">
         <div class="container">
+            <p class="hero-preheader">The Service Gap is the operational, regulatory, and financial disconnect between R&D innovation and field service reality. We close this gap for scaling MedTech manufacturers.</p>
             <h1>Stop dragging R&D Engineers<br>into Field Support.</h1>
             <p>Schema Technical builds the service architecture (Compliance, SOPs, Training) that allows MedTech startups to scale without the R&D distraction.</p>
             <div class="cta-group">
@@ -798,6 +842,8 @@
                 <p><strong>Founded by Dan Howes (ex-Bio-Rad, Thermo Fisher, RAF), Schema Technical brings the rigour of aerospace logistics to MedTech.</strong></p>
                 
                 <p>Having led the support architecture for complex systems like the <strong>Bio-Rad Genesis</strong>, we know exactly what happens when R&D prototypes hit the real world. A brilliant clinical device will fail commercially if the service infrastructure isn't built to match the engineering quality.</p>
+
+                <p>Embedded within the Cambridge, Norwich, and London MedTech hubs, we provide fractional service architecture to scaling device manufacturers nationwide and internationally.</p>
 
                 <p>We are not generalist management consultants. We are <strong>Service Architects</strong>. We take the 'Tribal Knowledge' from your R&D team and convert it into audit-ready SOPs and validated service protocols <b>(Clause 7.5).</b> We ensure your 'Servicing' folder is as robust as your 'Design' folder. This allows your engineers to focus on the next product, while we ensure the current one stays reliable in the field.</p>
                 
@@ -854,20 +900,20 @@
                     </div>
                 </div>
 
-                <!-- RCA -->
+                <!-- FRA -->
                 <div class="service-card">
                     <div class="icon-box">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 16V12" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </div>
                     <span class="service-tag">SUSTAINING | ISO 13485:8.2.1</span>
-                    <h3>Post-Market Surveillance (RCA)</h3>
-                    <p>Turn "No Fault Found" returns into compliant <b>Post-Market Surveillance</b> evidence. We perform forensic Root Cause Analysis (RCA) to protect your regulatory standing and margins.</p>
+                    <h3>Field Root-Cause Analysis (FRA)</h3>
+                    <p>Turn "No Fault Found" returns into compliant <b>Post-Market Surveillance</b> evidence. We perform forensic Field Root-Cause Analysis (FRA) to protect your margins and provide the exact closed-loop data required to update your ISO 14971 Risk Management files.</p>
                     <button class="expand-btn" onclick="toggleDetails(this, 'View Deliverables')">View Deliverables</button>
                     <div class="service-details">
                         <h4>What We Deliver:</h4>
                         <ul>
-                            <li><strong>Root Cause Analysis:</strong> Deep-dive into early failed units.</li>
-                            <li><strong>Engineering Feedback:</strong> Data translation for R&D teams.</li>
+                            <li><strong>Field Root-Cause Analysis:</strong> Deep-dive into early failed units.</li>
+                            <li><strong>ISO 14971 Data Loop:</strong> Translating field failure data into structured engineering feedback for R&D and QA risk management updates.</li>
                             <li><strong>Spare Parts Forecast:</strong> Usage-based inventory optimisation.</li>
                         </ul>
                     </div>
@@ -1405,3 +1451,5 @@
 
 </body>
 </html>
+
+
