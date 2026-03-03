@@ -363,6 +363,77 @@
             line-height: 1;
         }
 
+        /* Pricing Section */
+        .pricing {
+            padding: 100px 0;
+            background: var(--light);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 30px;
+        }
+
+        .pricing-card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            position: relative;
+            border-top: 4px solid var(--blue);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pricing-card.featured {
+            transform: scale(1.02);
+            box-shadow: 0 10px 20px -5px rgba(0,0,0,0.15);
+        }
+
+        .pricing-card h3 {
+            font-size: 1.3rem;
+            color: var(--navy);
+            margin-bottom: 10px;
+        }
+
+        .pricing-card .price {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--navy);
+            margin-bottom: 5px;
+        }
+
+        .pricing-card .price-sub {
+            font-size: 0.85rem;
+            color: var(--slate);
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .pricing-card ul {
+            list-style: none;
+            margin-bottom: 30px;
+            flex-grow: 1;
+            padding-left: 0;
+        }
+
+        .pricing-card li {
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            color: var(--slate);
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .pricing-card li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--blue);
+            font-weight: bold;
+        }
+
         /* --- BLOG SPECIFIC STYLES --- */
         .service-card-img {
             width: 100%;
@@ -815,6 +886,7 @@
                 <div class="nav-links">
                     <a href="#about">About</a>
                     <a href="#services">Services</a>
+                    <a href="#pricing">Pricing</a>
                     <a href="#resources">Resources</a>
                     <a href="#articles">Articles</a>
                     <a href="#contact">Contact</a>
@@ -845,7 +917,7 @@
 
                 <p>Embedded within the Cambridge, Norwich, and London MedTech hubs, we provide fractional service architecture to scaling device manufacturers nationwide and internationally.</p>
 
-                <p>We are not generalist management consultants. We are <strong>Service Architects</strong>. We take the 'Tribal Knowledge' from your R&D team and convert it into audit-ready SOPs and validated service protocols <b>(Clause 7.5).</b> We ensure your 'Servicing' folder is as robust as your 'Design' folder. This allows your engineers to focus on the next product, while we ensure the current one stays reliable in the field.</p>
+                <p>We are not generalist management consultants. We are <strong>Service Architects</strong>. We operate across the entire hardware lifecycle: conducting forensic pre-freeze design audits to remove repair bottlenecks, building ISO 13485 compliant field infrastructures, and performing physical root cause analysis on post-market failures. We ensure your service operations are as robust as your clinical data, allowing your R&D engineers to focus on the next product while we protect your margins in the field.</p>
                 
                 <div style="text-align: center; margin-top: 40px;">
                     <a href="https://www.linkedin.com/in/danhowes1/" target="_blank" class="btn">View LinkedIn Profile</a>
@@ -875,8 +947,28 @@
                         <h4>What We Deliver:</h4>
                         <ul>
                             <li><strong>Risk Assessment:</strong> Component-level failure risk ranking.</li>
-                            <li><strong>Accessibility Analysis:</strong> Time-to-repair optimisation.</li>
+                            <li><strong>Accessibility Analysis:</strong> Time-to-repair optimization.</li>
                             <li><strong>The "Red Flag" Report:</strong> Critical changes needed before tooling freeze.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- DOCS -->
+                <div class="service-card">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-linecap="round" stroke-linejoin="round"/><polyline points="14 2 14 8 20 8" stroke-linecap="round" stroke-linejoin="round"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    </div>
+                    <span class="service-tag">DOCUMENTATION | ISO 13485:7.5</span>
+                    <h3>Technical Authoring</h3>
+                    <p>Stop relying on tribal R&D knowledge. We convert complex mechanical assemblies into validated, highly visual work instructions and compliance frameworks for your field engineers.</p>
+                    <button class="expand-btn" onclick="toggleDetails(this, 'View Deliverables')">View Deliverables</button>
+                    <div class="service-details">
+                        <h4>What We Deliver:</h4>
+                        <ul>
+                            <li><strong>Service Readiness Frameworks:</strong> The baseline QMS structure, including the core Service Manual architecture and PPM schedules.</li>
+                            <li><strong>FRU Work Instructions:</strong> Highly visual replacement guides for standard components.</li>
+                            <li><strong>Complex Overhaul Procedures:</strong> Advanced instructions requiring proprietary jigs or software calibration.</li>
+                            <li><strong>Validation Protocols:</strong> Site Readiness and IQ/OQ templates.</li>
                         </ul>
                     </div>
                 </div>
@@ -893,9 +985,9 @@
                     <div class="service-details">
                         <h4>What We Deliver:</h4>
                         <ul>
-                            <li><strong>SOP Engineering:</strong> Converting "Tribal Knowledge" into field manuals.</li>
-                            <li><strong>Logistics Index:</strong> Defining Van Stock vs. Depot Stock.</li>
-                            <li><strong>"Train the Trainer":</strong> Certifying your first external partners.</li>
+                            <li><strong>Vendor Qualification:</strong> Auditing and certifying third-party repair facilities.</li>
+                            <li><strong>Curriculum Design:</strong> Developing rigorous, measurable training programs.</li>
+                            <li><strong>On-Site Certification:</strong> Delivering technical training and competency assessments.</li>
                         </ul>
                     </div>
                 </div>
@@ -906,39 +998,91 @@
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 16V12" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </div>
                     <span class="service-tag">SUSTAINING | ISO 13485:8.2.1</span>
-                    <h3>Field Root-Cause Analysis (FRA)</h3>
-                    <p>Turn "No Fault Found" returns into compliant <b>Post-Market Surveillance</b> evidence. We perform forensic Field Root-Cause Analysis (FRA) to protect your margins and provide the exact closed-loop data required to update your ISO 14971 Risk Management files.</p>
+                    <h3>Field Reliability Analysis (FRA)</h3>
+                    <p>Turn "No Fault Found" returns into compliant <b>Post-Market Surveillance</b> evidence. We perform forensic physical root cause analysis to protect margins and provide closed-loop data for your ISO 14971 Risk Management files.</p>
                     <button class="expand-btn" onclick="toggleDetails(this, 'View Deliverables')">View Deliverables</button>
                     <div class="service-details">
                         <h4>What We Deliver:</h4>
                         <ul>
-                            <li><strong>Field Root-Cause Analysis:</strong> Deep-dive into early failed units.</li>
-                            <li><strong>ISO 14971 Data Loop:</strong> Translating field failure data into structured engineering feedback for R&D and QA risk management updates.</li>
-                            <li><strong>Spare Parts Forecast:</strong> Usage-based inventory optimisation.</li>
+                            <li><strong>Physical Root Cause Analysis:</strong> Forensic teardown and replication of field failures.</li>
+                            <li><strong>CAPA Engineering Data:</strong> Translating failure data into structured fixes for R&D.</li>
+                            <li><strong>Sustaining Support:</strong> Ongoing R&D technical triage and QMS review.</li>
                         </ul>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- --- TRANSPARENT PRICING SECTION --- -->
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <div class="section-title">
+                <h2>Transparent Commercials</h2>
+                <div class="divider"></div>
+                <p class="section-subtitle">We scope by mechanical complexity, not open-ended day rates. Fixed fees ensure ISO 13485 compliance is thoroughly funded without scope bleed.</p>
+            </div>
+
+            <div class="pricing-grid">
+                <!-- SDR Pricing -->
+                <div class="pricing-card featured">
+                    <h3>Pre-Freeze Audit (SDR)</h3>
+                    <div class="price">From £2,500</div>
+                    <span class="price-sub">Fixed fee based on hardware complexity</span>
+                    <ul>
+                        <li>Max 3 to 5-day forensic teardown</li>
+                        <li>Strictly bounded project scope</li>
+                        <li>Tier 1 (Standard) to Tier 3 (Robotics/Optics)</li>
+                        <li>Actionable engineering interventions</li>
+                    </ul>
+                    <a href="#contact" class="btn" style="width:100%; text-align:center;">Request Audit</a>
                 </div>
 
-                <!-- DOCS -->
-                <div class="service-card">
-                    <div class="icon-box">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-linecap="round" stroke-linejoin="round"/><polyline points="14 2 14 8 20 8" stroke-linecap="round" stroke-linejoin="round"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-                    </div>
-                    <span class="service-tag">DOCUMENTATION | ISO 13485:7.5</span>
-                    <h3>Service Documentation</h3>
-                    <p>We fill the compliance gap. We convert R&D data into audit-ready Technical Service Manuals, IQ/OQ protocols, and detailed Maintenance Checklists.</p>
-                    <button class="expand-btn" onclick="toggleDetails(this, 'View Deliverables')">View Deliverables</button>
-                    <div class="service-details">
-                        <h4>What We Deliver:</h4>
-                        <ul>
-                            <li><strong>Technical Service Manual (TSM):</strong> The definitive guide for repair.</li>
-                            <li><strong>Install Guides & Site Readiness:</strong> Protocols for first-time safe deployments.</li>
-                            <li><strong>IQ/OQ Protocols:</strong> Installation and Operational Qualification validation.</li>
-                            <li><strong>PPM Schedules & Checklists:</strong> Preventative maintenance for field engineering.</li>
-                            <li><strong>Service Software Validation (SSV):</strong> Proof of reliability for diagnostic tools.</li>
-                        </ul>
-                    </div>
+                <!-- Documentation Pricing -->
+                <div class="pricing-card">
+                    <h3>Technical Authoring</h3>
+                    <div class="price">From £350</div>
+                    <span class="price-sub">Per FRU Work Instruction</span>
+                    <ul>
+                        <li>Service Readiness Frameworks (From £3,500)</li>
+                        <li>Highly visual replacement guides</li>
+                        <li>Complex Overhaul Procedures (From £850)</li>
+                        <li>Auditor-ready ISO 13485 formatting</li>
+                    </ul>
+                    <a href="#contact" class="btn" style="width:100%; text-align:center; margin: 10px 0 0 0; padding: 12px 0;">Discuss Docs</a>
                 </div>
+
+                <!-- SNA Pricing -->
+                <div class="pricing-card">
+                    <h3>Service Network (SNA)</h3>
+                    <div class="price">From £1,500</div>
+                    <span class="price-sub">Per Project Phase</span>
+                    <ul>
+                        <li>Phase 0: Tech Discovery (Waived if SDR completed)</li>
+                        <li>Phase 1: Vendor Qualification (£2,500)</li>
+                        <li>Phase 2: Curriculum Design (£1,500)</li>
+                        <li>Phase 3: On-Site Training (From £4,800)</li>
+                    </ul>
+                    <a href="#contact" class="btn" style="width:100%; text-align:center; margin: 10px 0 0 0; padding: 12px 0;">Plan Network</a>
+                </div>
+
+                <!-- Reliability Pricing -->
+                <div class="pricing-card">
+                    <h3>Reliability (FRA)</h3>
+                    <div class="price">From £4,500</div>
+                    <span class="price-sub">Or £1,500/mo Retainer</span>
+                    <ul>
+                        <li>Physical Root Cause Analysis (Max 5 days)</li>
+                        <li>Sustaining retainer: 2 days/mo access (Min 3 mo)</li>
+                        <li>R&D technical triage & QMS review</li>
+                        <li>Standard out-of-scope rate: £850/day</li>
+                    </ul>
+                    <a href="#contact" class="btn" style="width:100%; text-align:center; margin: 10px 0 0 0; padding: 12px 0;">Secure Support</a>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <p style="font-size: 0.9rem; color: var(--slate);">*All engagements are scoped via an initial discovery call to ensure alignment with your current phase of commercialisation.</p>
             </div>
         </div>
     </section>
@@ -1451,5 +1595,3 @@
 
 </body>
 </html>
-
-
