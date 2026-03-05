@@ -78,38 +78,44 @@
             padding: 0 20px;
         }
 
-        /* Standard Blue Button */
-        .btn {
-            display: inline-block;
-            padding: 12px 24px;
-            background-color: var(--blue);
-            color: var(--white);
-            text-decoration: none;
+        /* Standardised Buttons */
+        .cta-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn, .btn-white {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 50px; 
+            padding: 0 24px;
             border-radius: 4px;
             font-weight: 600;
-            transition: background 0.3s;
-            cursor: pointer;
-            border: none;
             font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+            box-sizing: border-box;
+        }
+
+        .btn {
+            background-color: var(--blue);
+            color: var(--white);
+            border: 1px solid var(--blue);
         }
 
         .btn:hover {
             background-color: var(--navy);
+            border-color: var(--navy);
         }
 
-        /* Solid White Button */
         .btn-white {
-            display: inline-block;
-            padding: 12px 24px;
             background-color: var(--white);
             color: var(--navy);
-            text-decoration: none;
-            border-radius: 4px;
-            font-weight: 700;
-            transition: all 0.3s;
-            margin-left: 10px;
             border: 1px solid #e2e8f0;
-            cursor: pointer;
         }
 
         .btn-white:hover {
@@ -159,10 +165,9 @@
             text-align: center;
         }
         
-        /* GEO Answer-First Block (Natural Pre-header) */
         .hero-preheader {
             font-size: 1.05rem;
-            color: #60a5fa; /* Lighter blue to stand out on navy */
+            color: #60a5fa; 
             margin: 0 auto 20px auto;
             max-width: 700px;
             line-height: 1.5;
@@ -259,7 +264,6 @@
             box-shadow: 0 12px 20px rgba(0,0,0,0.1);
         }
 
-        /* Custom SVG Icon Styling */
         .icon-box svg {
             width: 50px;
             height: 50px;
@@ -295,7 +299,6 @@
             margin-bottom: 20px;
         }
 
-        /* Expanding Section Styles (Used for Services only) */
         .service-details {
             max-height: 0;
             overflow: hidden;
@@ -363,6 +366,77 @@
             line-height: 1;
         }
 
+        /* Pricing Section */
+        .pricing {
+            padding: 100px 0;
+            background: var(--light);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 30px;
+        }
+
+        .pricing-card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            position: relative;
+            border-top: 4px solid var(--blue);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pricing-card.featured {
+            transform: scale(1.02);
+            box-shadow: 0 10px 20px -5px rgba(0,0,0,0.15);
+        }
+
+        .pricing-card h3 {
+            font-size: 1.3rem;
+            color: var(--navy);
+            margin-bottom: 10px;
+        }
+
+        .pricing-card .price {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--navy);
+            margin-bottom: 5px;
+        }
+
+        .pricing-card .price-sub {
+            font-size: 0.85rem;
+            color: var(--slate);
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .pricing-card ul {
+            list-style: none;
+            margin-bottom: 30px;
+            flex-grow: 1;
+            padding-left: 0;
+        }
+
+        .pricing-card li {
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            color: var(--slate);
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .pricing-card li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--blue);
+            font-weight: bold;
+        }
+
         /* --- BLOG SPECIFIC STYLES --- */
         .service-card-img {
             width: 100%;
@@ -373,7 +447,6 @@
             background-color: #f1f5f9;
         }
 
-        /* Read Article Button Styles (Right Arrow) */
         .read-btn {
             background: none;
             border: none;
@@ -404,11 +477,11 @@
             transform: translateX(5px);
         }
 
-        /* --- ARTICLE MODAL STYLES --- */
+        /* --- SHARED MODAL STYLES --- */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(15, 23, 42, 0.85); /* Navy background with opacity */
+            background: rgba(15, 23, 42, 0.85);
             z-index: 1000;
             display: flex;
             justify-content: center;
@@ -487,17 +560,145 @@
             background-color: #f8fafc;
         }
 
-        /* Markdown Article Content Styling inside Modal */
+        /* --- CONFIGURATOR SPECIFIC STYLES --- */
+        .config-step {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .config-step.active {
+            display: block;
+        }
+
+        .config-question {
+            font-size: 1.25rem;
+            color: var(--navy);
+            font-weight: 600;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .config-options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .config-option {
+            display: block;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .config-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .config-option-content {
+            display: block;
+            padding: 15px 20px;
+            background: var(--light);
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            font-size: 1.05rem;
+            color: var(--slate);
+        }
+
+        .config-option input[type="radio"]:checked ~ .config-option-content {
+            border-color: var(--blue);
+            background: #eff6ff;
+            color: var(--navy);
+            font-weight: 500;
+        }
+
+        .config-option:hover .config-option-content {
+            border-color: #cbd5e1;
+        }
+
+        .config-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 20px;
+        }
+        
+        .config-result-box {
+            background: #f8fafc;
+            border-left: 4px solid var(--blue);
+            padding: 25px;
+            border-radius: 0 6px 6px 0;
+            margin-bottom: 30px;
+        }
+
+        .config-result-box h3 {
+            color: var(--navy);
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+        }
+
+        .config-result-box p {
+            color: var(--slate);
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+
+        .config-pathway h4 {
+            font-size: 1.1rem;
+            color: var(--navy);
+            margin-bottom: 15px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 8px;
+        }
+
+        .config-pathway ol {
+            margin-left: 20px;
+            color: var(--slate);
+            margin-bottom: 30px;
+        }
+
+        .config-pathway li {
+            margin-bottom: 12px;
+            font-size: 1.05rem;
+        }
+        
+        .config-pathway li strong {
+            color: var(--navy);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 15px;
+        }
+
+        .status-high-risk { background: #fee2e2; color: #b91c1c; }
+        .status-deploy { background: #dcfce3; color: #15803d; }
+        .status-mature { background: #e0f2fe; color: #0369a1; }
+        .status-disqualified { background: #f1f5f9; color: #475569; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .article-content {
             font-size: 1.05rem;
             color: var(--slate);
             line-height: 1.8;
         }
         
-        .article-content h1, 
-        .article-content h2, 
-        .article-content h3, 
-        .article-content h4 {
+        .article-content h1, .article-content h2, .article-content h3, .article-content h4 {
             color: var(--navy);
             margin: 30px 0 15px;
             line-height: 1.3;
@@ -506,20 +707,9 @@
         .article-content h1 { font-size: 1.8rem; }
         .article-content h2 { font-size: 1.5rem; }
         .article-content h3 { font-size: 1.2rem; }
-        
-        .article-content p {
-            margin-bottom: 20px;
-        }
-        
-        .article-content ul, 
-        .article-content ol {
-            margin-left: 20px;
-            margin-bottom: 20px;
-        }
-        
-        .article-content li {
-            margin-bottom: 8px;
-        }
+        .article-content p { margin-bottom: 20px; }
+        .article-content ul, .article-content ol { margin-left: 20px; margin-bottom: 20px; }
+        .article-content li { margin-bottom: 8px; }
         
         .article-content blockquote {
             border-left: 4px solid var(--blue);
@@ -541,7 +731,6 @@
             color: #b91c1c;
         }
 
-        /* Constraints for inline markdown images */
         .article-content img {
             max-width: 100%;
             height: auto;
@@ -587,7 +776,7 @@
         .form-success {
             margin-top: auto;
             padding-top: 20px;
-            color: #059669; /* Green */
+            color: #059669;
             font-weight: 600;
             font-size: 0.95rem;
             text-align: center;
@@ -611,29 +800,12 @@
             border-bottom: 4px solid var(--blue);
         }
 
-        .calc-header h3 {
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-        }
+        .calc-header h3 { font-size: 1.8rem; margin-bottom: 10px; }
+        .calc-header p { color: #cbd5e1; font-size: 1.05rem; }
 
-        .calc-header p {
-            color: #cbd5e1;
-            font-size: 1.05rem;
-        }
-
-        .calc-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-        }
-
-        .calc-inputs {
-            padding: 40px;
-        }
-
-        .calc-input-group {
-            margin-bottom: 20px;
-        }
-
+        .calc-grid { display: grid; grid-template-columns: 1fr 1fr; }
+        .calc-inputs { padding: 40px; }
+        .calc-input-group { margin-bottom: 20px; }
         .calc-input-group label {
             display: block;
             margin-bottom: 8px;
@@ -687,28 +859,11 @@
             letter-spacing: 0.5px;
         }
 
-        .calc-output-card .val {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--white);
-        }
-
-        .calc-output-card.highlight .val {
-            color: #60a5fa;
-            font-size: 2.2rem;
-        }
+        .calc-output-card .val { font-size: 1.8rem; font-weight: 700; color: var(--white); }
+        .calc-output-card.highlight .val { color: #60a5fa; font-size: 2.2rem; }
         
-        /* --- ARTICLES SECTION --- */
-        .articles-section {
-            padding: 100px 0;
-            background: var(--light);
-        }
-
-        /* --- CONTACT FORM SECTION --- */
-        .contact-section {
-            padding: 100px 0;
-            background: var(--white);
-        }
+        .articles-section { padding: 100px 0; background: var(--light); }
+        .contact-section { padding: 100px 0; background: var(--white); }
 
         .contact-grid {
             display: grid;
@@ -717,18 +872,8 @@
             align-items: start;
         }
 
-        .contact-text h2 {
-            font-size: 2.5rem;
-            color: var(--navy);
-            margin-bottom: 20px;
-            line-height: 1.2;
-        }
-        
-        .contact-text p {
-            color: var(--slate);
-            font-size: 1.1rem;
-            margin-bottom: 30px;
-        }
+        .contact-text h2 { font-size: 2.5rem; color: var(--navy); margin-bottom: 20px; line-height: 1.2; }
+        .contact-text p { color: var(--slate); font-size: 1.1rem; margin-bottom: 30px; }
 
         .contact-form {
             background: var(--light);
@@ -738,57 +883,18 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
 
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--navy); font-size: 0.9rem; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 1rem; background: var(--white); color: var(--navy);
         }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        .hidden-honeypot { display: none; }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--navy);
-            font-size: 0.9rem;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #cbd5e1;
-            border-radius: 4px;
-            font-size: 1rem;
-            background: var(--white);
-            color: var(--navy);
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--blue);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-
-        /* Hide the honeypot field from real users */
-        .hidden-honeypot {
-            display: none;
-        }
-
-        /* Footer */
-        footer {
-            background: #020617;
-            color: #94a3b8;
-            padding: 60px 0;
-            text-align: center;
-            font-size: 0.9rem;
-        }
+        footer { background: #020617; color: #94a3b8; padding: 60px 0; text-align: center; font-size: 0.9rem; }
 
         @media (max-width: 900px) {
             .contact-grid { grid-template-columns: 1fr; }
@@ -798,13 +904,19 @@
             .logo img { height: 60px; margin: 0 auto; } 
             nav { justify-content: center; }
             .services-grid { grid-template-columns: 1fr; }
-            .btn-white { display: block; margin: 15px auto 0 auto; width: fit-content; }
+            .btn-white { margin-left: 0; }
             .calc-grid { grid-template-columns: 1fr; }
             .modal-content { padding: 30px 20px; }
         }
     </style>
 </head>
 <body>
+
+    <!-- Hidden form for Netlify to process the Assessment Reports -->
+    <form name="assessment_report" netlify netlify-honeypot="bot-field" hidden>
+        <input type="text" name="email" />
+        <textarea name="report_data"></textarea>
+    </form>
 
     <header>
         <div class="container">
@@ -815,6 +927,7 @@
                 <div class="nav-links">
                     <a href="#about">About</a>
                     <a href="#services">Services</a>
+                    <a href="#pricing">Pricing</a>
                     <a href="#resources">Resources</a>
                     <a href="#articles">Articles</a>
                     <a href="#contact">Contact</a>
@@ -829,7 +942,7 @@
             <h1>Stop dragging R&D Engineers<br>into Field Support.</h1>
             <p>Schema Technical builds the service architecture (Compliance, SOPs, Training) that allows MedTech startups to scale without the R&D distraction.</p>
             <div class="cta-group">
-                <a href="#services" class="btn">Explore Services</a>
+                <button class="btn" onclick="openConfigModal()">Assess Service Readiness</button>
                 <a href="https://outlook.office.com/book/SchemaTechnicalLtd@schematechnical.co.uk/" target="_blank" class="btn-white">Book Discovery Call</a>
             </div>
         </div>
@@ -845,7 +958,7 @@
 
                 <p>Embedded within the Cambridge, Norwich, and London MedTech hubs, we provide fractional service architecture to scaling device manufacturers nationwide and internationally.</p>
 
-                <p>We are not generalist management consultants. We are <strong>Service Architects</strong>. We take the 'Tribal Knowledge' from your R&D team and convert it into audit-ready SOPs and validated service protocols <b>(Clause 7.5).</b> We ensure your 'Servicing' folder is as robust as your 'Design' folder. This allows your engineers to focus on the next product, while we ensure the current one stays reliable in the field.</p>
+                <p>We are not generalist management consultants. We are <strong>Service Architects</strong>. We operate across the entire hardware lifecycle: conducting forensic pre-freeze design audits to remove repair bottlenecks, building ISO 13485 compliant field infrastructures, and performing physical root cause analysis on post-market failures. We ensure your service operations are as robust as your clinical data, allowing your R&D engineers to focus on the next product while we protect your margins in the field.</p>
                 
                 <div style="text-align: center; margin-top: 40px;">
                     <a href="https://www.linkedin.com/in/danhowes1/" target="_blank" class="btn">View LinkedIn Profile</a>
@@ -875,8 +988,28 @@
                         <h4>What We Deliver:</h4>
                         <ul>
                             <li><strong>Risk Assessment:</strong> Component-level failure risk ranking.</li>
-                            <li><strong>Accessibility Analysis:</strong> Time-to-repair optimisation.</li>
+                            <li><strong>Accessibility Analysis:</strong> Time-to-repair optimization.</li>
                             <li><strong>The "Red Flag" Report:</strong> Critical changes needed before tooling freeze.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- DOCS -->
+                <div class="service-card">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-linecap="round" stroke-linejoin="round"/><polyline points="14 2 14 8 20 8" stroke-linecap="round" stroke-linejoin="round"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    </div>
+                    <span class="service-tag">DOCUMENTATION | ISO 13485:7.5</span>
+                    <h3>Technical Authoring</h3>
+                    <p>Stop relying on tribal R&D knowledge. We convert complex mechanical assemblies into validated, highly visual work instructions and compliance frameworks for your field engineers.</p>
+                    <button class="expand-btn" onclick="toggleDetails(this, 'View Deliverables')">View Deliverables</button>
+                    <div class="service-details">
+                        <h4>What We Deliver:</h4>
+                        <ul>
+                            <li><strong>Service Readiness Frameworks:</strong> The baseline QMS structure, including the core Service Manual architecture and PPM schedules.</li>
+                            <li><strong>FRU Work Instructions:</strong> Highly visual replacement guides for standard components.</li>
+                            <li><strong>Complex Overhaul Procedures:</strong> Advanced instructions requiring proprietary jigs or software calibration.</li>
+                            <li><strong>Validation Protocols:</strong> Site Readiness and IQ/OQ templates.</li>
                         </ul>
                     </div>
                 </div>
@@ -893,9 +1026,9 @@
                     <div class="service-details">
                         <h4>What We Deliver:</h4>
                         <ul>
-                            <li><strong>SOP Engineering:</strong> Converting "Tribal Knowledge" into field manuals.</li>
-                            <li><strong>Logistics Index:</strong> Defining Van Stock vs. Depot Stock.</li>
-                            <li><strong>"Train the Trainer":</strong> Certifying your first external partners.</li>
+                            <li><strong>Vendor Qualification:</strong> Auditing and certifying third-party repair facilities.</li>
+                            <li><strong>Curriculum Design:</strong> Developing rigorous, measurable training programs.</li>
+                            <li><strong>On-Site Certification:</strong> Delivering technical training and competency assessments.</li>
                         </ul>
                     </div>
                 </div>
@@ -906,39 +1039,91 @@
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 16V12" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </div>
                     <span class="service-tag">SUSTAINING | ISO 13485:8.2.1</span>
-                    <h3>Field Root-Cause Analysis (FRA)</h3>
-                    <p>Turn "No Fault Found" returns into compliant <b>Post-Market Surveillance</b> evidence. We perform forensic Field Root-Cause Analysis (FRA) to protect your margins and provide the exact closed-loop data required to update your ISO 14971 Risk Management files.</p>
+                    <h3>Field Reliability Analysis (FRA)</h3>
+                    <p>Turn "No Fault Found" returns into compliant <b>Post-Market Surveillance</b> evidence. We perform forensic physical root cause analysis to protect margins and provide closed-loop data for your ISO 14971 Risk Management files.</p>
                     <button class="expand-btn" onclick="toggleDetails(this, 'View Deliverables')">View Deliverables</button>
                     <div class="service-details">
                         <h4>What We Deliver:</h4>
                         <ul>
-                            <li><strong>Field Root-Cause Analysis:</strong> Deep-dive into early failed units.</li>
-                            <li><strong>ISO 14971 Data Loop:</strong> Translating field failure data into structured engineering feedback for R&D and QA risk management updates.</li>
-                            <li><strong>Spare Parts Forecast:</strong> Usage-based inventory optimisation.</li>
+                            <li><strong>Physical Root Cause Analysis:</strong> Forensic teardown and replication of field failures.</li>
+                            <li><strong>CAPA Engineering Data:</strong> Translating failure data into structured fixes for R&D.</li>
+                            <li><strong>Sustaining Support:</strong> Ongoing R&D technical triage and QMS review.</li>
                         </ul>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- --- TRANSPARENT PRICING SECTION --- -->
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <div class="section-title">
+                <h2>Transparent Commercials</h2>
+                <div class="divider"></div>
+                <p class="section-subtitle">We scope by mechanical complexity, not open-ended day rates. Fixed fees ensure ISO 13485 compliance is thoroughly funded without scope bleed.</p>
+            </div>
+
+            <div class="pricing-grid">
+                <!-- SDR Pricing -->
+                <div class="pricing-card featured">
+                    <h3>Pre-Freeze Audit (SDR)</h3>
+                    <div class="price">From £2,500</div>
+                    <span class="price-sub">Fixed fee based on hardware complexity</span>
+                    <ul>
+                        <li>Max 3 to 5-day forensic teardown</li>
+                        <li>Strictly bounded project scope</li>
+                        <li>Tier 1 (Standard) to Tier 3 (Robotics/Optics)</li>
+                        <li>Actionable engineering interventions</li>
+                    </ul>
+                    <a href="#contact" class="btn" style="width:100%; text-align:center;">Request Audit</a>
                 </div>
 
-                <!-- DOCS -->
-                <div class="service-card">
-                    <div class="icon-box">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-linecap="round" stroke-linejoin="round"/><polyline points="14 2 14 8 20 8" stroke-linecap="round" stroke-linejoin="round"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-                    </div>
-                    <span class="service-tag">DOCUMENTATION | ISO 13485:7.5</span>
-                    <h3>Service Documentation</h3>
-                    <p>We fill the compliance gap. We convert R&D data into audit-ready Technical Service Manuals, IQ/OQ protocols, and detailed Maintenance Checklists.</p>
-                    <button class="expand-btn" onclick="toggleDetails(this, 'View Deliverables')">View Deliverables</button>
-                    <div class="service-details">
-                        <h4>What We Deliver:</h4>
-                        <ul>
-                            <li><strong>Technical Service Manual (TSM):</strong> The definitive guide for repair.</li>
-                            <li><strong>Install Guides & Site Readiness:</strong> Protocols for first-time safe deployments.</li>
-                            <li><strong>IQ/OQ Protocols:</strong> Installation and Operational Qualification validation.</li>
-                            <li><strong>PPM Schedules & Checklists:</strong> Preventative maintenance for field engineering.</li>
-                            <li><strong>Service Software Validation (SSV):</strong> Proof of reliability for diagnostic tools.</li>
-                        </ul>
-                    </div>
+                <!-- Documentation Pricing -->
+                <div class="pricing-card">
+                    <h3>Technical Authoring</h3>
+                    <div class="price">From £350</div>
+                    <span class="price-sub">Per FRU Work Instruction</span>
+                    <ul>
+                        <li>Service Readiness Frameworks (From £3,500)</li>
+                        <li>Highly visual replacement guides</li>
+                        <li>Complex Overhaul Procedures (From £850)</li>
+                        <li>Auditor-ready ISO 13485 formatting</li>
+                    </ul>
+                    <a href="#contact" class="btn" style="width:100%; text-align:center; margin: 10px 0 0 0; padding: 12px 0;">Discuss Docs</a>
                 </div>
+
+                <!-- SNA Pricing -->
+                <div class="pricing-card">
+                    <h3>Service Network (SNA)</h3>
+                    <div class="price">From £1,500</div>
+                    <span class="price-sub">Per Project Phase</span>
+                    <ul>
+                        <li>Phase 0: Tech Discovery (Waived if SDR completed)</li>
+                        <li>Phase 1: Vendor Qualification (£2,500)</li>
+                        <li>Phase 2: Curriculum Design (£1,500)</li>
+                        <li>Phase 3: On-Site Training (From £4,800)</li>
+                    </ul>
+                    <a href="#contact" class="btn" style="width:100%; text-align:center; margin: 10px 0 0 0; padding: 12px 0;">Plan Network</a>
+                </div>
+
+                <!-- Reliability Pricing -->
+                <div class="pricing-card">
+                    <h3>Reliability (FRA)</h3>
+                    <div class="price">From £4,500</div>
+                    <span class="price-sub">Or £1,500/mo Retainer</span>
+                    <ul>
+                        <li>Physical Root Cause Analysis (Max 5 days)</li>
+                        <li>Sustaining retainer: 2 days/mo access (Min 3 mo)</li>
+                        <li>R&D technical triage & QMS review</li>
+                        <li>Standard out-of-scope rate: £850/day</li>
+                    </ul>
+                    <a href="#contact" class="btn" style="width:100%; text-align:center; margin: 10px 0 0 0; padding: 12px 0;">Secure Support</a>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <p style="font-size: 0.9rem; color: var(--slate);">*All engagements are scoped via an initial discovery call to ensure alignment with your current phase of commercialisation.</p>
             </div>
         </div>
     </section>
@@ -961,11 +1146,8 @@
                     <span class="service-tag">PDF GUIDE</span>
                     <h3>Pre-Production Serviceability Audit</h3>
                     <p>A 20-point engineering checklist to identify and eliminate catastrophic serviceability risks before you freeze your design and cut tooling.</p>
-                    
                     <form class="resource-form" name="resource_request" method="POST" data-netlify="true" netlify-honeypot="bot-field">
-                        <p class="hidden-honeypot">
-                            <label>Don’t fill this out if you're human: <input name="bot-field" /></label>
-                        </p>
+                        <p class="hidden-honeypot"><label>Don’t fill this out if you're human: <input name="bot-field" /></label></p>
                         <input type="hidden" name="form-name" value="resource_request">
                         <input type="hidden" name="document_requested" value="Pre-Production Serviceability Audit">
                         <input type="email" name="email" placeholder="Enter work email..." required>
@@ -981,11 +1163,8 @@
                     <span class="service-tag">PDF GUIDE</span>
                     <h3>The QMS Service Bridge</h3>
                     <p>Learn how to align your R&D engineering data with ISO 13485 and MDR Compliance to satisfy QA/RA auditors during Post-Market deployment.</p>
-                    
                     <form class="resource-form" name="resource_request" method="POST" data-netlify="true" netlify-honeypot="bot-field">
-                        <p class="hidden-honeypot">
-                            <label>Don’t fill this out if you're human: <input name="bot-field" /></label>
-                        </p>
+                        <p class="hidden-honeypot"><label>Don’t fill this out if you're human: <input name="bot-field" /></label></p>
                         <input type="hidden" name="form-name" value="resource_request">
                         <input type="hidden" name="document_requested" value="The QMS Service Bridge">
                         <input type="email" name="email" placeholder="Enter work email..." required>
@@ -1001,11 +1180,8 @@
                     <span class="service-tag">PDF DOCUMENT</span>
                     <h3>Schema Capability Statement</h3>
                     <p>A concise one-page breakdown of our fractional service architecture offerings, deliverables, and how we engage with MedTech startups.</p>
-                    
                     <form class="resource-form" name="resource_request" method="POST" data-netlify="true" netlify-honeypot="bot-field">
-                        <p class="hidden-honeypot">
-                            <label>Don’t fill this out if you're human: <input name="bot-field" /></label>
-                        </p>
+                        <p class="hidden-honeypot"><label>Don’t fill this out if you're human: <input name="bot-field" /></label></p>
                         <input type="hidden" name="form-name" value="resource_request">
                         <input type="hidden" name="document_requested" value="Schema Capability Statement">
                         <input type="email" name="email" placeholder="Enter work email..." required>
@@ -1021,11 +1197,8 @@
                     <span class="service-tag">DOCX TEMPLATE</span>
                     <h3>Technical Service Manual</h3>
                     <p>An ISO 13485 compliant boilerplate template for authoring your field service manuals, complete with troubleshooting and parts catalogue formatting.</p>
-                    
                     <form class="resource-form" name="resource_request" method="POST" data-netlify="true" netlify-honeypot="bot-field">
-                        <p class="hidden-honeypot">
-                            <label>Don’t fill this out if you're human: <input name="bot-field" /></label>
-                        </p>
+                        <p class="hidden-honeypot"><label>Don’t fill this out if you're human: <input name="bot-field" /></label></p>
                         <input type="hidden" name="form-name" value="resource_request">
                         <input type="hidden" name="document_requested" value="Technical Service Manual Template">
                         <input type="email" name="email" placeholder="Enter work email..." required>
@@ -1084,7 +1257,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </section>
 
@@ -1102,7 +1274,6 @@
                 </div>
             </div>
 
-            <!-- "View All" button container -->
             <div id="blog-load-more" style="text-align: center; margin-top: 40px; display: none;">
                 <button class="btn-white" onclick="renderAllArticles()">View All Articles</button>
             </div>
@@ -1116,32 +1287,23 @@
                     <h2>Book a Service Readiness Review.</h2>
                     <p>Find out if your device is ready for the field before your first customer complains. </p>
                     <p>Fill out the form to request a confidential discovery call with Dan.</p>
-                    <p style="margin-top: 20px;">
-                        <strong>Direct Email:</strong><br>
-                        <a href="mailto:dan@schematechnical.co.uk" style="color:var(--blue); text-decoration:none;">dan@schematechnical.co.uk</a>
-                    </p>
+                    <div style="margin-top: 30px;">
+                        <a href="https://outlook.office.com/book/SchemaTechnicalLtd@schematechnical.co.uk/" target="_blank" class="btn" style="margin-bottom: 20px;">Book directly on my calendar</a>
+                        <p>
+                            <strong>Direct Email:</strong><br>
+                            <a href="mailto:dan@schematechnical.co.uk" style="color:var(--blue); text-decoration:none;">dan@schematechnical.co.uk</a>
+                        </p>
+                    </div>
                 </div>
 
                 <form class="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
-                    <p class="hidden-honeypot">
-                        <label>Don’t fill this out if you're human: <input name="bot-field" /></label>
-                    </p>
+                    <p class="hidden-honeypot"><label>Don’t fill this out if you're human: <input name="bot-field" /></label></p>
                     <div class="form-row">
-                        <div class="form-group">
-                            <label>Name</label>
-                            <input type="text" name="name" required placeholder="John Smith">
-                        </div>
-                        <div class="form-group">
-                            <label>Work Email</label>
-                            <input type="email" name="email" required placeholder="john@company.com">
-                        </div>
+                        <div class="form-group"><label>Name</label><input type="text" name="name" required placeholder="John Smith"></div>
+                        <div class="form-group"><label>Work Email</label><input type="email" name="email" required placeholder="john@company.com"></div>
                     </div>
-
                     <div class="form-row">
-                        <div class="form-group">
-                            <label>Company Name</label>
-                            <input type="text" name="company" placeholder="Company Ltd">
-                        </div>
+                        <div class="form-group"><label>Company Name</label><input type="text" name="company" placeholder="Company Ltd"></div>
                         <div class="form-group">
                             <label>Device Classification</label>
                             <select name="classification">
@@ -1152,7 +1314,6 @@
                             </select>
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label>Stage of Development</label>
                         <select name="stage">
@@ -1162,12 +1323,10 @@
                             <option value="Legacy Support">Legacy Support / PMS</option>
                         </select>
                     </div>
-
                     <div class="form-group">
                         <label>How can we help?</label>
                         <textarea name="message" rows="4" placeholder="Tell us about your device stage (e.g., Prototype, Clinical Trial, Commercial)..."></textarea>
                     </div>
-
                     <button type="submit" class="btn" style="width:100%;">Request Call</button>
                 </form>
             </div>
@@ -1185,24 +1344,171 @@
     </footer>
 
     <!-- ARTICLE READING MODAL OVERLAY -->
-    <div class="modal-overlay" id="article-modal" onclick="closeModal(event)">
+    <div class="modal-overlay" id="article-modal" onclick="closeModal(event, 'article-modal')">
         <div class="modal-content" onclick="event.stopPropagation()">
-            <button class="modal-close" onclick="closeModal(event)">&times;</button>
+            <button class="modal-close" onclick="closeModal(event, 'article-modal')">&times;</button>
             <div class="modal-header">
                 <span class="service-tag" id="modal-date"></span>
                 <button id="copy-link-btn" class="btn-white" style="float: right; padding: 6px 12px; font-size: 0.8rem; margin: 0; margin-top: -5px;" onclick="copyArticleLink()">Copy Link</button>
                 <h2 id="modal-title"></h2>
-                <!-- Container for the featured header image -->
                 <div id="modal-image-container"></div>
             </div>
-            <div class="article-content" id="modal-body">
-                <!-- Blog content injected here -->
+            <div class="article-content" id="modal-body"></div>
+        </div>
+    </div>
+
+    <!-- CONFIGURATOR MODAL OVERLAY -->
+    <div class="modal-overlay" id="config-modal" onclick="closeModal(event, 'config-modal')">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal(event, 'config-modal')">&times;</button>
+            <div class="modal-header" style="border-bottom: none; padding-bottom: 0;">
+                <span class="service-tag">DIAGNOSTIC TOOL</span>
+                <h2 style="margin-bottom: 10px;">Service Readiness Assessment</h2>
+                <p style="color: var(--slate); font-size: 1.05rem;" id="config-subtitle">Map your ISO 13485 (Clause 7.5) operational pathway.</p>
+            </div>
+            
+            <div id="configurator-container" style="margin-top: 30px;">
+                
+                <!-- STEP 1: Disqualification Gate -->
+                <div class="config-step active" id="step-1">
+                    <p class="config-question">1. What is the core architecture of your medical device?</p>
+                    <div class="config-options-grid">
+                        <label class="config-option">
+                            <input type="radio" name="q1" value="A">
+                            <span class="config-option-content">Physical electro-mechanical hardware (with or without embedded software).</span>
+                        </label>
+                        <label class="config-option">
+                            <input type="radio" name="q1" value="B">
+                            <span class="config-option-content">Digital-only / Software as a Medical Device (SaMD).</span>
+                        </label>
+                    </div>
+
+                    <p class="config-question">2. What is the current commercial and funding status?</p>
+                    <div class="config-options-grid">
+                        <label class="config-option">
+                            <input type="radio" name="q2" value="A">
+                            <span class="config-option-content">Seed, Series A, Series B, or generating commercial revenue.</span>
+                        </label>
+                        <label class="config-option">
+                            <input type="radio" name="q2" value="B">
+                            <span class="config-option-content">Unfunded academic research, grant-pending, or pre-seed prototype.</span>
+                        </label>
+                    </div>
+
+                    <div class="config-actions" style="justify-content: flex-end;">
+                        <button class="btn" onclick="processStep1()">Continue Analysis</button>
+                    </div>
+                </div>
+
+                <!-- STEP 2: Core Diagnostic -->
+                <div class="config-step" id="step-2">
+                    <p class="config-question">3. What is the current lifecycle stage of the physical hardware?</p>
+                    <div class="config-options-grid">
+                        <label class="config-option">
+                            <input type="radio" name="q3" value="A">
+                            <span class="config-option-content">Prototype / Pre-Design Freeze.</span>
+                        </label>
+                        <label class="config-option">
+                            <input type="radio" name="q3" value="B">
+                            <span class="config-option-content">Design Freeze / Verification & Validation (V&V).</span>
+                        </label>
+                        <label class="config-option">
+                            <input type="radio" name="q3" value="C">
+                            <span class="config-option-content">Post-Market / Active Commercial Rollout.</span>
+                        </label>
+                    </div>
+
+                    <p class="config-question">4. Under EU MDR/IVDR, what is the regulatory classification?</p>
+                    <div class="config-options-grid">
+                        <label class="config-option">
+                            <input type="radio" name="q4" value="A">
+                            <span class="config-option-content">Class I / Class IIa.</span>
+                        </label>
+                        <label class="config-option">
+                            <input type="radio" name="q4" value="B">
+                            <span class="config-option-content">Class IIb / Class III.</span>
+                        </label>
+                    </div>
+
+                    <p class="config-question">5. How many Field Replaceable Units (FRUs) are defined in your architecture?</p>
+                    <div class="config-options-grid">
+                        <label class="config-option">
+                            <input type="radio" name="q5" value="A">
+                            <span class="config-option-content">1 to 5 (Sub-assembly swap out).</span>
+                        </label>
+                        <label class="config-option">
+                            <input type="radio" name="q5" value="B">
+                            <span class="config-option-content">6 to 15 (Complex component level).</span>
+                        </label>
+                        <label class="config-option">
+                            <input type="radio" name="q5" value="C">
+                            <span class="config-option-content">15+ or Undefined.</span>
+                        </label>
+                    </div>
+
+                    <p class="config-question">6. What is the baseline status of your field service documentation?</p>
+                    <div class="config-options-grid">
+                        <label class="config-option">
+                            <input type="radio" name="q6" value="A">
+                            <span class="config-option-content">We rely on R&D build notes and CAD files.</span>
+                        </label>
+                        <label class="config-option">
+                            <input type="radio" name="q6" value="B">
+                            <span class="config-option-content">We have partial SOPs, but lack validated IQ/OQ protocols and FRU manuals.</span>
+                        </label>
+                        <label class="config-option">
+                            <input type="radio" name="q6" value="C">
+                            <span class="config-option-content">We possess fully validated, ISO 13485 compliant service manuals.</span>
+                        </label>
+                    </div>
+
+                    <p class="config-question">7. Who is bearing the physical liability for field repairs?</p>
+                    <div class="config-options-grid">
+                        <label class="config-option">
+                            <input type="radio" name="q7" value="A">
+                            <span class="config-option-content">We do not have fielded units yet.</span>
+                        </label>
+                        <label class="config-option">
+                            <input type="radio" name="q7" value="B">
+                            <span class="config-option-content">Core R&D engineers are being pulled from development to execute repairs.</span>
+                        </label>
+                        <label class="config-option">
+                            <input type="radio" name="q7" value="C">
+                            <span class="config-option-content">An existing network handles it, but we see recurring failures or high turnaround times.</span>
+                        </label>
+                        <label class="config-option">
+                            <input type="radio" name="q7" value="D">
+                            <span class="config-option-content">A dedicated internal team or qualified third-party handles it efficiently with low failure rates.</span>
+                        </label>
+                    </div>
+
+                    <div class="config-actions">
+                        <button class="btn-white" style="margin-left: 0;" onclick="showConfigStep(1)">Back</button>
+                        <button class="btn" onclick="generateDiagnosticResult()">Generate Report</button>
+                    </div>
+                </div>
+
+                <!-- STEP 3: Results Panel -->
+                <div class="config-step" id="step-result">
+                    <div id="result-content">
+                        <!-- Injected via JS -->
+                    </div>
+                    
+                    <div class="form-group" style="margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 25px;">
+                        <label style="font-size: 1.1rem; color: var(--navy); margin-bottom: 10px;">Email this report & book consultation:</label>
+                        <input type="email" id="assessment-email" placeholder="Enter work email..." required style="margin-bottom: 15px;">
+                        <button class="btn" style="width: 100%;" onclick="submitAssessmentAndBook()">Book Call & Send Report</button>
+                        <button class="btn-white" style="width: 100%; margin: 10px 0 0 0;" onclick="showConfigStep(2)">Recalculate</button>
+                        <p id="assessment-status" style="color: #059669; font-weight: 600; text-align: center; margin-top: 10px; display: none;">Redirecting to booking portal...</p>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
 
     <script>
-        // Expanding Cards Logic for Services
+        // Expanding Cards Logic
         function toggleDetails(btn, defaultText = "Read More") {
             const details = btn.nextElementSibling;
             if (details.style.maxHeight) {
@@ -1216,27 +1522,22 @@
             }
         }
 
-        // Handle AJAX form submission for the resource downloads
+        // Resource Form Submissions
         document.querySelectorAll('.resource-form').forEach(form => {
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
                 const formData = new FormData(this);
-                
-                // Submit to Netlify without reloading the page
                 fetch("/", {
                     method: "POST",
                     headers: { "Content-Type": "application/x-www-form-urlencoded" },
                     body: new URLSearchParams(formData).toString()
                 }).then(() => {
                     this.innerHTML = '<div class="form-success">Request received! The document will be sent to your inbox shortly.</div>';
-                }).catch((error) => {
-                    console.error("Form submission error:", error);
-                    alert("There was an error submitting your request. Please try again.");
-                });
+                }).catch((error) => console.error("Form submission error:", error));
             });
         });
 
-        // Warranty Bleed Calculator Logic
+        // Warranty Bleed Calculator
         function calculateWarranty() {
             const installedBase = parseFloat(document.getElementById('calc-base').value) || 0;
             const mtbf = parseFloat(document.getElementById('calc-mtbf').value) || 0;
@@ -1259,32 +1560,24 @@
         }
         calculateWarranty();
 
-
-        // --- DYNAMIC GITHUB BLOG FETCH & MODAL LOGIC ---
+        // --- BLOG LOGIC ---
         let allArticlesData = [];
-
         async function loadGitHubBlogPosts() {
             const blogContainer = document.getElementById('blog-container');
             const repoApiUrl = 'https://api.github.com/repos/schematechnical/schema-technical-website/contents/blog?ref=main';
 
             try {
                 const response = await fetch(repoApiUrl);
-                
-                if (!response.ok) {
-                    throw new Error(`GitHub API responded with status: ${response.status}`);
-                }
-                
+                if (!response.ok) throw new Error(`API status: ${response.status}`);
                 const files = await response.json();
                 const mdFiles = files.filter(file => file.name.endsWith('.md'));
                 
                 if (mdFiles.length === 0) {
-                    blogContainer.innerHTML = '<div class="service-card" style="grid-column: 1 / -1; text-align: center;"><p>No articles published yet. Check back soon.</p></div>';
+                    blogContainer.innerHTML = '<div class="service-card" style="grid-column: 1 / -1; text-align: center;"><p>No articles published yet.</p></div>';
                     return;
                 }
 
-                blogContainer.innerHTML = ''; // Clear loading message
-
-                // Fetch and parse all articles
+                blogContainer.innerHTML = ''; 
                 for (const file of mdFiles) {
                     const contentResponse = await fetch(file.download_url);
                     const mdContent = await contentResponse.text();
@@ -1295,27 +1588,19 @@
                     let image = '';
                     let body = mdContent;
 
-                    // Extract YAML Frontmatter
-                    const frontmatterRegex = /^---\n([\s\S]*?)\n---\n([\s\S]*)$/;
-                    const match = mdContent.match(frontmatterRegex);
-                    
+                    const match = mdContent.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
                     if (match) {
-                        const frontmatter = match[1];
                         body = match[2]; 
+                        const front = match[1];
+                        const tMatch = front.match(/title:\s*["']?(.*?)["']?$/m);
+                        const dtMatch = front.match(/date:\s*["']?(.*?)["']?$/m);
+                        const dsMatch = front.match(/description:\s*["']?(.*?)["']?$/m);
+                        const imMatch = front.match(/image:\s*["']?(.*?)["']?$/m) || front.match(/thumbnail:\s*["']?(.*?)["']?$/m);
                         
-                        const titleMatch = frontmatter.match(/title:\s*["']?(.*?)["']?$/m);
-                        const dateMatch = frontmatter.match(/date:\s*["']?(.*?)["']?$/m);
-                        const descMatch = frontmatter.match(/description:\s*["']?(.*?)["']?$/m);
-                        
-                        // Check for either 'image' or 'thumbnail' in the CMS frontmatter
-                        const imgMatch = frontmatter.match(/image:\s*["']?(.*?)["']?$/m);
-                        const thumbMatch = frontmatter.match(/thumbnail:\s*["']?(.*?)["']?$/m);
-                        
-                        if (titleMatch) title = titleMatch[1];
-                        if (dateMatch) date = new Date(dateMatch[1]).toLocaleDateString('en-GB');
-                        if (descMatch) description = descMatch[1];
-                        if (imgMatch) image = imgMatch[1];
-                        else if (thumbMatch) image = thumbMatch[1];
+                        if (tMatch) title = tMatch[1];
+                        if (dtMatch) date = new Date(dtMatch[1]).toLocaleDateString('en-GB');
+                        if (dsMatch) description = dsMatch[1];
+                        if (imMatch) image = imMatch[1];
                     }
 
                     if (!description) {
@@ -1323,130 +1608,281 @@
                         if (description.length > 120) description = description.substring(0, 120) + '...';
                     }
 
-                    const htmlBody = window.marked ? marked.parse(body) : `<pre style="white-space: pre-wrap; font-family: inherit;">${body}</pre>`;
+                    const htmlBody = window.marked ? marked.parse(body) : `<pre style="white-space:pre-wrap;">${body}</pre>`;
                     const slug = file.name.replace('.md', '');
-
                     allArticlesData.push({ title, date, description, image, htmlBody, slug });
                 }
 
-                // Render only the first 2 articles to keep the page clean
                 renderArticles(0, 2);
+                if (allArticlesData.length > 2) document.getElementById('blog-load-more').style.display = 'block';
 
-                // If there are more articles, show the "View All" button
-                if (allArticlesData.length > 2) {
-                    document.getElementById('blog-load-more').style.display = 'block';
-                }
-
-                // Check URL for a specific article to open automatically
                 const urlParams = new URLSearchParams(window.location.search);
                 const articleParam = urlParams.get('article');
                 if (articleParam) {
                     const targetIndex = allArticlesData.findIndex(a => a.slug === articleParam);
                     if (targetIndex !== -1) {
-                        // Scroll to articles section and open the modal
                         document.getElementById('articles').scrollIntoView();
                         openArticleModal(targetIndex);
                     }
                 }
-
             } catch (error) {
-                console.error('Error fetching blog articles:', error);
-                blogContainer.innerHTML = '<div class="service-card" style="grid-column: 1 / -1; text-align: center;"><p>Currently unable to load engineering articles. Please check back later.</p></div>';
+                blogContainer.innerHTML = '<div class="service-card" style="grid-column: 1 / -1; text-align: center;"><p>Currently unable to load articles.</p></div>';
             }
         }
 
         function renderArticles(startIndex, limit) {
             const blogContainer = document.getElementById('blog-container');
-            const articlesToRender = allArticlesData.slice(startIndex, startIndex + limit);
-
-            articlesToRender.forEach((article, idx) => {
-                const globalIndex = startIndex + idx;
+            allArticlesData.slice(startIndex, startIndex + limit).forEach((article, idx) => {
                 const articleCard = document.createElement('div');
                 articleCard.className = 'service-card';
-                
-                // Construct the image HTML if an image exists
                 const imageHtml = article.image ? `<img src="${article.image}" alt="${article.title}" class="service-card-img">` : '';
-
                 articleCard.innerHTML = `
                     ${imageHtml}
                     <span class="service-tag">${article.date}</span>
                     <h3>${article.title}</h3>
                     <p>${article.description}</p>
-                    <button class="read-btn" onclick="openArticleModal(${globalIndex})">Read Article</button>
+                    <button class="read-btn" onclick="openArticleModal(${startIndex + idx})">Read Article</button>
                 `;
                 blogContainer.appendChild(articleCard);
             });
         }
 
         function renderAllArticles() {
-            // Render everything after the first 2
             renderArticles(2, allArticlesData.length - 2);
-            // Hide the load more button
             document.getElementById('blog-load-more').style.display = 'none';
         }
 
-        // Modal Controls
+        function closeModal(e, modalId) {
+            if (e) e.stopPropagation();
+            document.getElementById(modalId).classList.remove('active');
+            document.body.style.overflow = ''; 
+            if (modalId === 'article-modal') {
+                const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+                window.history.pushState({path: cleanUrl}, '', cleanUrl);
+            }
+        }
+
         function openArticleModal(index) {
             const article = allArticlesData[index];
             document.getElementById('modal-date').innerText = article.date;
             document.getElementById('modal-title').innerText = article.title;
             document.getElementById('modal-body').innerHTML = article.htmlBody;
-            
-            // Inject the header image if it exists
-            const imageContainer = document.getElementById('modal-image-container');
-            if (article.image) {
-                imageContainer.innerHTML = `<img src="${article.image}" alt="${article.title}" class="modal-hero-img">`;
-            } else {
-                imageContainer.innerHTML = '';
-            }
+            const imgCont = document.getElementById('modal-image-container');
+            imgCont.innerHTML = article.image ? `<img src="${article.image}" alt="${article.title}" class="modal-hero-img">` : '';
 
-            // Update the URL to enable direct linking
             const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?article=' + article.slug;
             window.history.pushState({path: newUrl}, '', newUrl);
             
             document.getElementById('article-modal').classList.add('active');
-            document.body.style.overflow = 'hidden'; // Stop background from scrolling
+            document.body.style.overflow = 'hidden'; 
         }
 
-        function closeModal(e) {
-            if (e) e.stopPropagation();
-            document.getElementById('article-modal').classList.remove('active');
-            document.body.style.overflow = ''; // Restore background scrolling
-
-            // Revert the URL when the modal closes
-            const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-            window.history.pushState({path: cleanUrl}, '', cleanUrl);
-        }
-
-        // Copy link to clipboard
         function copyArticleLink() {
-            const url = window.location.href;
-            const btn = document.getElementById('copy-link-btn');
-            
-            // Fallback for older browsers or restricted iframe environments
             const textArea = document.createElement("textarea");
-            textArea.value = url;
+            textArea.value = window.location.href;
             document.body.appendChild(textArea);
             textArea.select();
             try {
                 document.execCommand('copy');
+                const btn = document.getElementById('copy-link-btn');
                 btn.innerText = 'Copied!';
                 setTimeout(() => btn.innerText = 'Copy Link', 2000);
-            } catch (err) {
-                console.error('Failed to copy', err);
-            }
+            } catch (err) {}
             document.body.removeChild(textArea);
         }
 
-        // Close modal on Escape key press
         document.addEventListener('keydown', function(e) {
-            if (e.key === "Escape" && document.getElementById('article-modal').classList.contains('active')) {
-                closeModal();
+            if (e.key === "Escape") {
+                if (document.getElementById('article-modal').classList.contains('active')) closeModal(null, 'article-modal');
+                if (document.getElementById('config-modal').classList.contains('active')) closeModal(null, 'config-modal');
             }
         });
 
         document.addEventListener('DOMContentLoaded', loadGitHubBlogPosts);
 
+        // --- CONFIGURATOR LOGIC ---
+        let currentReportText = '';
+
+        function openConfigModal() {
+            document.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
+            document.getElementById('assessment-email').value = '';
+            document.getElementById('assessment-status').style.display = 'none';
+            showConfigStep(1);
+            document.getElementById('config-modal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function showConfigStep(stepNumber) {
+            document.querySelectorAll('.config-step').forEach(el => el.classList.remove('active'));
+            document.getElementById('step-' + (stepNumber === 'result' ? 'result' : stepNumber)).classList.add('active');
+            
+            const subtitle = document.getElementById('config-subtitle');
+            if (stepNumber === 1) subtitle.innerText = "Phase 1: Operational Scope";
+            else if (stepNumber === 2) subtitle.innerText = "Phase 2: System Complexity & Gap Analysis";
+            else subtitle.innerText = "Execution Report Generated";
+        }
+
+        function processStep1() {
+            const q1 = document.querySelector('input[name="q1"]:checked');
+            const q2 = document.querySelector('input[name="q2"]:checked');
+            if (!q1 || !q2) return alert("Please select an option for both questions to proceed.");
+            
+            if (q1.value === 'B' || q2.value === 'B') renderDisqualified();
+            else showConfigStep(2);
+        }
+
+        function renderDisqualified() {
+            const resContent = document.getElementById('result-content');
+            resContent.innerHTML = `
+                <div class="status-badge status-disqualified">Outside Operational Scope</div>
+                <div class="config-result-box" style="border-left-color: var(--slate);">
+                    <h3>Hardware Liability Pre-Requisite</h3>
+                    <p>Schema Technical operates strictly within physical hardware liability and field service network architecture. Building an ISO 13485 compliant service structure requires baseline capitalisation and physical field trials.</p>
+                    <p>We recommend re-engaging once Seed funding is secured and physical field iterations are mandated, or seeking a pure SaMD compliance consultancy if you operate digital-only.</p>
+                </div>
+                <button class="btn-white" style="margin-left: 0;" onclick="closeModal(null, 'config-modal')">Close Window</button>
+            `;
+            document.querySelector('.form-group[style*="border-top"]').style.display = 'none';
+            showConfigStep('result');
+        }
+
+        function generateDiagnosticResult() {
+            const q3 = document.querySelector('input[name="q3"]:checked');
+            const q4 = document.querySelector('input[name="q4"]:checked');
+            const q5 = document.querySelector('input[name="q5"]:checked');
+            const q6 = document.querySelector('input[name="q6"]:checked');
+            const q7 = document.querySelector('input[name="q7"]:checked');
+
+            if (!q3 || !q4 || !q5 || !q6 || !q7) {
+                return alert("Please complete all diagnostic parameters to generate the report.");
+            }
+
+            const resContent = document.getElementById('result-content');
+            const emailFormBlock = document.querySelector('.form-group[style*="border-top"]');
+            
+            let statusBadge, reportText, pathwayHtml;
+            let isMature = false;
+
+            // Pathway Logic
+            if (q3.value === 'A') {
+                // 1. Prototype = SDR
+                statusBadge = '<div class="status-badge status-high-risk">High Service Gap / High Commercial Risk</div>';
+                reportText = `Your hardware is pre-design freeze, and you currently lack validated field documentation. Proceeding to market without integrating Design for Service (DfS) principles guarantees high turnaround times and margin erosion during commercial rollout. A field service network cannot be built on R&D build notes.`;
+                pathwayHtml = `
+                    <div class="config-pathway">
+                        <h4>Mandated Operational Pathway:</h4>
+                        <ol>
+                            <li><strong>SDR (Service Design Review):</strong> Forensic teardown of your current prototype to enforce DfS and identify physical hardware liabilities.</li>
+                            <li><strong>Technical Authoring:</strong> Development of the foundational ISO 13485 documentation framework.</li>
+                            <li><strong>SNA:</strong> Long-term roadmap for Vendor Qualification.</li>
+                        </ol>
+                    </div>`;
+
+            } else if (q7.value === 'C') {
+                // 2. Failing Field Network = FRA
+                statusBadge = '<div class="status-badge status-high-risk" style="background: #fee2e2; color: #b91c1c;">Active Field Liability / Compliance Risk</div>';
+                reportText = `Your fielded units are experiencing recurring failures or high turnaround times under your current network arrangement. Before attempting to scale further or change vendors, we must isolate whether the failure rate is driven by a fundamental hardware defect or poor procedural adherence by your existing repair provider.`;
+                pathwayHtml = `
+                    <div class="config-pathway">
+                        <h4>Mandated Operational Pathway:</h4>
+                        <ol>
+                            <li><strong>FRA (Field Root-Cause Analysis):</strong> Forensic investigation of existing field failures to isolate hardware versus procedural defects.</li>
+                            <li><strong>SNA:</strong> Complete audit and rebuild of your depot network setup, enforcing strict Vendor Qualification to protect your margins and regulatory standing.</li>
+                        </ol>
+                    </div>`;
+
+            } else if (q6.value !== 'C') {
+                // 3. Missing Validated Docs = Tech Auth
+                statusBadge = '<div class="status-badge status-high-risk" style="background: #fef08a; color: #854d0e;">Critical Documentation Deficit / Operational Bottleneck</div>';
+                reportText = `Using core R&D engineers to execute field repairs is an unsustainable operational bleed that limits your scalability. However, you cannot outsource to a third-party repair network without validated FRU repair manuals and IQ/OQ protocols. You must close the Service Gap by formalising your documentation before network deployment can occur.`;
+                pathwayHtml = `
+                    <div class="config-pathway">
+                        <h4>Mandated Operational Pathway:</h4>
+                        <ol>
+                            <li><strong>Technical Authoring:</strong> Convert existing R&D knowledge into strict, ISO 13485 (Clause 7.5) compliant service manuals and SOPs.</li>
+                            <li><strong>SNA:</strong> Execute Curriculum Design and On-Site Certification to securely transition repairs away from your internal R&D team.</li>
+                        </ol>
+                    </div>`;
+
+            } else if (q7.value === 'D' && q6.value === 'C') {
+                // 4. Docs are Good & Network is Good = Operationally Mature
+                isMature = true;
+                statusBadge = '<div class="status-badge status-mature">Operationally Mature</div>';
+                reportText = `Your hardware is locked, your ISO 13485 (Clause 7.5) documentation is validated, and your field network is executing repairs within acceptable turnaround margins. You have successfully bridged the Service Gap. You do not require our core architectural or deployment services at this time.`;
+                pathwayHtml = `
+                    <div class="config-pathway">
+                        <h4>Sustaining Recommendation:</h4>
+                        <p style="color: var(--slate); font-size: 1.05rem; margin-bottom: 20px;">Keep Schema Technical on file for <strong>FRA (Field Root-Cause Analysis)</strong>. If your installed base scales and you begin seeing unexpected "No Fault Found" returns or complex electromechanical failures, we provide fractional forensic intervention to protect your margins and update your ISO 14971 risk files.</p>
+                    </div>`;
+                    
+            } else {
+                // 5. Docs are good, no current crisis = Deployment Ready (SNA)
+                statusBadge = '<div class="status-badge status-deploy">Cleared for Operational Rollout</div>';
+                reportText = `Your hardware is locked, and your ISO 13485 documentation framework is fully validated. You have mitigated the core regulatory risks and are ready to aggressively scale your third-party service provision to protect your margins and prove investability to your board.`;
+                pathwayHtml = `
+                    <div class="config-pathway">
+                        <h4>Mandated Operational Pathway:</h4>
+                        <ol>
+                            <li><strong>SNA (Service Network Architecture):</strong> Immediate operational rollout. We will execute strict Vendor Qualification, Curriculum Design, and On-Site Certification for your selected third-party network to ensure field reality matches R&D intent.</li>
+                        </ol>
+                    </div>`;
+            }
+
+            resContent.innerHTML = `
+                ${statusBadge}
+                <div class="config-result-box">
+                    <h3>Diagnostic Report</h3>
+                    <p>${reportText}</p>
+                </div>
+                ${pathwayHtml}
+            `;
+            
+            if (isMature) {
+                emailFormBlock.style.display = 'none';
+                resContent.innerHTML += `
+                    <div class="config-actions" style="justify-content: flex-start; gap: 15px; border-top: none; padding-top: 0;">
+                        <button class="btn-white" style="margin-left: 0;" onclick="closeModal(null, 'config-modal')">Close Assessment</button>
+                        <a href="https://www.linkedin.com/in/danhowes1/" target="_blank" class="btn">Connect on LinkedIn</a>
+                    </div>
+                `;
+            } else {
+                emailFormBlock.style.display = 'block';
+                currentReportText = `DIAGNOSTIC REPORT\n\n${reportText}\n\nPATHWAY:\n${pathwayHtml.replace(/<[^>]*>?/gm, '').trim()}`;
+            }
+
+            showConfigStep('result');
+        }
+
+        function submitAssessmentAndBook() {
+            const emailInput = document.getElementById('assessment-email');
+            const email = emailInput.value.trim();
+            const statusMsg = document.getElementById('assessment-status');
+            
+            if (!email || !email.includes('@')) {
+                alert("Please provide a valid work email address to receive the report.");
+                emailInput.focus();
+                return;
+            }
+
+            statusMsg.style.display = 'block';
+
+            const formData = new FormData();
+            formData.append('form-name', 'assessment_report');
+            formData.append('email', email);
+            formData.append('report_data', currentReportText);
+
+            fetch("/", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: new URLSearchParams(formData).toString()
+            }).then(() => {
+                window.open("https://outlook.office.com/book/SchemaTechnicalLtd@schematechnical.co.uk/", "_blank");
+                setTimeout(() => { closeModal(null, 'config-modal'); }, 1500);
+            }).catch(err => {
+                console.error("Error sending report", err);
+                window.open("https://outlook.office.com/book/SchemaTechnicalLtd@schematechnical.co.uk/", "_blank");
+            });
+        }
     </script>
 
 </body>
