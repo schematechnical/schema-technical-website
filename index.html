@@ -78,7 +78,7 @@
             padding: 0 20px;
         }
 
-        /* Standardised Buttons */
+        /* Standard Blue Button */
         .cta-group {
             display: flex;
             justify-content: center;
@@ -165,9 +165,10 @@
             text-align: center;
         }
         
+        /* GEO Answer-First Block (Natural Pre-header) */
         .hero-preheader {
             font-size: 1.05rem;
-            color: #60a5fa; 
+            color: #60a5fa; /* Lighter blue to stand out on navy */
             margin: 0 auto 20px auto;
             max-width: 700px;
             line-height: 1.5;
@@ -264,6 +265,7 @@
             box-shadow: 0 12px 20px rgba(0,0,0,0.1);
         }
 
+        /* Custom SVG Icon Styling */
         .icon-box svg {
             width: 50px;
             height: 50px;
@@ -299,6 +301,7 @@
             margin-bottom: 20px;
         }
 
+        /* Expanding Section Styles (Used for Services only) */
         .service-details {
             max-height: 0;
             overflow: hidden;
@@ -447,6 +450,7 @@
             background-color: #f1f5f9;
         }
 
+        /* Read Article Button Styles (Right Arrow) */
         .read-btn {
             background: none;
             border: none;
@@ -481,7 +485,7 @@
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(15, 23, 42, 0.85);
+            background: rgba(15, 23, 42, 0.85); /* Navy background with opacity */
             z-index: 1000;
             display: flex;
             justify-content: center;
@@ -692,13 +696,17 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Markdown Article Content Styling inside Modal */
         .article-content {
             font-size: 1.05rem;
             color: var(--slate);
             line-height: 1.8;
         }
         
-        .article-content h1, .article-content h2, .article-content h3, .article-content h4 {
+        .article-content h1, 
+        .article-content h2, 
+        .article-content h3, 
+        .article-content h4 {
             color: var(--navy);
             margin: 30px 0 15px;
             line-height: 1.3;
@@ -707,9 +715,20 @@
         .article-content h1 { font-size: 1.8rem; }
         .article-content h2 { font-size: 1.5rem; }
         .article-content h3 { font-size: 1.2rem; }
-        .article-content p { margin-bottom: 20px; }
-        .article-content ul, .article-content ol { margin-left: 20px; margin-bottom: 20px; }
-        .article-content li { margin-bottom: 8px; }
+        
+        .article-content p {
+            margin-bottom: 20px;
+        }
+        
+        .article-content ul, 
+        .article-content ol {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .article-content li {
+            margin-bottom: 8px;
+        }
         
         .article-content blockquote {
             border-left: 4px solid var(--blue);
@@ -731,6 +750,7 @@
             color: #b91c1c;
         }
 
+        /* Constraints for inline markdown images */
         .article-content img {
             max-width: 100%;
             height: auto;
@@ -776,7 +796,7 @@
         .form-success {
             margin-top: auto;
             padding-top: 20px;
-            color: #059669;
+            color: #059669; /* Green */
             font-weight: 600;
             font-size: 0.95rem;
             text-align: center;
@@ -800,12 +820,29 @@
             border-bottom: 4px solid var(--blue);
         }
 
-        .calc-header h3 { font-size: 1.8rem; margin-bottom: 10px; }
-        .calc-header p { color: #cbd5e1; font-size: 1.05rem; }
+        .calc-header h3 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
 
-        .calc-grid { display: grid; grid-template-columns: 1fr 1fr; }
-        .calc-inputs { padding: 40px; }
-        .calc-input-group { margin-bottom: 20px; }
+        .calc-header p {
+            color: #cbd5e1;
+            font-size: 1.05rem;
+        }
+
+        .calc-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .calc-inputs {
+            padding: 40px;
+        }
+
+        .calc-input-group {
+            margin-bottom: 20px;
+        }
+
         .calc-input-group label {
             display: block;
             margin-bottom: 8px;
@@ -859,11 +896,28 @@
             letter-spacing: 0.5px;
         }
 
-        .calc-output-card .val { font-size: 1.8rem; font-weight: 700; color: var(--white); }
-        .calc-output-card.highlight .val { color: #60a5fa; font-size: 2.2rem; }
+        .calc-output-card .val {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .calc-output-card.highlight .val {
+            color: #60a5fa;
+            font-size: 2.2rem;
+        }
         
-        .articles-section { padding: 100px 0; background: var(--light); }
-        .contact-section { padding: 100px 0; background: var(--white); }
+        /* --- ARTICLES SECTION --- */
+        .articles-section {
+            padding: 100px 0;
+            background: var(--light);
+        }
+
+        /* --- CONTACT FORM SECTION --- */
+        .contact-section {
+            padding: 100px 0;
+            background: var(--white);
+        }
 
         .contact-grid {
             display: grid;
@@ -872,8 +926,18 @@
             align-items: start;
         }
 
-        .contact-text h2 { font-size: 2.5rem; color: var(--navy); margin-bottom: 20px; line-height: 1.2; }
-        .contact-text p { color: var(--slate); font-size: 1.1rem; margin-bottom: 30px; }
+        .contact-text h2 {
+            font-size: 2.5rem;
+            color: var(--navy);
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .contact-text p {
+            color: var(--slate);
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
 
         .contact-form {
             background: var(--light);
@@ -883,18 +947,57 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
 
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--navy); font-size: 0.9rem; }
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 1rem; background: var(--white); color: var(--navy);
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
         }
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-            outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-        .hidden-honeypot { display: none; }
 
-        footer { background: #020617; color: #94a3b8; padding: 60px 0; text-align: center; font-size: 0.9rem; }
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--navy);
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            font-size: 1rem;
+            background: var(--white);
+            color: var(--navy);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        /* Hide the honeypot field from real users */
+        .hidden-honeypot {
+            display: none;
+        }
+
+        /* Footer */
+        footer {
+            background: #020617;
+            color: #94a3b8;
+            padding: 60px 0;
+            text-align: center;
+            font-size: 0.9rem;
+        }
 
         @media (max-width: 900px) {
             .contact-grid { grid-template-columns: 1fr; }
@@ -904,7 +1007,7 @@
             .logo img { height: 60px; margin: 0 auto; } 
             nav { justify-content: center; }
             .services-grid { grid-template-columns: 1fr; }
-            .btn-white { margin-left: 0; }
+            .btn-white { margin-left: 0; margin-top: 15px; }
             .calc-grid { grid-template-columns: 1fr; }
             .modal-content { padding: 30px 20px; }
         }
@@ -1146,8 +1249,11 @@
                     <span class="service-tag">PDF GUIDE</span>
                     <h3>Pre-Production Serviceability Audit</h3>
                     <p>A 20-point engineering checklist to identify and eliminate catastrophic serviceability risks before you freeze your design and cut tooling.</p>
+                    
                     <form class="resource-form" name="resource_request" method="POST" data-netlify="true" netlify-honeypot="bot-field">
-                        <p class="hidden-honeypot"><label>Don’t fill this out if you're human: <input name="bot-field" /></label></p>
+                        <p class="hidden-honeypot">
+                            <label>Don’t fill this out if you're human: <input name="bot-field" /></label>
+                        </p>
                         <input type="hidden" name="form-name" value="resource_request">
                         <input type="hidden" name="document_requested" value="Pre-Production Serviceability Audit">
                         <input type="email" name="email" placeholder="Enter work email..." required>
@@ -1163,8 +1269,11 @@
                     <span class="service-tag">PDF GUIDE</span>
                     <h3>The QMS Service Bridge</h3>
                     <p>Learn how to align your R&D engineering data with ISO 13485 and MDR Compliance to satisfy QA/RA auditors during Post-Market deployment.</p>
+                    
                     <form class="resource-form" name="resource_request" method="POST" data-netlify="true" netlify-honeypot="bot-field">
-                        <p class="hidden-honeypot"><label>Don’t fill this out if you're human: <input name="bot-field" /></label></p>
+                        <p class="hidden-honeypot">
+                            <label>Don’t fill this out if you're human: <input name="bot-field" /></label>
+                        </p>
                         <input type="hidden" name="form-name" value="resource_request">
                         <input type="hidden" name="document_requested" value="The QMS Service Bridge">
                         <input type="email" name="email" placeholder="Enter work email..." required>
@@ -1180,8 +1289,11 @@
                     <span class="service-tag">PDF DOCUMENT</span>
                     <h3>Schema Capability Statement</h3>
                     <p>A concise one-page breakdown of our fractional service architecture offerings, deliverables, and how we engage with MedTech startups.</p>
+                    
                     <form class="resource-form" name="resource_request" method="POST" data-netlify="true" netlify-honeypot="bot-field">
-                        <p class="hidden-honeypot"><label>Don’t fill this out if you're human: <input name="bot-field" /></label></p>
+                        <p class="hidden-honeypot">
+                            <label>Don’t fill this out if you're human: <input name="bot-field" /></label>
+                        </p>
                         <input type="hidden" name="form-name" value="resource_request">
                         <input type="hidden" name="document_requested" value="Schema Capability Statement">
                         <input type="email" name="email" placeholder="Enter work email..." required>
@@ -1197,8 +1309,11 @@
                     <span class="service-tag">DOCX TEMPLATE</span>
                     <h3>Technical Service Manual</h3>
                     <p>An ISO 13485 compliant boilerplate template for authoring your field service manuals, complete with troubleshooting and parts catalogue formatting.</p>
+                    
                     <form class="resource-form" name="resource_request" method="POST" data-netlify="true" netlify-honeypot="bot-field">
-                        <p class="hidden-honeypot"><label>Don’t fill this out if you're human: <input name="bot-field" /></label></p>
+                        <p class="hidden-honeypot">
+                            <label>Don’t fill this out if you're human: <input name="bot-field" /></label>
+                        </p>
                         <input type="hidden" name="form-name" value="resource_request">
                         <input type="hidden" name="document_requested" value="Technical Service Manual Template">
                         <input type="email" name="email" placeholder="Enter work email..." required>
@@ -1257,6 +1372,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </section>
 
@@ -1274,6 +1390,7 @@
                 </div>
             </div>
 
+            <!-- "View All" button container -->
             <div id="blog-load-more" style="text-align: center; margin-top: 40px; display: none;">
                 <button class="btn-white" onclick="renderAllArticles()">View All Articles</button>
             </div>
@@ -1297,13 +1414,25 @@
                 </div>
 
                 <form class="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
-                    <p class="hidden-honeypot"><label>Don’t fill this out if you're human: <input name="bot-field" /></label></p>
+                    <p class="hidden-honeypot">
+                        <label>Don’t fill this out if you're human: <input name="bot-field" /></label>
+                    </p>
                     <div class="form-row">
-                        <div class="form-group"><label>Name</label><input type="text" name="name" required placeholder="John Smith"></div>
-                        <div class="form-group"><label>Work Email</label><input type="email" name="email" required placeholder="john@company.com"></div>
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" name="name" required placeholder="John Smith">
+                        </div>
+                        <div class="form-group">
+                            <label>Work Email</label>
+                            <input type="email" name="email" required placeholder="john@company.com">
+                        </div>
                     </div>
+
                     <div class="form-row">
-                        <div class="form-group"><label>Company Name</label><input type="text" name="company" placeholder="Company Ltd"></div>
+                        <div class="form-group">
+                            <label>Company Name</label>
+                            <input type="text" name="company" placeholder="Company Ltd">
+                        </div>
                         <div class="form-group">
                             <label>Device Classification</label>
                             <select name="classification">
@@ -1314,6 +1443,7 @@
                             </select>
                         </div>
                     </div>
+
                     <div class="form-group">
                         <label>Stage of Development</label>
                         <select name="stage">
@@ -1323,10 +1453,12 @@
                             <option value="Legacy Support">Legacy Support / PMS</option>
                         </select>
                     </div>
+
                     <div class="form-group">
                         <label>How can we help?</label>
                         <textarea name="message" rows="4" placeholder="Tell us about your device stage (e.g., Prototype, Clinical Trial, Commercial)..."></textarea>
                     </div>
+
                     <button type="submit" class="btn" style="width:100%;">Request Call</button>
                 </form>
             </div>
@@ -1351,9 +1483,12 @@
                 <span class="service-tag" id="modal-date"></span>
                 <button id="copy-link-btn" class="btn-white" style="float: right; padding: 6px 12px; font-size: 0.8rem; margin: 0; margin-top: -5px;" onclick="copyArticleLink()">Copy Link</button>
                 <h2 id="modal-title"></h2>
+                <!-- Container for the featured header image -->
                 <div id="modal-image-container"></div>
             </div>
-            <div class="article-content" id="modal-body"></div>
+            <div class="article-content" id="modal-body">
+                <!-- Blog content injected here -->
+            </div>
         </div>
     </div>
 
@@ -1494,12 +1629,12 @@
                         <!-- Injected via JS -->
                     </div>
                     
-                    <div class="form-group" style="margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 25px;">
+                    <div class="form-group" style="margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 25px;" id="email-capture-block">
                         <label style="font-size: 1.1rem; color: var(--navy); margin-bottom: 10px;">Email this report & book consultation:</label>
                         <input type="email" id="assessment-email" placeholder="Enter work email..." required style="margin-bottom: 15px;">
                         <button class="btn" style="width: 100%;" onclick="submitAssessmentAndBook()">Book Call & Send Report</button>
                         <button class="btn-white" style="width: 100%; margin: 10px 0 0 0;" onclick="showConfigStep(2)">Recalculate</button>
-                        <p id="assessment-status" style="color: #059669; font-weight: 600; text-align: center; margin-top: 10px; display: none;">Redirecting to booking portal...</p>
+                        <p id="assessment-status" style="color: #059669; font-weight: 600; text-align: center; margin-top: 10px; display: none;">Report captured. Redirecting to booking portal...</p>
                     </div>
                 </div>
 
@@ -1508,7 +1643,7 @@
     </div>
 
     <script>
-        // Expanding Cards Logic
+        // Expanding Cards Logic for Services
         function toggleDetails(btn, defaultText = "Read More") {
             const details = btn.nextElementSibling;
             if (details.style.maxHeight) {
@@ -1522,22 +1657,27 @@
             }
         }
 
-        // Resource Form Submissions
+        // Handle AJAX form submission for the resource downloads
         document.querySelectorAll('.resource-form').forEach(form => {
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
                 const formData = new FormData(this);
+                
+                // Submit to Netlify without reloading the page
                 fetch("/", {
                     method: "POST",
                     headers: { "Content-Type": "application/x-www-form-urlencoded" },
                     body: new URLSearchParams(formData).toString()
                 }).then(() => {
                     this.innerHTML = '<div class="form-success">Request received! The document will be sent to your inbox shortly.</div>';
-                }).catch((error) => console.error("Form submission error:", error));
+                }).catch((error) => {
+                    console.error("Form submission error:", error);
+                    alert("There was an error submitting your request. Please try again.");
+                });
             });
         });
 
-        // Warranty Bleed Calculator
+        // Warranty Bleed Calculator Logic
         function calculateWarranty() {
             const installedBase = parseFloat(document.getElementById('calc-base').value) || 0;
             const mtbf = parseFloat(document.getElementById('calc-mtbf').value) || 0;
@@ -1560,24 +1700,32 @@
         }
         calculateWarranty();
 
-        // --- BLOG LOGIC ---
+
+        // --- DYNAMIC GITHUB BLOG FETCH & MODAL LOGIC ---
         let allArticlesData = [];
+
         async function loadGitHubBlogPosts() {
             const blogContainer = document.getElementById('blog-container');
             const repoApiUrl = 'https://api.github.com/repos/schematechnical/schema-technical-website/contents/blog?ref=main';
 
             try {
                 const response = await fetch(repoApiUrl);
-                if (!response.ok) throw new Error(`API status: ${response.status}`);
+                
+                if (!response.ok) {
+                    throw new Error(`GitHub API responded with status: ${response.status}`);
+                }
+                
                 const files = await response.json();
                 const mdFiles = files.filter(file => file.name.endsWith('.md'));
                 
                 if (mdFiles.length === 0) {
-                    blogContainer.innerHTML = '<div class="service-card" style="grid-column: 1 / -1; text-align: center;"><p>No articles published yet.</p></div>';
+                    blogContainer.innerHTML = '<div class="service-card" style="grid-column: 1 / -1; text-align: center;"><p>No articles published yet. Check back soon.</p></div>';
                     return;
                 }
 
-                blogContainer.innerHTML = ''; 
+                blogContainer.innerHTML = ''; // Clear loading message
+
+                // Fetch and parse all articles
                 for (const file of mdFiles) {
                     const contentResponse = await fetch(file.download_url);
                     const mdContent = await contentResponse.text();
@@ -1588,19 +1736,27 @@
                     let image = '';
                     let body = mdContent;
 
-                    const match = mdContent.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+                    // Extract YAML Frontmatter
+                    const frontmatterRegex = /^---\n([\s\S]*?)\n---\n([\s\S]*)$/;
+                    const match = mdContent.match(frontmatterRegex);
+                    
                     if (match) {
+                        const frontmatter = match[1];
                         body = match[2]; 
-                        const front = match[1];
-                        const tMatch = front.match(/title:\s*["']?(.*?)["']?$/m);
-                        const dtMatch = front.match(/date:\s*["']?(.*?)["']?$/m);
-                        const dsMatch = front.match(/description:\s*["']?(.*?)["']?$/m);
-                        const imMatch = front.match(/image:\s*["']?(.*?)["']?$/m) || front.match(/thumbnail:\s*["']?(.*?)["']?$/m);
                         
-                        if (tMatch) title = tMatch[1];
-                        if (dtMatch) date = new Date(dtMatch[1]).toLocaleDateString('en-GB');
-                        if (dsMatch) description = dsMatch[1];
-                        if (imMatch) image = imMatch[1];
+                        const titleMatch = frontmatter.match(/title:\s*["']?(.*?)["']?$/m);
+                        const dateMatch = frontmatter.match(/date:\s*["']?(.*?)["']?$/m);
+                        const descMatch = frontmatter.match(/description:\s*["']?(.*?)["']?$/m);
+                        
+                        // Check for either 'image' or 'thumbnail' in the CMS frontmatter
+                        const imgMatch = frontmatter.match(/image:\s*["']?(.*?)["']?$/m);
+                        const thumbMatch = frontmatter.match(/thumbnail:\s*["']?(.*?)["']?$/m);
+                        
+                        if (titleMatch) title = titleMatch[1];
+                        if (dateMatch) date = new Date(dateMatch[1]).toLocaleDateString('en-GB');
+                        if (descMatch) description = descMatch[1];
+                        if (imgMatch) image = imgMatch[1];
+                        else if (thumbMatch) image = thumbMatch[1];
                     }
 
                     if (!description) {
@@ -1608,54 +1764,75 @@
                         if (description.length > 120) description = description.substring(0, 120) + '...';
                     }
 
-                    const htmlBody = window.marked ? marked.parse(body) : `<pre style="white-space:pre-wrap;">${body}</pre>`;
+                    const htmlBody = window.marked ? marked.parse(body) : `<pre style="white-space: pre-wrap; font-family: inherit;">${body}</pre>`;
                     const slug = file.name.replace('.md', '');
+
                     allArticlesData.push({ title, date, description, image, htmlBody, slug });
                 }
 
+                // Render only the first 2 articles to keep the page clean
                 renderArticles(0, 2);
-                if (allArticlesData.length > 2) document.getElementById('blog-load-more').style.display = 'block';
 
+                // If there are more articles, show the "View All" button
+                if (allArticlesData.length > 2) {
+                    document.getElementById('blog-load-more').style.display = 'block';
+                }
+
+                // Check URL for a specific article to open automatically
                 const urlParams = new URLSearchParams(window.location.search);
                 const articleParam = urlParams.get('article');
                 if (articleParam) {
                     const targetIndex = allArticlesData.findIndex(a => a.slug === articleParam);
                     if (targetIndex !== -1) {
+                        // Scroll to articles section and open the modal
                         document.getElementById('articles').scrollIntoView();
                         openArticleModal(targetIndex);
                     }
                 }
+
             } catch (error) {
-                blogContainer.innerHTML = '<div class="service-card" style="grid-column: 1 / -1; text-align: center;"><p>Currently unable to load articles.</p></div>';
+                console.error('Error fetching blog articles:', error);
+                blogContainer.innerHTML = '<div class="service-card" style="grid-column: 1 / -1; text-align: center;"><p>Currently unable to load engineering articles. Please check back later.</p></div>';
             }
         }
 
         function renderArticles(startIndex, limit) {
             const blogContainer = document.getElementById('blog-container');
-            allArticlesData.slice(startIndex, startIndex + limit).forEach((article, idx) => {
+            const articlesToRender = allArticlesData.slice(startIndex, startIndex + limit);
+
+            articlesToRender.forEach((article, idx) => {
+                const globalIndex = startIndex + idx;
                 const articleCard = document.createElement('div');
                 articleCard.className = 'service-card';
+                
+                // Construct the image HTML if an image exists
                 const imageHtml = article.image ? `<img src="${article.image}" alt="${article.title}" class="service-card-img">` : '';
+
                 articleCard.innerHTML = `
                     ${imageHtml}
                     <span class="service-tag">${article.date}</span>
                     <h3>${article.title}</h3>
                     <p>${article.description}</p>
-                    <button class="read-btn" onclick="openArticleModal(${startIndex + idx})">Read Article</button>
+                    <button class="read-btn" onclick="openArticleModal(${globalIndex})">Read Article</button>
                 `;
                 blogContainer.appendChild(articleCard);
             });
         }
 
         function renderAllArticles() {
+            // Render everything after the first 2
             renderArticles(2, allArticlesData.length - 2);
+            // Hide the load more button
             document.getElementById('blog-load-more').style.display = 'none';
         }
 
-        function closeModal(e, modalId) {
+        // Shared Modal Logic for Articles and Configurator
+        function closeModal(e, modalId = 'article-modal') {
             if (e) e.stopPropagation();
             document.getElementById(modalId).classList.remove('active');
-            document.body.style.overflow = ''; 
+            document.body.style.overflow = ''; // Restore background scrolling
+
+            // Revert the URL when the article modal closes
             if (modalId === 'article-modal') {
                 const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
                 window.history.pushState({path: cleanUrl}, '', cleanUrl);
@@ -1667,34 +1844,52 @@
             document.getElementById('modal-date').innerText = article.date;
             document.getElementById('modal-title').innerText = article.title;
             document.getElementById('modal-body').innerHTML = article.htmlBody;
-            const imgCont = document.getElementById('modal-image-container');
-            imgCont.innerHTML = article.image ? `<img src="${article.image}" alt="${article.title}" class="modal-hero-img">` : '';
+            
+            // Inject the header image if it exists
+            const imageContainer = document.getElementById('modal-image-container');
+            if (article.image) {
+                imageContainer.innerHTML = `<img src="${article.image}" alt="${article.title}" class="modal-hero-img">`;
+            } else {
+                imageContainer.innerHTML = '';
+            }
 
+            // Update the URL to enable direct linking
             const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?article=' + article.slug;
             window.history.pushState({path: newUrl}, '', newUrl);
             
             document.getElementById('article-modal').classList.add('active');
-            document.body.style.overflow = 'hidden'; 
+            document.body.style.overflow = 'hidden'; // Stop background from scrolling
         }
 
+        // Copy link to clipboard
         function copyArticleLink() {
+            const url = window.location.href;
+            const btn = document.getElementById('copy-link-btn');
+            
+            // Fallback for older browsers or restricted iframe environments
             const textArea = document.createElement("textarea");
-            textArea.value = window.location.href;
+            textArea.value = url;
             document.body.appendChild(textArea);
             textArea.select();
             try {
                 document.execCommand('copy');
-                const btn = document.getElementById('copy-link-btn');
                 btn.innerText = 'Copied!';
                 setTimeout(() => btn.innerText = 'Copy Link', 2000);
-            } catch (err) {}
+            } catch (err) {
+                console.error('Failed to copy', err);
+            }
             document.body.removeChild(textArea);
         }
 
+        // Close active modal on Escape key press
         document.addEventListener('keydown', function(e) {
             if (e.key === "Escape") {
-                if (document.getElementById('article-modal').classList.contains('active')) closeModal(null, 'article-modal');
-                if (document.getElementById('config-modal').classList.contains('active')) closeModal(null, 'config-modal');
+                if (document.getElementById('article-modal').classList.contains('active')) {
+                    closeModal(null, 'article-modal');
+                }
+                if (document.getElementById('config-modal').classList.contains('active')) {
+                    closeModal(null, 'config-modal');
+                }
             }
         });
 
@@ -1742,7 +1937,7 @@
                 </div>
                 <button class="btn-white" style="margin-left: 0;" onclick="closeModal(null, 'config-modal')">Close Window</button>
             `;
-            document.querySelector('.form-group[style*="border-top"]').style.display = 'none';
+            document.getElementById('email-capture-block').style.display = 'none';
             showConfigStep('result');
         }
 
@@ -1758,7 +1953,7 @@
             }
 
             const resContent = document.getElementById('result-content');
-            const emailFormBlock = document.querySelector('.form-group[style*="border-top"]');
+            const emailFormBlock = document.getElementById('email-capture-block');
             
             let statusBadge, reportText, pathwayHtml;
             let isMature = false;
@@ -1866,6 +2061,10 @@
 
             statusMsg.style.display = 'block';
 
+            // CRITICAL FIX: Open the window immediately on user click to prevent browser popup blockers.
+            window.open("https://outlook.office.com/book/SchemaTechnicalLtd@schematechnical.co.uk/", "_blank");
+
+            // Then, silently post the form data to Netlify in the background.
             const formData = new FormData();
             formData.append('form-name', 'assessment_report');
             formData.append('email', email);
@@ -1876,11 +2075,9 @@
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
                 body: new URLSearchParams(formData).toString()
             }).then(() => {
-                window.open("https://outlook.office.com/book/SchemaTechnicalLtd@schematechnical.co.uk/", "_blank");
                 setTimeout(() => { closeModal(null, 'config-modal'); }, 1500);
             }).catch(err => {
-                console.error("Error sending report", err);
-                window.open("https://outlook.office.com/book/SchemaTechnicalLtd@schematechnical.co.uk/", "_blank");
+                console.error("Error logging report submission to Netlify:", err);
             });
         }
     </script>
