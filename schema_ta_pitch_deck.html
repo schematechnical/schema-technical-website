@@ -6,38 +6,45 @@
     <title>Schema Technical - Technical Authoring Pitch Deck</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        /* 1. CORE SETUP & PRESENTATION LOGIC */
-        * { box-sizing: border-box; }
-        p { margin: 0; margin-bottom: 15px; }
+        /* 1. CORE RESET & SCALING */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         
         body {
-            background-color: #0F172A;
+            background-color: #050914; 
             margin: 0;
-            padding: 0;
-            overflow: hidden; 
-            height: 100vh;
-            width: 100vw;
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
+            height: 100vh;
+            width: 100vw;
+            font-family: 'Urbanist', sans-serif;
+            color: #F8FAFC;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* 2. 16:9 FIXED ASPECT RATIO CONTAINER */
+        .presentation-wrapper {
+            position: relative;
+            width: 100vw;
+            height: 56.25vw; /* 16:9 ratio */
+            max-height: 100vh;
+            max-width: 177.78vh; /* 16:9 ratio */
+            background: radial-gradient(circle at center, #111A31 0%, #080D1C 100%);
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            container-type: inline-size;
         }
 
         .slide-container {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            padding: 60px;
+            top: 0; left: 0; width: 100%; height: 100%;
+            padding: 6% 8%;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background-color: #0F172A;
-            font-family: 'Urbanist', sans-serif;
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.4s ease, visibility 0.4s;
@@ -50,33 +57,14 @@
             z-index: 2;
         }
 
-        .slide-container::before {
-            content: '';
-            position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: radial-gradient(circle at center, rgba(37, 99, 235, 0.08) 0%, rgba(15, 23, 42, 0) 60%);
-            z-index: -1;
-            pointer-events: none;
-        }
-        .slide-container::after {
-            content: '';
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #2563EB, #38BDF8);
-            z-index: 0;
-        }
-        .slide-container > * { position: relative; z-index: 1; width: 100%; max-width: 1200px; }
-
-        /* MOBILE OVERLAY */
+        /* 3. MOBILE OVERLAY (Restored Original) */
         #mobile-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.98); z-index: 3000; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px; color: #F8FAFC; font-family: 'Urbanist', sans-serif; }
         #mobile-overlay i { font-size: 60px; color: #2563EB; margin-bottom: 20px; }
         #mobile-overlay h2 { font-size: 24px; margin-bottom: 10px; }
         #mobile-overlay p { color: #94A3B8; margin-bottom: 30px; font-size: 1.1rem; line-height: 1.5; }
         .overlay-actions { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
 
-        /* NAVIGATION CONTROLS */
+        /* 4. NAVIGATION CONTROLS (Restored Original) */
         .nav-controls { position: fixed; bottom: 30px; right: 30px; display: flex; align-items: center; gap: 15px; z-index: 2000; }
         .nav-btn { background: #2563EB; border: none; color: #F8FAFC; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4); transition: transform 0.2s, background 0.2s; font-size: 1.5rem; }
         .nav-btn:hover { background: #3b82f6; transform: scale(1.1); }
@@ -86,41 +74,97 @@
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.8); } 70% { box-shadow: 0 0 0 20px rgba(37, 99, 235, 0); } 100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); } }
         .btn-next:not(.disabled) { animation: pulse 2s infinite; }
 
-        /* TYPOGRAPHY & LAYOUTS */
-        .slide-container h1, .slide-container h2, .slide-container h3, .slide-container h4 { color: #F8FAFC; font-weight: 700; margin: 0; }
-        .slide-container h1 { font-size: 4.5vw; letter-spacing: -1px; }
-        .slide-container .slide-title { font-size: 3vw; font-weight: 700; margin-bottom: 30px; text-align: left; color: #F8FAFC; }
-        .slide-container h3 { font-size: 1.8vw; font-weight: 500; margin-bottom: 15px; color: #38BDF8; }
-        .slide-container p, .slide-container li, .slide-container .subtitle, .slide-container td, .slide-container th, .slide-container .bar .label, .slide-container .chart-summary { color: #CBD5E1; font-family: 'Urbanist', sans-serif; font-size: 1.3vw; line-height: 1.5; }
-        .slide-container .subtitle { font-size: 1.6vw; font-weight: 400; margin: 20px auto; color: #94A3B8; }
-        .accent-text { color: #38BDF8; }
-        .title-layout { text-align: center; }
-        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; width: 100%; }
-        .two-column.tiled > div { background-color: #1E293B; border-radius: 12px; border: 1px solid #334155; padding: 30px; text-align: left; }
-        .two-column ul { list-style: none; margin: 0; padding: 0; }
-        .two-column li { margin-bottom: 15px; position: relative; padding-left: 30px; }
-        .two-column li::before { content: '\f0da'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: #38BDF8; position: absolute; left: 0; top: 2px; }
-        .highlight-numbers-layout .number { color: #38BDF8; font-size: 7vw; font-weight: 700; line-height: 1; text-shadow: 0 0 40px rgba(56, 189, 248, 0.2);}
-        .timeline-layout { display: flex; justify-content: space-between; position: relative; width: 100%; }
-        .timeline-layout .timeline-line { background-color: #334155; height: 4px; left: 0; position: absolute; top: 50%; width: 100%; }
-        .timeline-item { position: relative; text-align: center; width: 18%; }
-        .timeline-item::after { background-color: #0F172A; border-radius: 50%; border: 4px solid #38BDF8; content: ''; height: 20px; left: 50%; position: absolute; top: 50%; transform: translate(-50%, -50%); width: 20px; }
-        .timeline-item .content-wrapper { background-color: #1E293B; padding: 20px 10px; border-radius: 8px; border: 1px solid #334155; position: absolute; width: 100%; }
-        .timeline-item:nth-child(odd) .content-wrapper { bottom: 50%; margin-bottom: 30px; }
-        .timeline-item:nth-child(even) .content-wrapper { top: 50%; margin-top: 30px; }
-        .chart-container { display: flex; flex-direction: column; gap: 20px; width: 100%; }
-        .bar { display: flex; align-items: center; gap: 20px; }
-        .bar .label { color: #F8FAFC; flex: 0 0 350px; font-weight: 700; text-align: right; font-size: 1.2vw;}
-        .bar .bar-inner { background-color: #1E293B; border-radius: 8px; flex-grow: 1; height: 45px; border: 1px solid #334155;}
-        .bar .bar-fill { height: 100%; border-radius: 8px; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; }
-        .table-layout table { border-collapse: collapse; width: 100%; background-color: #1E293B; border-radius: 12px; overflow: hidden;}
-        .table-layout th, .table-layout td { border-bottom: 1px solid #334155; padding: 15px 20px; text-align: left; }
-        .table-layout th { background-color: #0F172A; color: #38BDF8; border-bottom: 2px solid #2563EB;}
+        /* 5. GLOBAL TYPOGRAPHY */
+        .slide-title { font-size: 3.2cqw; font-weight: 600; margin-bottom: 5cqw; color: #FFFFFF; letter-spacing: -0.5px;}
+        .accent { color: #38BDF8; }
+        p { font-size: 1.4cqw; line-height: 1.6; color: #CBD5E1; margin-bottom: 1.5cqw; font-weight: 400;}
+        h3 { font-size: 1.8cqw; font-weight: 500; color: #38BDF8; margin-bottom: 1.2cqw; }
+
+        /* SLIDE 1: TITLE */
+        #slide1 { align-items: center; justify-content: center; text-align: center; }
+        #slide1 h1 { font-size: 5cqw; font-weight: 700; margin-bottom: 1cqw; letter-spacing: -1px; }
+        #slide1 p { font-size: 1.5cqw; color: #94A3B8; max-width: 70%; font-weight: 300; }
+
+        /* SLIDE 2: MANDATE */
+        .s2-layout { display: flex; align-items: center; justify-content: space-between; height: 100%; gap: 5cqw; padding-top: 2cqw;}
+        .s2-left { flex: 1; text-align: center; }
+        .s2-left .iso { font-size: 9cqw; font-weight: 700; line-height: 1; color: #38BDF8; text-shadow: 0 0 40px rgba(56,189,248,0.3); letter-spacing: -2px; }
+        .s2-left .rm { font-size: 1.8cqw; font-weight: 700; letter-spacing: 2px; margin-top: 1cqw; color: #F8FAFC; }
+        .s2-left .asterisk { font-size: 0.9cqw; color: #64748B; font-style: italic; margin-top: 4cqw; padding: 0 2cqw;}
+        .s2-right { flex: 1.2; padding-right: 2cqw; }
+        .s2-right h3 { font-size: 2.2cqw; line-height: 1.3; margin-bottom: 2cqw; }
+
+        /* SLIDE 3: TIMELINE */
+        .timeline-wrapper { position: relative; height: 100%; display: flex; align-items: center; margin-top: -3cqw;}
+        .timeline-line { position: absolute; top: 50%; left: 5%; right: 5%; height: 2px; background: #263859; transform: translateY(-50%); z-index: 1;}
+        .timeline-nodes { display: flex; justify-content: space-between; width: 90%; margin: 0 auto; position: relative; z-index: 2;}
+        .t-node { width: 18%; position: relative; display: flex; justify-content: center; }
+        .t-circle { width: 1.2cqw; height: 1.2cqw; background: #080D1C; border: 3px solid #38BDF8; border-radius: 50%; position: absolute; top: 50%; transform: translateY(-50%); z-index: 3;}
+        .t-card { background: rgba(21, 30, 50, 0.7); border: 1px solid #1E2B48; border-radius: 8px; padding: 1.5cqw; width: 100%; text-align: center; position: absolute; }
+        .t-card h4 { color: #38BDF8; font-size: 1.2cqw; font-weight: 600; margin-bottom: 0.8cqw; }
+        .t-card p { font-size: 1cqw; margin: 0; line-height: 1.4; color: #94A3B8;}
+        .t-node:nth-child(odd) .t-card { top: 3cqw; }
+        .t-node:nth-child(even) .t-card { bottom: 3cqw; }
+
+        /* SLIDE 4: TWO BOXES */
+        .s4-layout { display: flex; gap: 3cqw; height: 100%; align-items: flex-start; }
+        .dark-box { background: rgba(21, 30, 50, 0.6); border: 1px solid #1E2B48; border-radius: 10px; padding: 3cqw; flex: 1; }
+        .dark-box h3 { font-size: 2cqw; margin-bottom: 2cqw; }
+        .custom-list { list-style: none; margin-top: 1cqw; }
+        .custom-list li { position: relative; padding-left: 1.5cqw; margin-bottom: 1.2cqw; font-size: 1.4cqw; color: #CBD5E1; }
+        .custom-list li::before { content: '\f0da'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: #38BDF8; position: absolute; left: 0; top: 2px; font-size: 1.2cqw;}
+
+        /* SLIDE 5: LINGUISTIC */
+        .s5-layout { display: flex; gap: 4cqw; align-items: center; height: 100%; }
+        .s5-left { flex: 1.2; }
+        .s5-left h3 { font-size: 2cqw; }
+        .s5-right { flex: 1; }
+        .s5-right .dark-box { padding: 2.5cqw; }
+        .s5-right .box-header { display: flex; align-items: center; gap: 1cqw; margin-bottom: 1.5cqw; }
+        .s5-right .box-header i { color: #38BDF8; font-size: 1.8cqw; }
+        .s5-right .box-header h4 { color: #F8FAFC; font-size: 1.6cqw; font-weight: 600; }
+
+        /* SLIDE 6: THREE BOXES */
+        .s6-layout { display: flex; gap: 2cqw; height: 100%; align-items: stretch; padding-top: 2cqw; }
+        .s6-box { flex: 1; background: rgba(21, 30, 50, 0.6); border: 1px solid #1E2B48; border-radius: 10px; padding: 3cqw 2cqw; text-align: center; display: flex; flex-direction: column; align-items: center;}
+        .s6-box i { color: #38BDF8; font-size: 3cqw; margin-bottom: 1.5cqw; }
+        .s6-box h4 { color: #F8FAFC; font-size: 1.6cqw; font-weight: 500; margin-bottom: 1.5cqw; line-height: 1.3;}
+        .s6-box p { font-size: 1.2cqw; }
+
+        /* SLIDE 7: CHART */
+        .s7-content { display: flex; flex-direction: column; justify-content: center; height: 100%; padding: 0 5cqw;}
+        .chart-row { display: flex; align-items: center; margin-bottom: 2cqw; gap: 2cqw; }
+        .chart-label { width: 30%; text-align: right; font-size: 1.3cqw; font-weight: 600; color: #F8FAFC; }
+        .chart-track { flex: 1; background: #151E32; border-radius: 6px; height: 3.5cqw; display: flex; align-items: center; border: 1px solid #1E2B48;}
+        .chart-bar { height: 100%; border-radius: 6px; display: flex; align-items: center; padding-left: 1.5cqw; font-weight: 600; font-size: 1.1cqw; color: #FFF; white-space: nowrap; }
+        .bar-red { width: 85%; background: linear-gradient(90deg, #DC2626, #EF4444); }
+        .bar-green { width: 45%; background: linear-gradient(90deg, #16A34A, #22C55E); }
+        .s7-footer { text-align: center; font-style: italic; font-size: 1.2cqw; color: #94A3B8; margin-top: 4cqw; padding: 0 4cqw;}
+
+        /* SLIDE 8: TABLE */
+        .s8-table-wrapper { background: rgba(21, 30, 50, 0.5); border: 1px solid #1E2B48; border-radius: 8px; overflow: hidden; margin-top: 2cqw;}
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th { color: #38BDF8; font-weight: 600; font-size: 1.2cqw; padding: 1.5cqw 2cqw; border-bottom: 1px solid #263859; }
+        td { padding: 1.5cqw 2cqw; font-size: 1.2cqw; color: #CBD5E1; border-bottom: 1px solid #1E2B48; vertical-align: top;}
+        td:first-child { font-weight: 600; color: #F8FAFC; width: 22%; }
+        tr:last-child td { border-bottom: none; }
+
+        /* SLIDE 9: QUOTE */
+        #slide9 { align-items: center; justify-content: center; text-align: center; }
+        .quote-container { position: relative; max-width: 80%; }
+        .quote-mark { color: #1E3A8A; font-size: 8cqw; font-weight: 900; position: absolute; font-family: serif; line-height: 0; }
+        .qm-left { top: 0; left: -4cqw; }
+        .qm-right { bottom: -2cqw; right: -4cqw; }
+        .quote-text { font-size: 2.5cqw; font-weight: 400; color: #F8FAFC; line-height: 1.4; margin-bottom: 3cqw; }
+        .quote-author { color: #38BDF8; font-weight: 700; font-size: 1.2cqw; letter-spacing: 1px; text-transform: uppercase; }
+
+        /* SLIDE 10: END */
+        #slide10 { align-items: center; justify-content: center; text-align: center; }
+        #slide10 h2 { font-size: 4.5cqw; font-weight: 700; margin-bottom: 1cqw; }
+        #slide10 p { font-size: 1.6cqw; color: #94A3B8; font-weight: 300; margin-bottom: 3cqw; }
+        #slide10 .footer { color: #38BDF8; font-weight: 600; font-size: 1.2cqw; letter-spacing: 1px; }
 
         @media (max-width: 900px) {
-            .slide-container h1 { font-size: 8vw; } .slide-container .slide-title { font-size: 6vw; }
-            .slide-container p, .slide-container li { font-size: 3.5vw; }
-            .two-column { grid-template-columns: 1fr; }
             #mobile-overlay { display: flex; }
         }
         @media (max-width: 900px) and (orientation: landscape) { #mobile-overlay { display: none; } }
@@ -138,57 +182,84 @@
     </div>
 </div>
 
-<div class="slide-container active" id="slide1">
-    <div class="title-layout">
-        <h1>Schema Technical <span class="accent-text">Documentation</span></h1>
-        <p class="subtitle">Technical Authoring: Engineering legally defensible Risk Controls, <br>eradicating field ambiguity, and securing ISO 13485 Document Control.</p>
+<div class="presentation-wrapper">
+    
+    <div class="slide-container active" id="slide1">
+        <h1>Schema Technical <span class="accent">Documentation</span></h1>
+        <p>Technical Authoring: Engineering legally defensible Risk Controls,<br>eradicating field ambiguity, and securing ISO 13485 Document Control.</p>
     </div>
-</div>
 
-<div class="slide-container" id="slide2">
-    <h2 class="slide-title">The Information for Safety Mandate</h2>
-    <div class="content-area">
-        <div class="two-column highlight-numbers-layout">
-            <div>
-                <div class="number">ISO 14971</div>
-                <div class="number-label">Risk Management</div>
-                <p style="font-size: 0.9vw; color: #64748B; font-style: italic; margin-top: 30px;">*When a physical hazard cannot be eliminated by design, the final layer of protection is "Information for Safety."</p>
+    <div class="slide-container" id="slide2">
+        <h2 class="slide-title">The Information for Safety Mandate</h2>
+        <div class="s2-layout">
+            <div class="s2-left">
+                <div class="iso">ISO<br>14971</div>
+                <div class="rm">RISK MANAGEMENT</div>
+                <div class="asterisk">"When a physical hazard cannot be eliminated by R&D design, the absolute final layer of regulatory protection is 'Information for Safety.'"</div>
             </div>
-            <div>
+            <div class="s2-right">
                 <h3>Manuals are not guidelines. They are Risk Controls.</h3>
-                <p>In the MedTech sector, a Service Manual is a legally binding regulatory document. If a manual is vague, the resulting hazard is a direct failure of the OEM's QMS.</p>
+                <p>In the MedTech sector, a Service Manual is a legally binding regulatory document. If a field engineer pinches a high-voltage cable because the manual was vague, the resulting patient hazard is a direct failure of the OEM's Quality Management System.</p>
                 <p>Drafting these documents cannot be delegated to junior staff using basic word processors. They must be engineered.</p>
             </div>
         </div>
     </div>
-</div>
 
-<div class="slide-container" id="slide3">
-    <h2 class="slide-title">The 5-Phase Authoring Architecture</h2>
-    <div class="content-area">
-        <div class="timeline-layout">
+    <div class="slide-container" id="slide3">
+        <h2 class="slide-title">The 5-Phase Authoring Architecture</h2>
+        <div class="timeline-wrapper">
             <div class="timeline-line"></div>
-            <div class="timeline-item"><div class="content-wrapper"><h3>1: Intake</h3><p>Securing RMF, 3D CAD geometry, and production-equivalent hardware.</p></div></div>
-            <div class="timeline-item"><div class="content-wrapper"><h3>2: Anatomy</h3><p>Reconciling hardware against CAD and engineering safe-state sequences.</p></div></div>
-            <div class="timeline-item"><div class="content-wrapper"><h3>3: Syntax</h3><p>Drafting using verb-first imperatives and ISO 3864 hazard signal words.</p></div></div>
-            <div class="timeline-item"><div class="content-wrapper"><h3>4: Validation</h3><p>Executing drafts physically on the bench to prove tooling clearances.</p></div></div>
-            <div class="timeline-item"><div class="content-wrapper"><h3>5: Handover</h3><p>Final QARA review and ingestion into the Digital Service Portal.</p></div></div>
+            <div class="timeline-nodes">
+                <div class="t-node">
+                    <div class="t-circle"></div>
+                    <div class="t-card">
+                        <h4>1: Intake</h4>
+                        <p>Securing the Risk Management File, 3D CAD geometry, and production-equivalent hardware.</p>
+                    </div>
+                </div>
+                <div class="t-node">
+                    <div class="t-circle"></div>
+                    <div class="t-card">
+                        <h4>2: Anatomy</h4>
+                        <p>Reconciling physical hardware against CAD and engineering safe-state isolation sequences.</p>
+                    </div>
+                </div>
+                <div class="t-node">
+                    <div class="t-circle"></div>
+                    <div class="t-card">
+                        <h4>3: Syntax</h4>
+                        <p>Drafting using strict verb-first imperatives and injecting ISO 3864 hazard signal words.</p>
+                    </div>
+                </div>
+                <div class="t-node">
+                    <div class="t-circle"></div>
+                    <div class="t-card">
+                        <h4>4: Validation</h4>
+                        <p>Executing drafts physically on the bench to prove tooling clearances and generate vector art.</p>
+                    </div>
+                </div>
+                <div class="t-node">
+                    <div class="t-circle"></div>
+                    <div class="t-card">
+                        <h4>5: Handover</h4>
+                        <p>Final QARA review of technical limits and ingestion into the Digital Service Portal.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="slide-container" id="slide4">
-    <h2 class="slide-title">Eliminating "Desk-Drafted" Manuals</h2>
-    <div class="content-area">
-        <div class="two-column tiled">
-            <div>
+    <div class="slide-container" id="slide4">
+        <h2 class="slide-title">Eliminating "Desk-Drafted" Manuals</h2>
+        <div class="s4-layout">
+            <div class="dark-box">
                 <h3>The Flawed Approach</h3>
-                <p>Traditional technical writers often author manuals entirely from 3D CAD models while sitting at a desk, ignoring tooling clearances and ergonomics.</p>
+                <p>Traditional technical writers often author manuals entirely from 3D CAD models while sitting at a desk. This results in instructions that are physically impossible to execute in the field because they ignore tooling clearances, real-world loom routing, and human ergonomics.</p>
             </div>
-            <div>
+            <div class="dark-box">
                 <h3>The Physical Validation Mandate</h3>
-                <p>Schema Technical executes every drafted procedure on physical hardware on our engineering bench:</p>
-                <ul>
+                <p>Schema Technical refuses to author blindly. We execute every drafted procedure on physical, production-equivalent hardware on our engineering bench:</p>
+                <ul class="custom-list">
                     <li>Validates specified torque tools physically fit.</li>
                     <li>Identifies unmitigated sharp edges.</li>
                     <li>Ensures sequence flow matches physical reality.</li>
@@ -196,89 +267,116 @@
             </div>
         </div>
     </div>
-</div>
 
-<div class="slide-container" id="slide5">
-    <h2 class="slide-title">Linguistic Hazard Control</h2>
-    <div class="content-area">
-        <div class="two-column align-center">
-            <div>
+    <div class="slide-container" id="slide5">
+        <h2 class="slide-title">Linguistic Hazard Control</h2>
+        <div class="s5-layout">
+            <div class="s5-left">
                 <h3>Mitigating Foreseeable Use Error</h3>
                 <p>We apply strict grammatical architecture to eliminate cognitive ambiguity during high-stress field interventions.</p>
-                <p>We utilise <strong>Verb-First Imperative Syntax</strong> and explicitly apply <strong>ISO 3864 Signal Words</strong> (DANGER, WARNING, CAUTION) immediately prior to the hazard.</p>
+                <p>We utilise <strong>Verb-First Imperative Syntax</strong> (e.g., "Remove the screws", not "The screws should be removed"). We explicitly apply <strong>ISO 3864 Signal Words</strong> (DANGER, WARNING, CAUTION) immediately prior to the physical action that triggers the hazard, preventing technicians from skimming past vital safety limits.</p>
             </div>
-            <div style="background-color: rgba(37, 99, 235, 0.1); border-left: 4px solid #38BDF8; padding: 30px; border-radius: 8px;">
-                <h4 style="font-size: 1.6vw; color: #F8FAFC; margin-bottom: 15px;"><i class="fa-solid fa-bezier-curve" style="color: #38BDF8;"></i> CAD-Derived Vector Art</h4>
-                <p>We generate high-contrast vector line art derived directly from your .STEP files, highlighting interaction points with absolute visual clarity.</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="slide-container" id="slide6">
-    <h2 class="slide-title">Solving ISO 13485 Clause 4.2.4</h2>
-    <div class="content-area">
-        <div style="display: flex; gap: 30px; justify-content: center; width: 100%;">
-            <div style="flex: 1; background: #1E293B; border-radius: 12px; padding: 30px; text-align: center; border: 1px solid #334155;">
-                <i class="fa-solid fa-file-pdf" style="font-size: 2.5vw; color: #38BDF8; margin-bottom: 20px;"></i>
-                <h3 style="font-size: 1.4vw; color: #F8FAFC;">The "Local File" Threat</h3>
-                <p>Prevent engineers from using obsolete, cached PDF files on local drives.</p>
-            </div>
-            <div style="flex: 1; background: #1E293B; border-radius: 12px; padding: 30px; text-align: center; border: 1px solid #334155;">
-                <i class="fa-solid fa-server" style="font-size: 2.5vw; color: #38BDF8; margin-bottom: 20px;"></i>
-                <h3 style="font-size: 1.4vw; color: #F8FAFC;">Digital Portals</h3>
-                <p>Forcing access to a single, globally updated source of truth via secure SharePoint.</p>
-            </div>
-            <div style="flex: 1; background: #1E293B; border-radius: 12px; padding: 30px; text-align: center; border: 1px solid #334155;">
-                <i class="fa-solid fa-lock" style="font-size: 2.5vw; color: #38BDF8; margin-bottom: 20px;"></i>
-                <h3 style="font-size: 1.4vw; color: #F8FAFC;">View-Only</h3>
-                <p>Strict permission matrices that block downloading or printing of critical IP.</p>
+            <div class="s5-right">
+                <div class="dark-box">
+                    <div class="box-header">
+                        <i class="fa-solid fa-bezier-curve"></i>
+                        <h4>CAD-Derived Vector Art</h4>
+                    </div>
+                    <p style="font-size: 1.2cqw;">Generic photographs fade, photocopy poorly, and clutter the page. We generate high-contrast vector line art derived directly from your .STEP files, highlighting specific interaction points with absolute visual clarity.</p>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="slide-container" id="slide7">
-    <h2 class="slide-title">The Operational Delta</h2>
-    <div class="content-area">
-        <div class="chart-container">
-            <div class="bar"><div class="label">Standard Word Processor Docs</div><div class="bar-inner"><div class="bar-fill" style="width: 85%; background: linear-gradient(90deg, #991B1B, #EF4444);">High Ambiguity & Version Failures</div></div></div>
-            <div class="bar"><div class="label">Schema Readiness Framework</div><div class="bar-inner"><div class="bar-fill" style="width: 45%; min-width: max-content; padding: 0 20px; background: linear-gradient(90deg, #166534, #22C55E);">ISO 13485 Compliant Risk Control</div></div></div>
+    <div class="slide-container" id="slide6">
+        <h2 class="slide-title">Solving ISO 13485 Clause 4.2.4</h2>
+        <div class="s6-layout">
+            <div class="s6-box">
+                <i class="fa-solid fa-file-pdf"></i>
+                <h4>The "Local File"<br>Threat</h4>
+                <p>If field engineers carry PDF manuals on their local hard drives, they will inevitably execute a repair using an obsolete, cached file. This is a critical Document Control failure.</p>
+            </div>
+            <div class="s6-box">
+                <i class="fa-solid fa-server"></i>
+                <h4>Digital Service<br>Portals</h4>
+                <p>We architect and configure secure SharePoint intranet portals. This forces engineers to access a single, globally updated source of truth, eradicating the risk of obsolete documentation.</p>
+            </div>
+            <div class="s6-box">
+                <i class="fa-solid fa-lock"></i>
+                <h4>View-Only<br>Enforcement</h4>
+                <p>We configure complex permission matrices that allow field engineers to view manuals in the browser, but mathematically blocks them from downloading or printing the IP locally.</p>
+            </div>
         </div>
-        <p class="chart-summary">Structured Technical Authoring protects R&D intent, reduces hardware failures, and satisfies Notified Body requirements.</p>
     </div>
-</div>
 
-<div class="slide-container" id="slide8">
-    <h2 class="slide-title">The Deliverable Package</h2>
-    <div class="content-area">
-        <div class="table-layout">
+    <div class="slide-container" id="slide7">
+        <h2 class="slide-title">The Operational Delta</h2>
+        <div class="s7-content">
+            <div class="chart-row">
+                <div class="chart-label">Standard Word Processor Docs</div>
+                <div class="chart-track">
+                    <div class="chart-bar bar-red">High Ambiguity & Version Control Failures</div>
+                </div>
+            </div>
+            <div class="chart-row">
+                <div class="chart-label">Schema Readiness Framework</div>
+                <div class="chart-track">
+                    <div class="chart-bar bar-green">ISO 13485 Compliant Risk Control</div>
+                </div>
+            </div>
+            <div class="s7-footer">
+                Transitioning from loosely formatted text documents to a strictly governed, structured Technical Authoring framework protects R&D intent, reduces field-induced hardware failures, and satisfies Notified Body requirements for Information for Safety.
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-container" id="slide8">
+        <h2 class="slide-title">The Deliverable Package</h2>
+        <div class="s8-table-wrapper">
             <table>
-                <thead><tr><th>Asset Type</th><th>Deliverable Content</th><th>Primary Value</th></tr></thead>
+                <thead>
+                    <tr>
+                        <th>Asset Type</th>
+                        <th>Deliverable Content</th>
+                        <th>Primary Value</th>
+                    </tr>
+                </thead>
                 <tbody>
-                    <tr><td><strong>Readiness Framework</strong></td><td>Master manual architecture, tooling matrices, safety baselines, and PPM schedules.</td><td>Establishes the foundations for all field interventions.</td></tr>
-                    <tr><td><strong>Modular FRU Instructions</strong></td><td>Highly visual, task-specific replacement guides for targeted units.</td><td>Reduces cognitive load and accelerates MTTR.</td></tr>
+                    <tr>
+                        <td>Service Readiness Framework</td>
+                        <td>The master architectural manual. Includes tooling matrices, safety/isolation baselines, and PPM schedules.</td>
+                        <td>Establishes the foundational regulatory rules of engagement for all field interventions.</td>
+                    </tr>
+                    <tr>
+                        <td>Modular FRU Instructions</td>
+                        <td>Highly visual, 2-4 page task-specific replacement guides for targeted Field Replaceable Units.</td>
+                        <td>Reduces cognitive load on engineers, accelerating Mean Time To Repair (MTTR).</td>
+                    </tr>
+                    <tr>
+                        <td>Digital Portal Configuration</td>
+                        <td>Setup of the secure SharePoint repository with strict "View-Only" permissions and draft invisibility.</td>
+                        <td>Satisfies ISO 13485 Document Control by locking the distribution pipeline.</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
     </div>
-</div>
 
-<div class="slide-container" id="slide9">
-    <div class="content-area">
-        <div class="quote-layout">
-            <blockquote>"If a physical hazard cannot be engineered out, the Service Manual is your absolute last line of regulatory defence."</blockquote>
-            <cite>SCHEMA TECHNICAL</cite>
+    <div class="slide-container" id="slide9">
+        <div class="quote-container">
+            <span class="quote-mark qm-left">"</span>
+            <div class="quote-text">"If a physical hazard cannot be engineered out, the Service Manual is your absolute last line of regulatory defence."</div>
+            <span class="quote-mark qm-right">"</span>
+            <div class="quote-author">SCHEMA TECHNICAL</div>
         </div>
     </div>
-</div>
 
-<div class="slide-container" id="slide10">
-    <div class="qa-layout">
+    <div class="slide-container" id="slide10">
         <h2>Control the Execution.</h2>
         <p>Engineer the documentation. Lock the liability.</p>
-        <div class="contact-info">SCHEMA TECHNICAL | Technical Authoring</div>
+        <div class="footer">SCHEMA TECHNICAL | Technical Authoring</div>
     </div>
+
 </div>
 
 <div class="nav-controls">
@@ -317,12 +415,11 @@
         const requestFs = docEl.requestFullscreen || docEl.webkitRequestFullscreen || docEl.mozRequestFullScreen || docEl.msRequestFullscreen;
         const exitFs = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
         
-        // Hardware Bypass: Detect iOS devices (all browsers on iOS use restricted Apple WebKit)
+        // Hardware Bypass: Detect iOS devices
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
         
         if (!document.fullscreenElement && !document.webkitFullscreenElement) {
             if (isIOS || !requestFs) {
-                // Synchronous pop-out prevents mobile browsers from blocking the popup
                 window.open(window.location.href, '_blank');
                 dismissOverlay();
                 return;

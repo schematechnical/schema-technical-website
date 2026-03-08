@@ -6,25 +6,63 @@
     <title>Schema Technical - FRA Pitch Deck</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        /* 1. CORE SETUP & PRESENTATION LOGIC */
-        * { box-sizing: border-box; }
-        p { margin: 0; margin-bottom: 15px; }
-        body { background-color: #0F172A; margin: 0; padding: 0; overflow: hidden; height: 100vh; width: 100vw; display: flex; align-items: center; justify-content: center; }
+        /* CORE RESET & SCALING */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            background-color: #050914; 
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            width: 100vw;
+            font-family: 'Urbanist', sans-serif;
+            color: #F8FAFC;
+            -webkit-font-smoothing: antialiased;
+        }
 
-        .slide-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; padding: 60px; display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: #0F172A; font-family: 'Urbanist', sans-serif; opacity: 0; visibility: hidden; transition: opacity 0.4s ease, visibility 0.4s; z-index: 1; }
-        .slide-container.active { opacity: 1; visibility: visible; z-index: 2; }
-        .slide-container::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at center, rgba(37, 99, 235, 0.08) 0%, rgba(15, 23, 42, 0) 60%); z-index: -1; pointer-events: none; }
-        .slide-container::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #2563EB, #38BDF8); z-index: 0; }
-        .slide-container > * { position: relative; z-index: 1; width: 100%; max-width: 1200px; }
+        /* 16:9 FIXED ASPECT RATIO CONTAINER */
+        .presentation-wrapper {
+            position: relative;
+            width: 100vw;
+            height: 56.25vw; /* 16:9 ratio */
+            max-height: 100vh;
+            max-width: 177.78vh; /* 16:9 ratio */
+            background: radial-gradient(circle at center, #111A31 0%, #080D1C 100%);
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            container-type: inline-size;
+        }
+
+        .slide-container {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            padding: 6% 8%;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s;
+            z-index: 1;
+        }
+
+        .slide-container.active {
+            opacity: 1;
+            visibility: visible;
+            z-index: 2;
+        }
 
         /* MOBILE OVERLAY */
         #mobile-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.98); z-index: 3000; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px; color: #F8FAFC; font-family: 'Urbanist', sans-serif; }
         #mobile-overlay i { font-size: 60px; color: #2563EB; margin-bottom: 20px; }
         #mobile-overlay h2 { font-size: 24px; margin-bottom: 10px; }
-        #mobile-overlay p { color: #94A3B8; margin-bottom: 30px; }
+        #mobile-overlay p { color: #94A3B8; margin-bottom: 30px; font-size: 1.1rem; line-height: 1.5; }
+        .overlay-actions { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
 
         /* NAVIGATION CONTROLS */
         .nav-controls { position: fixed; bottom: 30px; right: 30px; display: flex; align-items: center; gap: 15px; z-index: 2000; }
@@ -36,40 +74,100 @@
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.8); } 70% { box-shadow: 0 0 0 20px rgba(37, 99, 235, 0); } 100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); } }
         .btn-next:not(.disabled) { animation: pulse 2s infinite; }
 
-        /* TYPOGRAPHY & LAYOUTS */
-        .slide-container h1, .slide-container h2, .slide-container h3, .slide-container h4 { color: #F8FAFC; font-weight: 700; margin: 0; }
-        .slide-container h1 { font-size: 4.5vw; letter-spacing: -1px; }
-        .slide-container .slide-title { font-size: 3vw; font-weight: 700; margin-bottom: 30px; text-align: left; color: #F8FAFC; }
-        .slide-container h3 { font-size: 1.8vw; font-weight: 500; margin-bottom: 15px; color: #38BDF8; }
-        .slide-container p, .slide-container li, .slide-container .subtitle, .slide-container td, .slide-container th, .slide-container .bar .label, .slide-container .chart-summary { color: #CBD5E1; font-family: 'Urbanist', sans-serif; font-size: 1.3vw; line-height: 1.5; }
-        .slide-container .subtitle { font-size: 1.6vw; font-weight: 400; margin: 20px auto; color: #94A3B8; }
-        .accent-text { color: #38BDF8; }
-        .title-layout { text-align: center; }
-        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; width: 100%; }
-        .two-column.tiled > div { background-color: #1E293B; border-radius: 12px; border: 1px solid #334155; padding: 30px; text-align: left; }
-        .two-column ul { list-style: none; margin: 0; padding: 0; }
-        .two-column li { margin-bottom: 15px; position: relative; padding-left: 30px; }
-        .two-column li::before { content: '\f0da'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: #38BDF8; position: absolute; left: 0; top: 2px; }
-        .highlight-numbers-layout .number { color: #38BDF8; font-size: 7vw; font-weight: 700; line-height: 1; text-shadow: 0 0 40px rgba(56, 189, 248, 0.2);}
-        .timeline-layout { display: flex; justify-content: space-between; position: relative; width: 100%; }
-        .timeline-layout .timeline-line { background-color: #334155; height: 4px; left: 0; position: absolute; top: 50%; width: 100%; }
-        .timeline-item { position: relative; text-align: center; width: 18%; }
-        .timeline-item::after { background-color: #0F172A; border-radius: 50%; border: 4px solid #38BDF8; content: ''; height: 20px; left: 50%; position: absolute; top: 50%; transform: translate(-50%, -50%); width: 20px; }
-        .timeline-item .content-wrapper { background-color: #1E293B; padding: 20px 10px; border-radius: 8px; border: 1px solid #334155; position: absolute; width: 100%; }
-        .timeline-item:nth-child(odd) .content-wrapper { bottom: 50%; margin-bottom: 30px; }
-        .timeline-item:nth-child(even) .content-wrapper { top: 50%; margin-top: 30px; }
-        .chart-container { display: flex; flex-direction: column; gap: 20px; width: 100%; }
-        .bar { display: flex; align-items: center; gap: 20px; }
-        .bar .bar-inner { background-color: #1E293B; border-radius: 8px; flex-grow: 1; height: 45px; border: 1px solid #334155;}
-        .bar .bar-fill { height: 100%; border-radius: 8px; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; }
-        .table-layout table { border-collapse: collapse; width: 100%; background-color: #1E293B; border-radius: 12px; overflow: hidden;}
-        .table-layout th, .table-layout td { border-bottom: 1px solid #334155; padding: 15px 20px; text-align: left; }
-        .table-layout th { background-color: #0F172A; color: #38BDF8; border-bottom: 2px solid #2563EB;}
+        /* GLOBAL TYPOGRAPHY */
+        .slide-title { font-size: 3.2cqw; font-weight: 600; margin-bottom: 4cqw; color: #FFFFFF; letter-spacing: -0.5px;}
+        .accent { color: #38BDF8; }
+        p { font-size: 1.4cqw; line-height: 1.6; color: #CBD5E1; margin-bottom: 1.5cqw; font-weight: 400;}
+        h3 { font-size: 1.8cqw; font-weight: 500; color: #38BDF8; margin-bottom: 1.2cqw; }
+
+        /* SLIDE 1: TITLE */
+        #slide1 { align-items: center; justify-content: center; text-align: center; }
+        #slide1 h1 { font-size: 5cqw; font-weight: 700; margin-bottom: 1cqw; letter-spacing: -1px; }
+        #slide1 p { font-size: 1.5cqw; color: #94A3B8; max-width: 80%; font-weight: 300; }
+
+        /* SLIDE 2: NFF Layout */
+        .s2-layout { display: flex; align-items: center; justify-content: space-between; height: 100%; gap: 5cqw; padding-top: 2cqw;}
+        .s2-left { flex: 1; text-align: center; display: flex; flex-direction: column; justify-content: center;}
+        .s2-left .huge-number { font-size: 12cqw; font-weight: 700; line-height: 1; color: #38BDF8; text-shadow: 0 0 40px rgba(56,189,248,0.3); letter-spacing: -2px; }
+        .s2-left .huge-label { font-size: 1.8cqw; font-weight: 700; letter-spacing: 2px; margin-top: 1cqw; color: #F8FAFC; text-transform: uppercase;}
+        .s2-left .asterisk { font-size: 0.9cqw; color: #64748B; font-style: italic; margin-top: 4cqw; padding: 0 1cqw;}
+        .s2-right { flex: 1.2; padding-right: 2cqw; }
+        .s2-right h3 { font-size: 2.2cqw; line-height: 1.3; margin-bottom: 2cqw; }
+
+        /* SLIDE 3: TIMELINE (4 Nodes) */
+        .timeline-wrapper { position: relative; height: 100%; display: flex; align-items: center; margin-top: -3cqw;}
+        .timeline-line { position: absolute; top: 50%; left: 5%; right: 5%; height: 2px; background: #263859; transform: translateY(-50%); z-index: 1;}
+        .timeline-nodes { display: flex; justify-content: space-between; width: 90%; margin: 0 auto; position: relative; z-index: 2;}
+        .t-node { width: 22%; position: relative; display: flex; justify-content: center; }
+        .t-circle { width: 1.2cqw; height: 1.2cqw; background: #080D1C; border: 3px solid #38BDF8; border-radius: 50%; position: absolute; top: 50%; transform: translateY(-50%); z-index: 3;}
+        .t-card { background: rgba(21, 30, 50, 0.7); border: 1px solid #1E2B48; border-radius: 8px; padding: 1.5cqw; width: 100%; text-align: center; position: absolute; }
+        .t-card h4 { color: #38BDF8; font-size: 1.2cqw; font-weight: 600; margin-bottom: 0.8cqw; }
+        .t-card p { font-size: 1cqw; margin: 0; line-height: 1.4; color: #94A3B8;}
+        
+        /* Staggered Timeline Logic */
+        #slide3 .t-node:nth-child(odd) .t-card { bottom: 3cqw; }
+        #slide3 .t-node:nth-child(even) .t-card { top: 3cqw; }
+
+        /* SLIDE 4 & 5: TWO BOXES */
+        .two-col-layout { display: flex; gap: 3cqw; height: 100%; align-items: flex-start; }
+        .two-col-layout.center { align-items: center; }
+        .two-col-layout .flex-1 { flex: 1; }
+        .two-col-layout .flex-1-2 { flex: 1.2; }
+        .dark-box { background: rgba(21, 30, 50, 0.6); border: 1px solid #1E2B48; border-radius: 10px; padding: 3cqw; flex: 1; }
+        .dark-box h3 { font-size: 2cqw; margin-bottom: 2cqw; }
+        .custom-list { list-style: none; margin-top: 1cqw; }
+        .custom-list li { position: relative; padding-left: 1.5cqw; margin-bottom: 1.2cqw; font-size: 1.4cqw; color: #CBD5E1; }
+        .custom-list li::before { content: '\f0da'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: #38BDF8; position: absolute; left: 0; top: 2px; font-size: 1.2cqw;}
+        .highlight-text { color: #F8FAFC; font-weight: 600; }
+        
+        /* DATA BOX (Slide 5 right) */
+        .data-box { background-color: rgba(37, 99, 235, 0.1); border-left: 4px solid #38BDF8; border-radius: 8px; padding: 2.5cqw; }
+        .data-box-header { display: flex; align-items: center; gap: 1cqw; margin-bottom: 1.5cqw; }
+        .data-box-header i { color: #38BDF8; font-size: 1.8cqw; }
+        .data-box-header h4 { color: #F8FAFC; font-size: 1.6cqw; font-weight: 600; }
+
+        /* SLIDE 6: THREE BOXES */
+        .s6-layout { display: flex; gap: 2cqw; height: 100%; align-items: stretch; padding-top: 2cqw; }
+        .s6-box { flex: 1; background: rgba(21, 30, 50, 0.6); border: 1px solid #1E2B48; border-radius: 10px; padding: 3cqw 2cqw; text-align: center; display: flex; flex-direction: column; align-items: center;}
+        .s6-box i { color: #38BDF8; font-size: 3cqw; margin-bottom: 1.5cqw; }
+        .s6-box h4 { color: #F8FAFC; font-size: 1.6cqw; font-weight: 500; margin-bottom: 1.5cqw; line-height: 1.3;}
+        .s6-box p { font-size: 1.2cqw; }
+
+        /* SLIDE 7: CHART */
+        .s7-content { display: flex; flex-direction: column; justify-content: center; height: 100%; padding: 0 5cqw;}
+        .chart-row { display: flex; align-items: center; margin-bottom: 2cqw; gap: 2cqw; }
+        .chart-label { width: 35%; text-align: right; font-size: 1.3cqw; font-weight: 600; color: #F8FAFC; }
+        .chart-track { flex: 1; background: #151E32; border-radius: 6px; height: 3.5cqw; display: flex; align-items: center; border: 1px solid #1E2B48;}
+        .chart-bar { height: 100%; border-radius: 6px; display: flex; align-items: center; padding-left: 1.5cqw; font-weight: 600; font-size: 1.1cqw; color: #FFF; white-space: nowrap; }
+        .bar-red { width: 85%; background: linear-gradient(90deg, #DC2626, #EF4444); }
+        .bar-green { width: 35%; background: linear-gradient(90deg, #16A34A, #22C55E); }
+        .s7-footer { text-align: center; font-style: italic; font-size: 1.2cqw; color: #94A3B8; margin-top: 4cqw; padding: 0 4cqw;}
+
+        /* SLIDE 8: TABLE */
+        .s8-table-wrapper { background: rgba(21, 30, 50, 0.5); border: 1px solid #1E2B48; border-radius: 8px; overflow: hidden; margin-top: 2cqw;}
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th { color: #38BDF8; font-weight: 600; font-size: 1.2cqw; padding: 1.5cqw 2cqw; border-bottom: 1px solid #263859; }
+        td { padding: 1.5cqw 2cqw; font-size: 1.2cqw; color: #CBD5E1; border-bottom: 1px solid #1E2B48; vertical-align: top;}
+        td:first-child { font-weight: 600; color: #F8FAFC; width: 22%; }
+        .td-sub { display: block; font-weight: 400; color: #94A3B8; font-size: 1cqw; margin-top: 0.5cqw; }
+        tr:last-child td { border-bottom: none; }
+
+        /* SLIDE 9: QUOTE */
+        #slide9 { align-items: center; justify-content: center; text-align: center; }
+        .quote-container { position: relative; max-width: 80%; }
+        .quote-mark { color: #1E3A8A; font-size: 8cqw; font-weight: 900; position: absolute; font-family: serif; line-height: 0; }
+        .qm-left { top: 0; left: -4cqw; }
+        .qm-right { bottom: -2cqw; right: -4cqw; }
+        .quote-text { font-size: 2.5cqw; font-weight: 400; color: #F8FAFC; line-height: 1.4; margin-bottom: 3cqw; }
+        .quote-author { color: #38BDF8; font-weight: 700; font-size: 1.2cqw; letter-spacing: 1px; text-transform: uppercase; }
+
+        /* SLIDE 10: END */
+        #slide10 { align-items: center; justify-content: center; text-align: center; }
+        #slide10 h2 { font-size: 5cqw; font-weight: 700; margin-bottom: 1cqw; }
+        #slide10 p { font-size: 1.6cqw; color: #94A3B8; font-weight: 300; margin-bottom: 4cqw; }
+        #slide10 .footer { color: #38BDF8; font-weight: 600; font-size: 1.2cqw; letter-spacing: 1px; text-transform: uppercase; }
 
         @media (max-width: 900px) {
-            .slide-container h1 { font-size: 8vw; } .slide-container .slide-title { font-size: 6vw; }
-            .slide-container p, .slide-container li { font-size: 3.5vw; }
-            .two-column { grid-template-columns: 1fr; }
             #mobile-overlay { display: flex; }
         }
         @media (max-width: 900px) and (orientation: landscape) { #mobile-overlay { display: none; } }
@@ -78,157 +176,209 @@
 <body>
 
 <div id="mobile-overlay">
-    <i class="fa-solid fa-expand"></i>
+    <i class="fa-solid fa-rotate"></i>
     <h2>Optimize Presentation</h2>
-    <p>This technical brief is optimized for a full-screen experience.</p>
-    <button class="btn" style="background: #2563EB; color: white; border: none; padding: 15px 30px; border-radius: 4px; font-weight: 700; cursor: pointer;" onclick="toggleFullscreen()">Enter Presentation Mode</button>
-</div>
-
-<div class="slide-container active" id="slide1">
-    <div class="title-layout">
-        <h1>Schema Technical <span class="accent-text">FRA</span></h1>
-        <p class="subtitle">Field Reliability Analysis: Forensic root cause execution to eliminate<br>"No Fault Found" loops and close regulatory CAPAs with objective physics.</p>
+    <p>For the best experience, please rotate your device to <strong>landscape mode</strong> or enter Fullscreen.</p>
+    <div class="overlay-actions">
+        <button class="btn" style="background: #2563EB; color: white; border: none; padding: 15px 30px; border-radius: 4px; font-weight: 700; cursor: pointer; font-family: 'Urbanist', sans-serif;" onclick="toggleFullscreen()">Fullscreen Mode</button>
+        <button class="btn" style="background: #1E293B; color: #F8FAFC; border: 1px solid #334155; padding: 15px 30px; border-radius: 4px; font-weight: 700; cursor: pointer; font-family: 'Urbanist', sans-serif;" onclick="dismissOverlay()">Dismiss</button>
     </div>
 </div>
 
-<div class="slide-container" id="slide2">
-    <h2 class="slide-title">The Investigation Void</h2>
-    <div class="content-area">
-        <div class="two-column highlight-numbers-layout">
-            <div>
-                <div class="number">NFF</div>
-                <div class="number-label">No Fault Found</div>
-                <p style="font-size: 0.9vw; color: #64748B; font-style: italic; margin-top: 30px;">*You cannot close a CAPA on a "best guess." Forensic RCA is mandated.</p>
+<div class="presentation-wrapper">
+    
+    <div class="slide-container active" id="slide1">
+        <h1>Schema Technical <span class="accent">FRA</span></h1>
+        <p>Field Reliability Analysis: Forensic root cause execution to eliminate<br>"No Fault Found" loops and close regulatory CAPAs with objective physics.</p>
+    </div>
+
+    <div class="slide-container" id="slide2">
+        <h2 class="slide-title">The Investigation Void</h2>
+        <div class="s2-layout">
+            <div class="s2-left">
+                <div class="huge-number">NFF</div>
+                <div class="huge-label">NO FAULT FOUND</div>
+                <div class="asterisk">*Component swapping without forensic analysis leads directly to recidivism. You cannot close a CAPA on a "best guess."</div>
             </div>
-            <div>
+            <div class="s2-right">
                 <h3>The "Component Swapping" Trap</h3>
-                <p>Returning an unverified unit to the clinical field drives up "No Fault Found" (NFF) rates and erodes patient trust.</p>
-                <p>A forensic FRA identifies the underlying process flaw, allowing for an ECO that permanently eliminates the field hazard.</p>
+                <p>When field hardware fails, depots often strip and rebuild units until the symptom disappears. This destroys the forensic evidence required to find the true root cause.</p>
+                <p>Returning an unverified unit to the clinical field drives up "No Fault Found" (NFF) rates, erodes patient trust, and leaves your ISO 13485 Quality Management System dangerously exposed to recurring hazards.</p>
             </div>
         </div>
     </div>
-</div>
 
-<div class="slide-container" id="slide3">
-    <h2 class="slide-title">The 6-Phase FRA Protocol</h2>
-    <div class="content-area">
-        <div class="timeline-layout">
+    <div class="slide-container" id="slide3">
+        <h2 class="slide-title">The 6-Phase FRA Protocol</h2>
+        <div class="timeline-wrapper">
             <div class="timeline-line"></div>
-            <div class="timeline-item"><div class="content-wrapper"><h3>1 & 2: Quarantine</h3><p>Securing the failed unit and extracting telemetry prior to disturbance.</p></div></div>
-            <div class="timeline-item"><div class="content-wrapper"><h3>3: Teardown</h3><p>Comparative disassembly against a KGU baseline to capture torque metrics.</p></div></div>
-            <div class="timeline-item"><div class="content-wrapper"><h3>4: Root Cause</h3><p>Applying 5-Whys and Ishikawa methodologies to classify the fault.</p></div></div>
-            <div class="timeline-item"><div class="content-wrapper"><h3>5 & 6: Closure</h3><p>Definition of the exact Verification of Effectiveness (VoE) metric.</p></div></div>
+            <div class="timeline-nodes">
+                <div class="t-node">
+                    <div class="t-circle"></div>
+                    <div class="t-card">
+                        <h4>1 & 2: Quarantine</h4>
+                        <p>Securing the Failed-From-Field (FFF) unit and extracting telemetry prior to any physical disturbance.</p>
+                    </div>
+                </div>
+                <div class="t-node">
+                    <div class="t-circle"></div>
+                    <div class="t-card">
+                        <h4>3: Teardown</h4>
+                        <p>Comparative disassembly against a Known Good Unit (KGU) to capture torque metrics and isolation data.</p>
+                    </div>
+                </div>
+                <div class="t-node">
+                    <div class="t-circle"></div>
+                    <div class="t-card">
+                        <h4>4: Root Cause</h4>
+                        <p>Translating physical metrology into the 5-Whys and Ishikawa methodologies to classify the fault.</p>
+                    </div>
+                </div>
+                <div class="t-node">
+                    <div class="t-circle"></div>
+                    <div class="t-card">
+                        <h4>5 & 6: CAPA Closure</h4>
+                        <p>Safe reassembly and definition of the exact Verification of Effectiveness (VoE) metric for QARA.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="slide-container" id="slide4">
-    <h2 class="slide-title">The KGU Mandate</h2>
-    <div class="content-area">
-        <div class="two-column tiled">
-            <div>
+    <div class="slide-container" id="slide4">
+        <h2 class="slide-title">The Comparative Baseline</h2>
+        <div class="two-col-layout">
+            <div class="dark-box">
                 <h3>The Flawed Approach</h3>
-                <p>Analysing a single broken unit in isolation. Without a baseline, thermal deformations or torque backouts are impossible to mathematically verify.</p>
+                <p>Attempting to diagnose a complex failure by analyzing a single broken unit in isolation. Without a baseline, thermal deformations or torque backouts are impossible to mathematically verify.</p>
             </div>
-            <div>
-                <h3>The Comparative Delta</h3>
-                <p>Schema Technical never audits in isolation. We mandate a <strong>Known Good Unit (KGU)</strong> for every investigation:</p>
-                <ul>
-                    <li>If FFF torque is 0.4Nm, but KGU is 1.5Nm, we have proof of assembly failure.</li>
-                    <li>We lock the delta to satisfy Notified Body requirements.</li>
+            <div class="dark-box">
+                <h3>The KGU Mandate</h3>
+                <p>Schema Technical never audits in isolation. We strictly mandate a <strong>Known Good Unit (KGU)</strong> for every investigation to lock the comparative delta:</p>
+                <ul class="custom-list">
+                    <li>If the FFF torque is 0.4Nm, but the KGU is 1.5Nm, we have absolute proof of assembly failure.</li>
+                    <li>If FFF telemetry spikes but KGU is flat, we have proof of digital friction.</li>
                 </ul>
             </div>
         </div>
     </div>
-</div>
 
-<div class="slide-container" id="slide5">
-    <h2 class="slide-title">CAPA Integration</h2>
-    <div class="content-area">
-        <div class="two-column align-center">
-            <div>
-                <h3>Satisfying Clause 8.5</h3>
-                <p>We deliver the definitive engineering data required for your QARA team to formally close Corrective and Preventive Actions.</p>
+    <div class="slide-container" id="slide5">
+        <h2 class="slide-title">CAPA Integration</h2>
+        <div class="two-col-layout center">
+            <div class="flex-1-2">
+                <h3 style="font-size: 2cqw;">Satisfying ISO 13485 (Clause 8.5)</h3>
+                <p>We do not deliver speculative opinions. We deliver the definitive engineering data required for your QARA team to formally close Corrective and Preventive Actions.</p>
+                <p>Every FRA report clearly defines whether the root cause originates from Design (DfM), Manufacturing Process, Service Protocol, or Clinical Use-Error—allowing precise routing of Engineering Change Orders (ECO).</p>
             </div>
-            <div style="background-color: rgba(37, 99, 235, 0.1); border-left: 4px solid #38BDF8; padding: 30px; border-radius: 8px;">
-                <h4 style="font-size: 1.6vw; color: #F8FAFC; margin-bottom: 15px;"><i class="fa-solid fa-microscope" style="color: #38BDF8;"></i> Defining the VoE</h4>
-                <p>We supply the strict <strong>Verification of Effectiveness (VoE)</strong> metric. We tell your Quality team exactly what measurable test must be passed to prove the CAPA is mitigated.</p>
+            <div class="flex-1">
+                <div class="data-box">
+                    <div class="data-box-header">
+                        <i class="fa-solid fa-microscope"></i>
+                        <h4>Defining the VoE</h4>
+                    </div>
+                    <p style="font-size: 1.2cqw;">We supply the strict <strong>Verification of Effectiveness (VoE)</strong> metric. We tell your Quality team exactly what measurable test must be passed (e.g., 60-second pressure decay < 0.1 mbar) to legally prove the CAPA is mitigated.</p>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="slide-container" id="slide6">
-    <h2 class="slide-title">Forensic Execution Vectors</h2>
-    <div class="content-area">
-        <div style="display: flex; gap: 30px; justify-content: center; width: 100%;">
-            <div style="flex: 1; background: #1E293B; border-radius: 12px; padding: 30px; text-align: center; border: 1px solid #334155;">
-                <i class="fa-solid fa-shield-halved" style="font-size: 2.5vw; color: #38BDF8; margin-bottom: 20px;"></i>
-                <h3 style="font-size: 1.4vw; color: #F8FAFC;">Non-Destructive</h3>
-                <p>IEC 62353 safety tests and thermal imaging before geometry is broken.</p>
+    <div class="slide-container" id="slide6">
+        <h2 class="slide-title">Forensic Execution Vectors</h2>
+        <div class="s6-layout">
+            <div class="s6-box">
+                <i class="fa-solid fa-shield-halved"></i>
+                <h4>Non-Destructive<br>(NDT)</h4>
+                <p>Execution of baseline IEC 62353 safety tests and thermal imaging to capture electrical and hardware states before geometry is broken.</p>
             </div>
-            <div style="flex: 1; background: #1E293B; border-radius: 12px; padding: 30px; text-align: center; border: 1px solid #334155;">
-                <i class="fa-solid fa-ruler-combined" style="font-size: 2.5vw; color: #38BDF8; margin-bottom: 20px;"></i>
-                <h3 style="font-size: 1.4vw; color: #F8FAFC;">Metrology</h3>
-                <p>Calibrated torque and UV markers to identify fastener backout.</p>
+            <div class="s6-box">
+                <i class="fa-solid fa-ruler-combined"></i>
+                <h4>Invasive Metrology</h4>
+                <p>Using calibrated torque drivers, digital calipers, and UV markers to identify fastener backout, fluid ingress, and compromised isolation barriers.</p>
             </div>
-            <div style="flex: 1; background: #1E293B; border-radius: 12px; padding: 30px; text-align: center; border: 1px solid #334155;">
-                <i class="fa-solid fa-diagram-project" style="font-size: 2.5vw; color: #38BDF8; margin-bottom: 20px;"></i>
-                <h3 style="font-size: 1.4vw; color: #F8FAFC;">Root Cause</h3>
-                <p>Structured 5-Whys mapping to prevent termination at "Human Error".</p>
+            <div class="s6-box">
+                <i class="fa-solid fa-diagram-project"></i>
+                <h4>Root Cause Logic</h4>
+                <p>Mapping physical evidence into structured 5-Whys and Ishikawa (Fishbone) models to prevent the investigation from terminating at "Human Error".</p>
             </div>
         </div>
     </div>
-</div>
 
-<div class="slide-container" id="slide7">
-    <h2 class="slide-title">Mitigating Reliability Risk</h2>
-    <div class="content-area">
-        <div class="chart-container">
-            <div class="bar"><div class="label">Component Swapping</div><div class="bar-inner"><div class="bar-fill" style="width: 85%; background: linear-gradient(90deg, #991B1B, #EF4444);">High Field Recidivism</div></div></div>
-            <div class="bar"><div class="label">Physics-Based FRA</div><div class="bar-inner"><div class="bar-fill" style="width: 35%; min-width: max-content; padding: 0 20px; background: linear-gradient(90deg, #166534, #22C55E);">Permanent CAPA Closure</div></div></div>
+    <div class="slide-container" id="slide7">
+        <h2 class="slide-title">Mitigating Reliability Risk</h2>
+        <div class="s7-content">
+            <div class="chart-row">
+                <div class="chart-label">Component Swapping (Symptomatic)</div>
+                <div class="chart-track">
+                    <div class="chart-bar bar-red">High Field Recidivism & NFF Rates</div>
+                </div>
+            </div>
+            <div class="chart-row">
+                <div class="chart-label">Physics-Based FRA (Systemic)</div>
+                <div class="chart-track">
+                    <div class="chart-bar bar-green">Permanent CAPA Closure</div>
+                </div>
+            </div>
+            <div class="s7-footer">
+                Treating symptoms blindly on the depot bench guarantees that the same failure mode will strike again. A forensic FRA identifies the underlying process or design flaw, allowing for an Engineering Change Order that permanently eliminates the field hazard.
+            </div>
         </div>
-        <p class="chart-summary">A forensic FRA identifies the underlying process flaw, allowing for an ECO that permanently eliminates the field hazard.</p>
     </div>
-</div>
 
-<div class="slide-container" id="slide8">
-    <h2 class="slide-title">The Deliverable Package</h2>
-    <div class="content-area">
-        <div class="table-layout">
+    <div class="slide-container" id="slide8">
+        <h2 class="slide-title">The Deliverable Package</h2>
+        <div class="s8-table-wrapper">
             <table>
-                <thead><tr><th>Asset Type</th><th>Deliverable Content</th><th>Primary Value</th></tr></thead>
+                <thead>
+                    <tr>
+                        <th>Asset Type</th>
+                        <th>Deliverable Content</th>
+                        <th>Primary Value</th>
+                    </tr>
+                </thead>
                 <tbody>
-                    <tr><td><strong>Formal Audit Report</strong></td><td>Detailed physical failure modes, Ishikawa analysis, and VoE metric.</td><td>Objective evidence required to formally close the regulatory CAPA.</td></tr>
-                    <tr><td><strong>Spoliation Control</strong></td><td>Strict inbound triage enforcing baseline safety and Chain of Custody.</td><td>Protects forensic evidence from accidental destruction.</td></tr>
+                    <tr>
+                        <td>Formal Audit Report<span class="td-sub">(REP-FRA-001)</span></td>
+                        <td>A regulatory-grade document detailing physical failure modes, Ishikawa analysis, and the required VoE metric.</td>
+                        <td>Provides QARA and R&D with the objective, physics-based evidence required to formally close the CAPA.</td>
+                    </tr>
+                    <tr>
+                        <td>Spoliation Control<span class="td-sub">(Chain of Custody)</span></td>
+                        <td>Strict inbound triage enforcing baseline safety and forbidding unapproved depot-level cleaning or resets.</td>
+                        <td>Protects forensic evidence from being accidentally destroyed by well-meaning technicians.</td>
+                    </tr>
+                    <tr>
+                        <td>Executive Debrief<span class="td-sub">(Video Conference)</span></td>
+                        <td>A comprehensive presentation with R&D and Quality leadership to present the forensic findings.</td>
+                        <td>Aligns cross-functional teams immediately on whether the fix requires an ECO, a software patch, or a training update.</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
     </div>
-</div>
 
-<div class="slide-container" id="slide9">
-    <div class="content-area">
-        <div class="quote-layout">
-            <blockquote>"You cannot close a regulatory CAPA with a best guess. You close it with physics."</blockquote>
-            <cite>SCHEMA TECHNICAL</cite>
+    <div class="slide-container" id="slide9">
+        <div class="quote-container">
+            <span class="quote-mark qm-left">"</span>
+            <div class="quote-text">"You cannot close a regulatory CAPA with<br>a best guess. You close it with physics."</div>
+            <span class="quote-mark qm-right">"</span>
+            <div class="quote-author">SCHEMA TECHNICAL</div>
         </div>
     </div>
-</div>
 
-<div class="slide-container" id="slide10">
-    <div class="qa-layout">
+    <div class="slide-container" id="slide10">
         <h2>Stop Guessing.</h2>
         <p>Find the root cause. Engineer the fix.</p>
-        <div class="contact-info">SCHEMA TECHNICAL | FRA</div>
+        <div class="footer">SCHEMA TECHNICAL | Field Reliability Analysis</div>
     </div>
+
 </div>
 
 <div class="nav-controls">
-    <button class="nav-btn fullscreen-btn" onclick="toggleFullscreen()"><i class="fa-solid fa-expand"></i></button>
+    <button class="nav-btn fullscreen-btn" onclick="toggleFullscreen()" title="Fullscreen mode"><i class="fa-solid fa-expand"></i></button>
     <span class="slide-counter" id="counter">1 / 10</span>
-    <button class="nav-btn btn-prev disabled" id="prevBtn"><i class="fa-solid fa-chevron-left"></i></button>
-    <button class="nav-btn btn-next" id="nextBtn"><i class="fa-solid fa-chevron-right"></i></button>
+    <button class="nav-btn btn-prev disabled" id="prevBtn" title="Previous Slide"><i class="fa-solid fa-chevron-left"></i></button>
+    <button class="nav-btn btn-next" id="nextBtn" title="Next Slide"><i class="fa-solid fa-chevron-right"></i></button>
 </div>
 
 <script>
@@ -260,12 +410,11 @@
         const requestFs = docEl.requestFullscreen || docEl.webkitRequestFullscreen || docEl.mozRequestFullScreen || docEl.msRequestFullscreen;
         const exitFs = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
         
-        // Hardware Bypass: Detect iOS devices (all browsers on iOS use restricted Apple WebKit)
+        // Hardware Bypass: Detect iOS devices
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
         
         if (!document.fullscreenElement && !document.webkitFullscreenElement) {
             if (isIOS || !requestFs) {
-                // Synchronous pop-out prevents mobile browsers from blocking the popup
                 window.open(window.location.href, '_blank');
                 dismissOverlay();
                 return;
