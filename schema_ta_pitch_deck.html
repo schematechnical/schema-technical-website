@@ -25,7 +25,6 @@
             justify-content: center;
         }
 
-        /* 1.1 SLIDE CONTAINER BASE */
         .slide-container {
             position: absolute;
             top: 0;
@@ -45,14 +44,12 @@
             z-index: 1;
         }
 
-        /* Active Slide state */
         .slide-container.active {
             opacity: 1;
             visibility: visible;
             z-index: 2;
         }
 
-        /* 1.2 BACKGROUND EFFECTS */
         .slide-container::before {
             content: '';
             position: absolute;
@@ -72,213 +69,64 @@
         }
         .slide-container > * { position: relative; z-index: 1; width: 100%; max-width: 1200px; }
 
-        /* 1.3 MOBILE FULLSCREEN OVERLAY */
-        #mobile-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.95);
-            z-index: 3000;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 40px;
-            color: #F8FAFC;
-            font-family: 'Urbanist', sans-serif;
-        }
-
+        /* MOBILE OVERLAY */
+        #mobile-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.98); z-index: 3000; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px; color: #F8FAFC; font-family: 'Urbanist', sans-serif; }
         #mobile-overlay i { font-size: 60px; color: #2563EB; margin-bottom: 20px; }
         #mobile-overlay h2 { font-size: 24px; margin-bottom: 10px; }
         #mobile-overlay p { color: #94A3B8; margin-bottom: 30px; }
 
-        /* 1.4 NAVIGATION CONTROLS - RE-ENGINEERED FOR VISIBILITY */
-        .nav-controls {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            z-index: 2000;
-        }
-        
-        .nav-btn {
-            background: #2563EB;
-            border: none;
-            color: #F8FAFC;
-            width: 60px; /* Increased size */
-            height: 60px; /* Increased size */
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-            transition: transform 0.2s, background 0.2s;
-            font-size: 1.5rem;
-        }
+        /* NAVIGATION CONTROLS */
+        .nav-controls { position: fixed; bottom: 30px; right: 30px; display: flex; align-items: center; gap: 15px; z-index: 2000; }
+        .nav-btn { background: #2563EB; border: none; color: #F8FAFC; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4); transition: transform 0.2s, background 0.2s; font-size: 1.5rem; }
+        .nav-btn:hover { background: #3b82f6; transform: scale(1.1); }
+        .nav-btn.disabled { background: #1e293b; color: #475569; cursor: not-allowed; box-shadow: none; }
+        .fullscreen-btn { background: #1e293b; border: 1px solid #334155; }
+        .slide-counter { color: #F8FAFC; font-family: 'Urbanist', sans-serif; font-weight: 700; font-size: 1rem; letter-spacing: 1px; background: rgba(15, 23, 42, 0.8); padding: 8px 16px; border-radius: 30px; border: 1px solid #2563EB; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.8); } 70% { box-shadow: 0 0 0 20px rgba(37, 99, 235, 0); } 100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); } }
+        .btn-next:not(.disabled) { animation: pulse 2s infinite; }
 
-        .nav-btn:hover {
-            background: #3b82f6;
-            transform: scale(1.1);
-        }
-
-        .nav-btn.disabled {
-            background: #1e293b;
-            color: #475569;
-            cursor: not-allowed;
-            box-shadow: none;
-        }
-
-        .fullscreen-btn {
-            background: #1e293b;
-            border: 1px solid #334155;
-        }
-
-        .slide-counter {
-            color: #F8FAFC;
-            font-family: 'Urbanist', sans-serif;
-            font-weight: 700;
-            font-size: 1rem;
-            letter-spacing: 1px;
-            background: rgba(15, 23, 42, 0.8);
-            padding: 8px 16px;
-            border-radius: 30px;
-            border: 1px solid #2563EB;
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.8); }
-            70% { box-shadow: 0 0 0 20px rgba(37, 99, 235, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
-        }
-        .btn-next:not(.disabled) {
-            animation: pulse 2s infinite;
-        }
-
-        /* 2. TYPOGRAPHY (Responsive) */
-        .slide-container h1, .slide-container h2, .slide-container h3, .slide-container h4 {
-            color: #F8FAFC;
-            font-weight: 700;
-            margin: 0;
-        }
+        /* TYPOGRAPHY & LAYOUTS */
+        .slide-container h1, .slide-container h2, .slide-container h3, .slide-container h4 { color: #F8FAFC; font-weight: 700; margin: 0; }
         .slide-container h1 { font-size: 4.5vw; letter-spacing: -1px; }
-        .slide-container .slide-title { font-size: 3vw; font-weight: 700; margin-bottom: 30px; text-align: left; width: 100%; color: #F8FAFC; }
+        .slide-container .slide-title { font-size: 3vw; font-weight: 700; margin-bottom: 30px; text-align: left; color: #F8FAFC; }
         .slide-container h3 { font-size: 1.8vw; font-weight: 500; margin-bottom: 15px; color: #38BDF8; }
-        
-        .slide-container p, .slide-container li, .slide-container .subtitle, 
-        .slide-container td, .slide-container th, 
-        .slide-container .bar .label, .slide-container .chart-summary {
-            color: #CBD5E1;
-            font-family: 'Urbanist', sans-serif;
-            font-size: 1.3vw;
-            line-height: 1.5;
-        }
+        .slide-container p, .slide-container li, .slide-container .subtitle, .slide-container td, .slide-container th, .slide-container .bar .label, .slide-container .chart-summary { color: #CBD5E1; font-family: 'Urbanist', sans-serif; font-size: 1.3vw; line-height: 1.5; }
         .slide-container .subtitle { font-size: 1.6vw; font-weight: 400; margin: 20px auto; color: #94A3B8; }
-
-        .slide-container .content-area {
-            align-items: center; display: flex; flex-direction: column; flex-grow: 1; justify-content: center; width: 100%;
-        }
-
         .accent-text { color: #38BDF8; }
-
-        /* 3. LAYOUT DEFINITIONS */
         .title-layout { text-align: center; }
-        
-        .section-title-layout { align-items: center; display: flex; flex-direction: column; height: 100%; justify-content: center; text-align: center; width: 100%; }
-        .section-title-layout h2 { font-size: 3.5vw; margin-bottom: 20px; }
-        .section-title-layout p { font-size: 1.4vw; margin: 0 auto; max-width: 900px; }
-        .section-title-layout hr { background-color: #2563EB; border: none; height: 6px; margin: 30px auto; width: 120px; border-radius: 3px;}
-
-        .two-column { align-items: flex-start; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; width: 100%; }
+        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; width: 100%; }
         .two-column.tiled > div { background-color: #1E293B; border-radius: 12px; border: 1px solid #334155; padding: 30px; text-align: left; }
-        .two-column.tiled h3 { color: #38BDF8; margin-bottom: 20px;}
         .two-column ul { list-style: none; margin: 0; padding: 0; }
         .two-column li { margin-bottom: 15px; position: relative; padding-left: 30px; }
         .two-column li::before { content: '\f0da'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: #38BDF8; position: absolute; left: 0; top: 2px; }
-
-        .data-box {
-            background-color: rgba(37, 99, 235, 0.1);
-            border-left: 4px solid #38BDF8;
-            border-radius: 8px;
-            padding: 30px;
-            width: 100%;
-        }
-        .data-box h4 { color: #F8FAFC; font-size: 1.6vw; margin-bottom: 15px; }
-        .data-box i { color: #38BDF8; margin-right: 10px; }
-
-        .highlight-numbers-layout > div:first-child { flex: 0 0 40%; text-align: center; display: flex; flex-direction: column; justify-content: center; position: relative;}
-        .highlight-numbers-layout .number { color: #38BDF8; font-size: 7vw; font-weight: 700; line-height: 1; margin-bottom: 10px; text-shadow: 0 0 40px rgba(56, 189, 248, 0.2);}
-        .highlight-numbers-layout .number-label { font-size: 1.6vw; font-weight: 700; color: #F8FAFC; text-transform: uppercase; letter-spacing: 2px;}
-        .highlight-numbers-layout .citation { font-size: 0.9vw; color: #64748B; font-style: italic; margin-top: 30px; line-height: 1.3; }
-
-        .timeline-layout { align-items: stretch; display: flex; height: stretch; justify-content: space-between; position: relative; width: 100%; }
-        .timeline-layout .timeline-line { background-color: #334155; height: 4px; left: 0; position: absolute; top: 50%; transform: translateY(-2px); width: 100%; z-index: 0; }
-        .timeline-item { position: relative; text-align: center; width: 18%; z-index: 1;}
-        .timeline-item::after { background-color: #0F172A; border-radius: 50%; border: 4px solid #38BDF8; content: ''; height: 20px; left: 50%; position: absolute; top: 50%; transform: translate(-50%, -50%); width: 20px; z-index: 2; }
-        .timeline-item .content-wrapper { left: 0; position: absolute; width: 100%; background-color: #1E293B; padding: 20px 10px; border-radius: 8px; border: 1px solid #334155;}
+        .highlight-numbers-layout .number { color: #38BDF8; font-size: 7vw; font-weight: 700; line-height: 1; text-shadow: 0 0 40px rgba(56, 189, 248, 0.2);}
+        .timeline-layout { display: flex; justify-content: space-between; position: relative; width: 100%; }
+        .timeline-layout .timeline-line { background-color: #334155; height: 4px; left: 0; position: absolute; top: 50%; width: 100%; }
+        .timeline-item { position: relative; text-align: center; width: 18%; }
+        .timeline-item::after { background-color: #0F172A; border-radius: 50%; border: 4px solid #38BDF8; content: ''; height: 20px; left: 50%; position: absolute; top: 50%; transform: translate(-50%, -50%); width: 20px; }
+        .timeline-item .content-wrapper { background-color: #1E293B; padding: 20px 10px; border-radius: 8px; border: 1px solid #334155; position: absolute; width: 100%; }
         .timeline-item:nth-child(odd) .content-wrapper { bottom: 50%; margin-bottom: 30px; }
-        .timeline-item:nth-child(even) .content-wrapper { margin-top: 30px; top: 50%; }
-        .timeline-item h3 { color: #38BDF8; font-size: 1.2vw; margin-bottom: 10px;}
-        .timeline-item p { font-size: 0.9vw; margin: 0; line-height: 1.4;}
-
-        .tiled-content { align-items: stretch; display: flex; gap: 30px; justify-content: center; width: 100%; }
-        .tile { align-items: center; background-color: #1E293B; border-radius: 12px; border: 1px solid #334155; display: flex; flex-direction: column; flex: 1; justify-content: flex-start; padding: 30px 20px; text-align: center; }
-        .tile .icon { color: #38BDF8; font-size: 2.5vw; margin-bottom: 20px; }
-        .tile h3 { color: #F8FAFC; font-size: 1.4vw; }
-
-        .chart-container { display: flex; flex-direction: column; gap: 20px; width: 100%; padding: 10px 40px;}
-        .bar { align-items: center; display: flex; gap: 20px; }
-        .bar .label { color: #F8FAFC; flex: 0 0 300px; font-weight: 700; text-align: right; font-size: 1.2vw;}
+        .timeline-item:nth-child(even) .content-wrapper { top: 50%; margin-top: 30px; }
+        .chart-container { display: flex; flex-direction: column; gap: 20px; width: 100%; }
+        .bar { display: flex; align-items: center; gap: 20px; }
+        .bar .label { color: #F8FAFC; flex: 0 0 350px; font-weight: 700; text-align: right; font-size: 1.2vw;}
         .bar .bar-inner { background-color: #1E293B; border-radius: 8px; flex-grow: 1; height: 45px; border: 1px solid #334155;}
-        .bar .bar-fill { align-items: center; border-radius: 8px; color: white; display: flex; font-size: 1.1vw; font-weight: 700; height: 100%; justify-content: center; padding: 0 10px; white-space: nowrap; }
-        .chart-summary { font-style: italic; margin-top: 30px; max-width: 90%; text-align: center; color: #94A3B8;}
-
-        .table-layout { width: 100%; }
+        .bar .bar-fill { height: 100%; border-radius: 8px; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; }
         .table-layout table { border-collapse: collapse; width: 100%; background-color: #1E293B; border-radius: 12px; overflow: hidden;}
         .table-layout th, .table-layout td { border-bottom: 1px solid #334155; padding: 15px 20px; text-align: left; }
-        .table-layout th { background-color: #0F172A; color: #38BDF8; font-size: 1.3vw; font-weight: 700; border-bottom: 2px solid #2563EB;}
-        .table-layout td { font-size: 1.1vw; }
-        .table-layout tr:last-child td { border-bottom: none; }
-        .table-layout td strong { color: #F8FAFC; display: block; margin-bottom: 5px; font-size: 1.2vw;}
+        .table-layout th { background-color: #0F172A; color: #38BDF8; border-bottom: 2px solid #2563EB;}
 
-        .quote-layout { margin: 0 auto; text-align: center; width: 85%; }
-        .quote-layout blockquote { color: #F8FAFC; font-size: 2.8vw; font-weight: 500; line-height: 1.3; margin: 0 0 30px 0; padding: 0 50px; position: relative; }
-        .quote-layout blockquote::before, .quote-layout blockquote::after { color: #2563EB; content: '"'; font-size: 7vw; line-height: 0; position: absolute; opacity: 0.5;}
-        .quote-layout cite { color: #38BDF8; font-size: 1.4vw; font-style: normal; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;}
-
-        .qa-layout { margin: 0 auto; text-align: center; width: 100%; align-self: center; }
-        .qa-layout h2 { font-size: 5vw; margin-bottom: 20px; color: #F8FAFC; }
-        .qa-layout .contact-info { color: #38BDF8; font-size: 1.4vw; margin-top: 50px; font-weight: 700; letter-spacing: 2px;}
-
-        /* 4. MEDIA QUERIES FOR PORTRAIT MOBILE */
         @media (max-width: 900px) {
-            .slide-container { padding: 40px; }
-            .slide-container h1 { font-size: 8vw; }
-            .slide-container .slide-title { font-size: 6vw; }
-            .slide-container p, .slide-container li, .slide-container td, .slide-container .bar .label { font-size: 3.5vw; }
-            .two-column { grid-template-columns: 1fr; gap: 20px; }
-            .chart-container .bar .label { flex: 0 0 100px; font-size: 3vw; }
-            .timeline-layout { flex-direction: column; align-items: flex-start; gap: 40px; }
-            .timeline-layout .timeline-line { width: 4px; height: 100%; left: 20px; top: 0; transform: none; }
-            .timeline-item { width: 100%; text-align: left; padding-left: 50px; }
-            .timeline-item::after { left: 20px; }
-            .timeline-item .content-wrapper { position: static; margin: 0 !important; }
-            
-            /* Show overlay on small portrait screens */
+            .slide-container h1 { font-size: 8vw; } .slide-container .slide-title { font-size: 6vw; }
+            .slide-container p, .slide-container li { font-size: 3.5vw; }
+            .two-column { grid-template-columns: 1fr; }
             #mobile-overlay { display: flex; }
         }
-        
-        /* Landscape Mobile adjustment */
-        @media (max-width: 900px) and (orientation: landscape) {
-            #mobile-overlay { display: none; }
-        }
+        @media (max-width: 900px) and (orientation: landscape) { #mobile-overlay { display: none; } }
     </style>
 </head>
 <body>
 
-<!-- Presentation Pop-out Overlay for Mobile -->
 <div id="mobile-overlay">
     <i class="fa-solid fa-expand"></i>
     <h2>Optimize Presentation</h2>
@@ -286,7 +134,6 @@
     <button class="btn" style="background: #2563EB; color: white; border: none; padding: 15px 30px; border-radius: 4px; font-weight: 700; cursor: pointer;" onclick="toggleFullscreen()">Enter Presentation Mode</button>
 </div>
 
-<!-- Slide 1: Title_Slide -->
 <div class="slide-container active" id="slide1">
     <div class="title-layout">
         <h1>Schema Technical <span class="accent-text">Documentation</span></h1>
@@ -294,7 +141,6 @@
     </div>
 </div>
 
-<!-- Slide 2: Information for Safety -->
 <div class="slide-container" id="slide2">
     <h2 class="slide-title">The Information for Safety Mandate</h2>
     <div class="content-area">
@@ -302,69 +148,42 @@
             <div>
                 <div class="number">ISO 14971</div>
                 <div class="number-label">Risk Management</div>
-                <p class="citation">*When a physical hazard cannot be eliminated by R&D design, the absolute final layer of regulatory protection is "Information for Safety."</p>
+                <p style="font-size: 0.9vw; color: #64748B; font-style: italic; margin-top: 30px;">*When a physical hazard cannot be eliminated by design, the final layer of protection is "Information for Safety."</p>
             </div>
             <div>
                 <h3>Manuals are not guidelines. They are Risk Controls.</h3>
-                <p>In the MedTech sector, a Service Manual is a legally binding regulatory document. If a field engineer pinches a high-voltage cable because the manual was vague, the resulting patient hazard is a direct failure of the OEM's Quality Management System.</p>
+                <p>In the MedTech sector, a Service Manual is a legally binding regulatory document. If a manual is vague, the resulting hazard is a direct failure of the OEM's QMS.</p>
                 <p>Drafting these documents cannot be delegated to junior staff using basic word processors. They must be engineered.</p>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Slide 3: Timeline -->
 <div class="slide-container" id="slide3">
     <h2 class="slide-title">The 5-Phase Authoring Architecture</h2>
     <div class="content-area">
         <div class="timeline-layout">
             <div class="timeline-line"></div>
-            <div class="timeline-item">
-                <div class="content-wrapper">
-                    <h3>1: Intake</h3>
-                    <p>Securing the Risk Management File, 3D CAD geometry, and production-equivalent hardware.</p>
-                </div>
-            </div>
-            <div class="timeline-item">
-                <div class="content-wrapper">
-                    <h3>2: Anatomy</h3>
-                    <p>Reconciling physical hardware against CAD and engineering safe-state isolation sequences.</p>
-                </div>
-            </div>
-            <div class="timeline-item">
-                <div class="content-wrapper">
-                    <h3>3: Syntax</h3>
-                    <p>Drafting using strict verb-first imperatives and injecting ISO 3864 hazard signal words.</p>
-                </div>
-            </div>
-            <div class="timeline-item">
-                <div class="content-wrapper">
-                    <h3>4: Validation</h3>
-                    <p>Executing drafts physically on the bench to prove tooling clearances and generate vector art.</p>
-                </div>
-            </div>
-            <div class="timeline-item">
-                <div class="content-wrapper">
-                    <h3>5: Handover</h3>
-                    <p>Final QARA review of technical limits and ingestion into the Digital Service Portal.</p>
-                </div>
-            </div>
+            <div class="timeline-item"><div class="content-wrapper"><h3>1: Intake</h3><p>Securing RMF, 3D CAD geometry, and production-equivalent hardware.</p></div></div>
+            <div class="timeline-item"><div class="content-wrapper"><h3>2: Anatomy</h3><p>Reconciling hardware against CAD and engineering safe-state sequences.</p></div></div>
+            <div class="timeline-item"><div class="content-wrapper"><h3>3: Syntax</h3><p>Drafting using verb-first imperatives and ISO 3864 hazard signal words.</p></div></div>
+            <div class="timeline-item"><div class="content-wrapper"><h3>4: Validation</h3><p>Executing drafts physically on the bench to prove tooling clearances.</p></div></div>
+            <div class="timeline-item"><div class="content-wrapper"><h3>5: Handover</h3><p>Final QARA review and ingestion into the Digital Service Portal.</p></div></div>
         </div>
     </div>
 </div>
 
-<!-- Slide 4: Teardown vs Desk Drafting -->
 <div class="slide-container" id="slide4">
     <h2 class="slide-title">Eliminating "Desk-Drafted" Manuals</h2>
     <div class="content-area">
         <div class="two-column tiled">
             <div>
                 <h3>The Flawed Approach</h3>
-                <p>Traditional technical writers often author manuals entirely from 3D CAD models while sitting at a desk. This results in instructions that are physically impossible to execute in the field because they ignore tooling clearances, real-world loom routing, and human ergonomics.</p>
+                <p>Traditional technical writers often author manuals entirely from 3D CAD models while sitting at a desk, ignoring tooling clearances and ergonomics.</p>
             </div>
             <div>
                 <h3>The Physical Validation Mandate</h3>
-                <p>Schema Technical refuses to author blindly. We execute every drafted procedure on physical, production-equivalent hardware on our engineering bench:</p>
+                <p>Schema Technical executes every drafted procedure on physical hardware on our engineering bench:</p>
                 <ul>
                     <li>Validates specified torque tools physically fit.</li>
                     <li>Identifies unmitigated sharp edges.</li>
@@ -375,7 +194,6 @@
     </div>
 </div>
 
-<!-- Slide 5: Data Box Layout -->
 <div class="slide-container" id="slide5">
     <h2 class="slide-title">Linguistic Hazard Control</h2>
     <div class="content-area">
@@ -383,96 +201,65 @@
             <div>
                 <h3>Mitigating Foreseeable Use Error</h3>
                 <p>We apply strict grammatical architecture to eliminate cognitive ambiguity during high-stress field interventions.</p>
-                <p>We utilise <strong>Verb-First Imperative Syntax</strong> (e.g., "Remove the screws", not "The screws should be removed"). We explicitly apply <strong>ISO 3864 Signal Words</strong> (DANGER, WARNING, CAUTION) immediately prior to the physical action that triggers the hazard, preventing technicians from skimming past vital safety limits.</p>
+                <p>We utilise <strong>Verb-First Imperative Syntax</strong> and explicitly apply <strong>ISO 3864 Signal Words</strong> (DANGER, WARNING, CAUTION) immediately prior to the hazard.</p>
             </div>
-            <div>
-                <div class="data-box">
-                    <h4><i class="fa-solid fa-bezier-curve"></i> CAD-Derived Vector Art</h4>
-                    <p>Generic photographs fade, photocopy poorly, and clutter the page. We generate high-contrast vector line art derived directly from your .STEP files, highlighting specific interaction points with absolute visual clarity.</p>
-                </div>
+            <div style="background-color: rgba(37, 99, 235, 0.1); border-left: 4px solid #38BDF8; padding: 30px; border-radius: 8px;">
+                <h4 style="font-size: 1.6vw; color: #F8FAFC; margin-bottom: 15px;"><i class="fa-solid fa-bezier-curve" style="color: #38BDF8;"></i> CAD-Derived Vector Art</h4>
+                <p>We generate high-contrast vector line art derived directly from your .STEP files, highlighting interaction points with absolute visual clarity.</p>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Slide 6: ISO 13485 Clause 4.2.4 -->
 <div class="slide-container" id="slide6">
     <h2 class="slide-title">Solving ISO 13485 Clause 4.2.4</h2>
     <div class="content-area">
-        <div class="tiled-content">
-            <div class="tile">
-                <div class="icon"><i class="fa-solid fa-file-pdf"></i></div>
-                <h3>The "Local File" Threat</h3>
-                <p>If field engineers carry PDF manuals on their local hard drives, they will inevitably execute a repair using an obsolete, cached file. This is a critical Document Control failure.</p>
+        <div style="display: flex; gap: 30px; justify-content: center; width: 100%;">
+            <div style="flex: 1; background: #1E293B; border-radius: 12px; padding: 30px; text-align: center; border: 1px solid #334155;">
+                <i class="fa-solid fa-file-pdf" style="font-size: 2.5vw; color: #38BDF8; margin-bottom: 20px;"></i>
+                <h3 style="font-size: 1.4vw; color: #F8FAFC;">The "Local File" Threat</h3>
+                <p>Prevent engineers from using obsolete, cached PDF files on local drives.</p>
             </div>
-            <div class="tile">
-                <div class="icon"><i class="fa-solid fa-server"></i></div>
-                <h3>Digital Service Portals</h3>
-                <p>We architect and configure secure SharePoint intranet portals. This forces engineers to access a single, globally updated source of truth, eradicating the risk of obsolete documentation.</p>
+            <div style="flex: 1; background: #1E293B; border-radius: 12px; padding: 30px; text-align: center; border: 1px solid #334155;">
+                <i class="fa-solid fa-server" style="font-size: 2.5vw; color: #38BDF8; margin-bottom: 20px;"></i>
+                <h3 style="font-size: 1.4vw; color: #F8FAFC;">Digital Portals</h3>
+                <p>Forcing access to a single, globally updated source of truth via secure SharePoint.</p>
             </div>
-            <div class="tile">
-                <div class="icon"><i class="fa-solid fa-lock"></i></div>
-                <h3>View-Only Enforcement</h3>
-                <p>We configure complex permission matrices that allow field engineers to view manuals in the browser, but mathematically blocks them from downloading or printing the IP locally.</p>
+            <div style="flex: 1; background: #1E293B; border-radius: 12px; padding: 30px; text-align: center; border: 1px solid #334155;">
+                <i class="fa-solid fa-lock" style="font-size: 2.5vw; color: #38BDF8; margin-bottom: 20px;"></i>
+                <h3 style="font-size: 1.4vw; color: #F8FAFC;">View-Only</h3>
+                <p>Strict permission matrices that block downloading or printing of critical IP.</p>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Slide 7: Comparison Chart -->
 <div class="slide-container" id="slide7">
     <h2 class="slide-title">The Operational Delta</h2>
     <div class="content-area">
         <div class="chart-container">
-            <div class="bar">
-                <div class="label">Standard Word Processor Docs</div>
-                <div class="bar-inner"><div class="bar-fill" style="width: 85%; background: linear-gradient(90deg, #991B1B, #EF4444);">High Ambiguity & Version Control Failures</div></div>
-            </div>
-            <div class="bar">
-                <div class="label">Schema Readiness Framework</div>
-                <div class="bar-inner"><div class="bar-fill" style="width: 45%; min-width: max-content; padding: 0 20px; background: linear-gradient(90deg, #166534, #22C55E);">ISO 13485 Compliant Risk Control</div></div>
-            </div>
+            <div class="bar"><div class="label">Standard Word Processor Docs</div><div class="bar-inner"><div class="bar-fill" style="width: 85%; background: linear-gradient(90deg, #991B1B, #EF4444);">High Ambiguity & Version Failures</div></div></div>
+            <div class="bar"><div class="label">Schema Readiness Framework</div><div class="bar-inner"><div class="bar-fill" style="width: 45%; min-width: max-content; padding: 0 20px; background: linear-gradient(90deg, #166534, #22C55E);">ISO 13485 Compliant Risk Control</div></div></div>
         </div>
-        <p class="chart-summary">Transitioning from loosely formatted text documents to a strictly governed, structured Technical Authoring framework protects R&D intent, reduces field-induced hardware failures, and satisfies Notified Body requirements for Information for Safety.</p>
+        <p class="chart-summary">Structured Technical Authoring protects R&D intent, reduces hardware failures, and satisfies Notified Body requirements.</p>
     </div>
 </div>
 
-<!-- Slide 8: Table -->
 <div class="slide-container" id="slide8">
     <h2 class="slide-title">The Deliverable Package</h2>
     <div class="content-area">
         <div class="table-layout">
             <table>
-                <thead>
-                    <tr>
-                        <th>Asset Type</th>
-                        <th>Deliverable Content</th>
-                        <th>Primary Value</th>
-                    </tr>
-                </thead>
+                <thead><tr><th>Asset Type</th><th>Deliverable Content</th><th>Primary Value</th></tr></thead>
                 <tbody>
-                    <tr>
-                        <td><strong>Service Readiness Framework</strong></td>
-                        <td>The master architectural manual. Includes tooling matrices, safety/isolation baselines, and PPM schedules.</td>
-                        <td>Establishes the foundational regulatory rules of engagement for all field interventions.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Modular FRU Instructions</strong></td>
-                        <td>Highly visual, 2-4 page task-specific replacement guides for targeted Field Replaceable Units.</td>
-                        <td>Reduces cognitive load on engineers, accelerating Mean Time To Repair (MTTR).</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Digital Portal Configuration</strong></td>
-                        <td>Setup of the secure SharePoint repository with strict "View-Only" permissions and draft invisibility.</td>
-                        <td>Satisfies ISO 13485 Document Control by locking the distribution pipeline.</td>
-                    </tr>
+                    <tr><td><strong>Readiness Framework</strong></td><td>Master manual architecture, tooling matrices, safety baselines, and PPM schedules.</td><td>Establishes the foundations for all field interventions.</td></tr>
+                    <tr><td><strong>Modular FRU Instructions</strong></td><td>Highly visual, task-specific replacement guides for targeted units.</td><td>Reduces cognitive load and accelerates MTTR.</td></tr>
                 </tbody>
             </table>
         </div>
     </div>
 </div>
 
-<!-- Slide 9: Quote -->
 <div class="slide-container" id="slide9">
     <div class="content-area">
         <div class="quote-layout">
@@ -482,29 +269,19 @@
     </div>
 </div>
 
-<!-- Slide 10: Q&A -->
 <div class="slide-container" id="slide10">
     <div class="qa-layout">
         <h2>Control the Execution.</h2>
         <p>Engineer the documentation. Lock the liability.</p>
-        <div class="contact-info">
-            SCHEMA TECHNICAL | Technical Authoring
-        </div>
+        <div class="contact-info">SCHEMA TECHNICAL | Technical Authoring</div>
     </div>
 </div>
 
-<!-- Navigation Interface -->
 <div class="nav-controls">
-    <button class="nav-btn fullscreen-btn" onclick="toggleFullscreen()" title="Fullscreen mode">
-        <i class="fa-solid fa-expand"></i>
-    </button>
+    <button class="nav-btn fullscreen-btn" onclick="toggleFullscreen()"><i class="fa-solid fa-expand"></i></button>
     <span class="slide-counter" id="counter">1 / 10</span>
-    <button class="nav-btn btn-prev disabled" id="prevBtn" title="Previous Slide">
-        <i class="fa-solid fa-chevron-left"></i>
-    </button>
-    <button class="nav-btn btn-next" id="nextBtn" title="Next Slide">
-        <i class="fa-solid fa-chevron-right"></i>
-    </button>
+    <button class="nav-btn btn-prev disabled" id="prevBtn"><i class="fa-solid fa-chevron-left"></i></button>
+    <button class="nav-btn btn-next" id="nextBtn"><i class="fa-solid fa-chevron-right"></i></button>
 </div>
 
 <script>
@@ -516,99 +293,38 @@
     let currentIndex = 0;
 
     function updatePresentation() {
-        slides.forEach((slide, index) => {
-            if (index === currentIndex) {
-                slide.classList.add('active');
-            } else {
-                slide.classList.remove('active');
-            }
-        });
-
+        slides.forEach((slide, index) => index === currentIndex ? slide.classList.add('active') : slide.classList.remove('active'));
         counter.textContent = `${currentIndex + 1} / ${slides.length}`;
-
-        if (currentIndex === 0) {
-            prevBtn.classList.add('disabled');
-        } else {
-            prevBtn.classList.remove('disabled');
-        }
-
-        if (currentIndex === slides.length - 1) {
-            nextBtn.classList.add('disabled');
-        } else {
-            nextBtn.classList.remove('disabled');
-        }
+        currentIndex === 0 ? prevBtn.classList.add('disabled') : prevBtn.classList.remove('disabled');
+        currentIndex === slides.length - 1 ? nextBtn.classList.add('disabled') : nextBtn.classList.remove('disabled');
     }
 
-    function nextSlide(e) {
-        if (e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-        if (currentIndex < slides.length - 1) {
-            currentIndex++;
-            updatePresentation();
-        }
-    }
-
-    function prevSlide(e) {
-        if (e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-        if (currentIndex > 0) {
-            currentIndex--;
-            updatePresentation();
-        }
-    }
+    function nextSlide(e) { if (e) { e.preventDefault(); e.stopPropagation(); } if (currentIndex < slides.length - 1) { currentIndex++; updatePresentation(); } }
+    function prevSlide(e) { if (e) { e.preventDefault(); e.stopPropagation(); } if (currentIndex > 0) { currentIndex--; updatePresentation(); } }
 
     function toggleFullscreen() {
-        if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen().catch(err => {
-                console.error(`Error attempting to enable full-screen mode: ${err.message}`);
-            });
-            overlay.style.display = 'none';
-        } else {
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-            }
-        }
+        const docEl = document.documentElement;
+        const requestFs = docEl.requestFullscreen || docEl.webkitRequestFullscreen || docEl.mozRequestFullScreen || docEl.msRequestFullscreen;
+        const exitFs = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
+        if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+            if (requestFs) { requestFs.call(docEl).then(() => { overlay.style.display = 'none'; }).catch(err => { overlay.style.display = 'none'; }); }
+        } else if (exitFs) { exitFs.call(document); }
     }
 
-    // Control Listeners
     nextBtn.addEventListener('click', nextSlide);
     prevBtn.addEventListener('click', prevSlide);
-
-    // Keyboard support
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
-            e.preventDefault();
-            nextSlide();
-        }
-        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-            e.preventDefault();
-            prevSlide();
-        }
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); prevSlide(); }
     });
-
-    // Global click-to-advance (excluding buttons)
-    document.addEventListener('click', (e) => {
-        if (!e.target.closest('.nav-controls') && !e.target.closest('#mobile-overlay')) {
-            nextSlide();
-        }
-    });
-
-    // Handle orientation changes for overlay
+    document.addEventListener('click', (e) => { if (!e.target.closest('.nav-controls') && !e.target.closest('#mobile-overlay')) nextSlide(); });
     window.addEventListener('resize', () => {
-        if (window.innerWidth > 900 || window.innerWidth > window.innerHeight) {
-            overlay.style.display = 'none';
-        } else if (window.innerWidth <= 900 && !document.fullscreenElement) {
-            overlay.style.display = 'flex';
-        }
+        const isMobile = window.innerWidth <= 900; const isPortrait = window.innerHeight > window.innerWidth;
+        const isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement);
+        if (isMobile && isPortrait && !isFullscreen) overlay.style.display = 'flex';
+        else overlay.style.display = 'none';
     });
-
-    // Initialize
     updatePresentation();
 </script>
-
 </body>
 </html>

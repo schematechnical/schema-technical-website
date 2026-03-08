@@ -25,7 +25,6 @@
             justify-content: center;
         }
 
-        /* 1.1 SLIDE CONTAINER BASE */
         .slide-container {
             position: absolute;
             top: 0;
@@ -51,7 +50,6 @@
             z-index: 2;
         }
 
-        /* 1.2 BACKGROUND EFFECTS */
         .slide-container::before {
             content: '';
             position: absolute;
@@ -75,7 +73,7 @@
         #mobile-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.95);
+            background: rgba(15, 23, 42, 0.98);
             z-index: 3000;
             display: none;
             flex-direction: column;
@@ -240,12 +238,12 @@
             <div>
                 <div class="number">80%</div>
                 <div class="number-label">Of Lifecycle Costs</div>
-                <p class="citation">*Source: Defense Acquisition University (DAU) &amp; INCOSE. Up to 80% of total lifecycle sustainment costs are permanently locked in by the end of the design phase.</p>
+                <p class="citation">*Source: Defense Acquisition University (DAU). Sustainment costs are locked in by design freeze.</p>
             </div>
             <div>
                 <h3>The Margin Trap</h3>
                 <p>Without a forensic Service Design Review (SDR), prototypes scale into the field with hidden mechanical dependencies and digital blocks.</p>
-                <p>This oversight forces simple interventions into expensive, depot-level repairs, driving unacceptable warranty drain and destroying commercial margins before the first unit is even sold.</p>
+                <p>This oversight forces simple interventions into expensive repairs, driving unacceptable warranty drain and destroying commercial margins before the first unit is sold.</p>
             </div>
         </div>
     </div>
@@ -256,30 +254,10 @@
     <div class="content-area">
         <div class="timeline-layout">
             <div class="timeline-line"></div>
-            <div class="timeline-item">
-                <div class="content-wrapper">
-                    <h3>1 & 2: Baseline</h3>
-                    <p>Intake verification against CAD and RMF. Execution of baseline IEC 62353 safety tests.</p>
-                </div>
-            </div>
-            <div class="timeline-item">
-                <div class="content-wrapper">
-                    <h3>3: Teardown</h3>
-                    <p>Deep disassembly to calculate MTTR, Service Priority Numbers, and mechanical blocks.</p>
-                </div>
-            </div>
-            <div class="timeline-item">
-                <div class="content-wrapper">
-                    <h3>4: Reassembly</h3>
-                    <p>Validation of fastener lifecycles (torque limits) and isolation of cable pinch-hazards.</p>
-                </div>
-            </div>
-            <div class="timeline-item">
-                <div class="content-wrapper">
-                    <h3>5 - 7: Compliance</h3>
-                    <p>Audit of digital service logic, functional load testing, and global regulatory labelling.</p>
-                </div>
-            </div>
+            <div class="timeline-item"><div class="content-wrapper"><h3>1 & 2: Baseline</h3><p>Intake verification against CAD and RMF. Execution of baseline IEC 62353 safety tests.</p></div></div>
+            <div class="timeline-item"><div class="content-wrapper"><h3>3: Teardown</h3><p>Deep disassembly to calculate MTTR, SPN metrics, and identify mechanical blocks.</p></div></div>
+            <div class="timeline-item"><div class="content-wrapper"><h3>4: Reassembly</h3><p>Validation of fastener lifecycles and isolation of cable pinch-hazards.</p></div></div>
+            <div class="timeline-item"><div class="content-wrapper"><h3>5 - 7: Compliance</h3><p>Audit of digital service logic, load testing, and global regulatory labelling.</p></div></div>
         </div>
     </div>
 </div>
@@ -290,7 +268,7 @@
         <div class="two-column tiled">
             <div>
                 <h3>The Flawed Approach</h3>
-                <p>Traditional design reviews rely on subjective engineering opinions (e.g., "The pump is too hard to reach"). Subjective feedback is easily dismissed by R&D teams pushing for rapid launch deadlines.</p>
+                <p>Traditional design reviews rely on subjective opinions (e.g., "The pump is too hard to reach"). Subjective feedback is easily dismissed by R&D teams pushing for rapid launch deadlines.</p>
             </div>
             <div>
                 <h3>The SPN Mathematics</h3>
@@ -310,14 +288,12 @@
         <div class="two-column align-center">
             <div>
                 <h3>Translating Friction into Compliance</h3>
-                <p>We do not just report mechanical frustrations; we translate them into strict QARA mandates.</p>
-                <p>An unkeyed ribbon cable isn't just a service nuisance—it is a latent patient safety hazard (Use Error). We tie every physical design flaw directly to <strong>ISO 13485</strong>, <strong>ISO 14971</strong>, and <strong>IEC 62366-1</strong>.</p>
+                <p>An unkeyed ribbon cable or a blind fastener isn't just a service nuisance—it is a latent patient safety hazard (Use Error).</p>
+                <p>We tie every physical design flaw directly to <strong>ISO 13485</strong> (DfS), <strong>ISO 14971</strong> (Risk Management), and <strong>IEC 62366-1</strong> (Usability).</p>
             </div>
-            <div>
-                <div class="data-box">
-                    <h4><i class="fa-solid fa-file-shield"></i> QMS Integration</h4>
-                    <p>By mapping physical teardown findings directly to regulatory hazard codes, we provide Quality Directors with the objective, auditable data required to block flawed hardware from reaching the field.</p>
-                </div>
+            <div class="data-box">
+                <h4><i class="fa-solid fa-file-shield"></i> QMS Integration</h4>
+                <p>By mapping teardown findings to hazard codes, we provide Quality Directors with the auditable data required to block flawed hardware from reaching the field.</p>
             </div>
         </div>
     </div>
@@ -328,19 +304,19 @@
     <div class="content-area">
         <div class="tiled-content">
             <div class="tile">
-                <div class="icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
-                <h3>Mechanical Integrity</h3>
-                <p>We validate fastener thread lifecycles using calibrated torque limits and inspect internal routing for cable strain and crush hazards.</p>
+                <i class="fa-solid fa-screwdriver-wrench"></i>
+                <h3>Mechanical</h3>
+                <p>Validating fastener lifecycles and identifying cable strain hazards.</p>
             </div>
             <div class="tile">
-                <div class="icon"><i class="fa-solid fa-laptop-code"></i></div>
-                <h3>Digital Friction</h3>
-                <p>We audit the software environment for hardware pair-locking, latency, and Bare Metal OS recovery speed.</p>
+                <i class="fa-solid fa-laptop-code"></i>
+                <h3>Digital</h3>
+                <p>Auditing for pair-locking, latency, and Bare Metal recovery speed.</p>
             </div>
             <div class="tile">
-                <div class="icon"><i class="fa-solid fa-bolt"></i></div>
-                <h3>Electrical Safety</h3>
-                <p>We perform IEC 62353 safety tests before and after the teardown to ensure field interventions do not compromise Earth Continuity.</p>
+                <i class="fa-solid fa-bolt"></i>
+                <h3>Electrical</h3>
+                <p>IEC 62353 safety tests to ensure interventions don't compromise Earth Continuity.</p>
             </div>
         </div>
     </div>
@@ -350,14 +326,8 @@
     <h2 class="slide-title">Example SPN Mitigation</h2>
     <div class="content-area">
         <div class="chart-container">
-            <div class="bar">
-                <div class="label">Pre-SDR (Glued Battery)</div>
-                <div class="bar-inner"><div class="bar-fill" style="width: 85%; background: linear-gradient(90deg, #991B1B, #EF4444);">SPN: 50 (Critical Fail)</div></div>
-            </div>
-            <div class="bar">
-                <div class="label">Post-SDR (Captive Bracket)</div>
-                <div class="bar-inner"><div class="bar-fill" style="width: 25%; min-width: max-content; padding: 0 20px; background: linear-gradient(90deg, #166534, #22C55E);">SPN: 10 (Approved)</div></div>
-            </div>
+            <div class="bar"><div class="label">Pre-SDR (Glued Battery)</div><div class="bar-inner"><div class="bar-fill" style="width: 85%; background: linear-gradient(90deg, #991B1B, #EF4444);">SPN: 50 (Critical Fail)</div></div></div>
+            <div class="bar"><div class="label">Post-SDR (Captive Bracket)</div><div class="bar-inner"><div class="bar-fill" style="width: 25%; min-width: max-content; padding: 0 20px; background: linear-gradient(90deg, #166534, #22C55E);">SPN: 10 (Approved)</div></div></div>
         </div>
         <p class="chart-summary">By identifying destructive access dependencies during the SDR phase, R&D can pivot to bracketed retention before the BOM locks, dropping the SPN from a critical safety risk to a commercially viable field task.</p>
     </div>
@@ -368,29 +338,10 @@
     <div class="content-area">
         <div class="table-layout">
             <table>
-                <thead>
-                    <tr>
-                        <th>Asset Type</th>
-                        <th>Deliverable Content</th>
-                        <th>Primary Value</th>
-                    </tr>
-                </thead>
+                <thead><tr><th>Asset Type</th><th>Deliverable Content</th><th>Primary Value</th></tr></thead>
                 <tbody>
-                    <tr>
-                        <td><strong>Formal Audit Report</strong></td>
-                        <td>A regulatory-grade document detailing SPN metrics and specific ISO 14971 hazard traceability links.</td>
-                        <td>Provides R&D with objective data to justify BOM changes before tooling locks.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>HTM Delta Export</strong></td>
-                        <td>A raw data export mapping physical flaws directly to the client's internal Hazard Traceability Matrix.</td>
-                        <td>Allows QARA to immediately ingest findings into their CAPA systems.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Executive Debrief</strong></td>
-                        <td>A comprehensive presentation with leadership to review physical findings and prioritise mitigations.</td>
-                        <td>Aligns cross-functional teams and accelerates the ECR pipeline.</td>
-                    </tr>
+                    <tr><td><strong>Formal Audit Report</strong></td><td>Detailed SPN metrics and specific ISO 14971 hazard traceability links.</td><td>Provides R&D with objective data to justify BOM changes before tooling locks.</td></tr>
+                    <tr><td><strong>HTM Delta Export</strong></td><td>Raw data export mapping physical flaws to the client's internal Hazard Matrix.</td><td>Allows QARA to immediately ingest findings into CAPA systems.</td></tr>
                 </tbody>
             </table>
         </div>
@@ -410,17 +361,15 @@
     <div class="qa-layout">
         <h2>Defend Your Margins.</h2>
         <p>Audit the prototype before the BOM locks.</p>
-        <div class="contact-info">
-            SCHEMA TECHNICAL | Service Design Review
-        </div>
+        <div class="contact-info">SCHEMA TECHNICAL | Service Design Review</div>
     </div>
 </div>
 
 <div class="nav-controls">
-    <button class="nav-btn fullscreen-btn" onclick="toggleFullscreen()" title="Fullscreen mode"><i class="fa-solid fa-expand"></i></button>
+    <button class="nav-btn fullscreen-btn" onclick="toggleFullscreen()"><i class="fa-solid fa-expand"></i></button>
     <span class="slide-counter" id="counter">1 / 10</span>
-    <button class="nav-btn btn-prev disabled" id="prevBtn" title="Previous Slide"><i class="fa-solid fa-chevron-left"></i></button>
-    <button class="nav-btn btn-next" id="nextBtn" title="Next Slide"><i class="fa-solid fa-chevron-right"></i></button>
+    <button class="nav-btn btn-prev disabled" id="prevBtn"><i class="fa-solid fa-chevron-left"></i></button>
+    <button class="nav-btn btn-next" id="nextBtn"><i class="fa-solid fa-chevron-right"></i></button>
 </div>
 
 <script>
@@ -442,10 +391,12 @@
     function prevSlide(e) { if (e) { e.preventDefault(); e.stopPropagation(); } if (currentIndex > 0) { currentIndex--; updatePresentation(); } }
 
     function toggleFullscreen() {
-        if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen().catch(err => console.error(err.message));
-            overlay.style.display = 'none';
-        } else if (document.exitFullscreen) { document.exitFullscreen(); }
+        const docEl = document.documentElement;
+        const requestFs = docEl.requestFullscreen || docEl.webkitRequestFullscreen || docEl.mozRequestFullScreen || docEl.msRequestFullscreen;
+        const exitFs = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
+        if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+            if (requestFs) { requestFs.call(docEl).then(() => { overlay.style.display = 'none'; }).catch(err => { overlay.style.display = 'none'; }); }
+        } else if (exitFs) { exitFs.call(document); }
     }
 
     nextBtn.addEventListener('click', nextSlide);
@@ -456,8 +407,10 @@
     });
     document.addEventListener('click', (e) => { if (!e.target.closest('.nav-controls') && !e.target.closest('#mobile-overlay')) nextSlide(); });
     window.addEventListener('resize', () => {
-        if (window.innerWidth > 900 || window.innerWidth > window.innerHeight) overlay.style.display = 'none';
-        else if (window.innerWidth <= 900 && !document.fullscreenElement) overlay.style.display = 'flex';
+        const isMobile = window.innerWidth <= 900; const isPortrait = window.innerHeight > window.innerWidth;
+        const isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement);
+        if (isMobile && isPortrait && !isFullscreen) overlay.style.display = 'flex';
+        else overlay.style.display = 'none';
     });
     updatePresentation();
 </script>
