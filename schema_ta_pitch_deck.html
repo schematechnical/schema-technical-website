@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        /* 1. CORE SETUP & NORMALIZE */
+        /* 1. CORE SETUP & presentation logic */
         * { box-sizing: border-box; }
         p { margin: 0; margin-bottom: 15px; }
         
@@ -17,28 +17,39 @@
             background-color: #0F172A;
             margin: 0;
             padding: 0;
-            overflow-x: hidden;
-            overflow-y: auto;
-            scroll-snap-type: y mandatory; /* Forces scroll to lock to slides */
-            scroll-behavior: smooth;
+            overflow: hidden; /* Kills all scrollbars */
             height: 100vh;
             width: 100vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         /* 1.1 SLIDE CONTAINER BASE */
         .slide-container {
-            align-items: center;
-            background-color: #0F172A;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 60px;
             display: flex;
             flex-direction: column;
-            font-family: 'Urbanist', sans-serif;
-            height: 100vh; /* Fill the iframe viewport */
-            width: 100vw;
+            align-items: center;
             justify-content: center;
-            padding: 60px;
-            position: relative;
-            scroll-snap-align: start; /* Snap target */
-            overflow: hidden;
+            background-color: #0F172A;
+            font-family: 'Urbanist', sans-serif;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s;
+            z-index: 1;
+        }
+
+        /* Active Slide state */
+        .slide-container.active {
+            opacity: 1;
+            visibility: visible;
+            z-index: 2;
         }
 
         /* 1.2 BACKGROUND EFFECTS */
@@ -48,7 +59,7 @@
             top: -50%; left: -50%;
             width: 200%; height: 200%;
             background: radial-gradient(circle at center, rgba(37, 99, 235, 0.08) 0%, rgba(15, 23, 42, 0) 60%);
-            z-index: 0;
+            z-index: -1;
             pointer-events: none;
         }
         .slide-container::after {
@@ -61,77 +72,112 @@
         }
         .slide-container > * { position: relative; z-index: 1; width: 100%; max-width: 1200px; }
 
-        /* Navigation Arrows Overlay */
-        .nav-hint {
+        /* Navigation Controls - High Visibility */
+        .nav-controls {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            bottom: 30px;
+            right: 30px;
             display: flex;
-            gap: 10px;
+            align-items: center;
+            gap: 15px;
             z-index: 100;
-            opacity: 0.5;
-            transition: opacity 0.3s;
         }
-        .nav-hint:hover { opacity: 1; }
+        
         .nav-btn {
-            background: rgba(30, 41, 59, 0.8);
-            border: 1px solid #334155;
+            background: #2563EB; /* Electric Blue */
+            border: none;
             color: #F8FAFC;
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s, background 0.2s;
+            font-size: 1.2rem;
         }
 
-        /* 2. TYPOGRAPHY */
+        .nav-btn:hover {
+            background: #3b82f6;
+            transform: scale(1.1);
+        }
+
+        .nav-btn:active {
+            transform: scale(0.95);
+        }
+
+        .nav-btn.disabled {
+            background: #1e293b;
+            color: #475569;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .slide-counter {
+            color: #94A3B8;
+            font-family: 'Urbanist', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            background: rgba(15, 23, 42, 0.6);
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1px solid #334155;
+        }
+
+        /* Next Button Pulse Animation */
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(37, 99, 235, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+        }
+        .btn-next:not(.disabled) {
+            animation: pulse 2s infinite;
+        }
+
+        /* 2. TYPOGRAPHY (Responsive) */
         .slide-container h1, .slide-container h2, .slide-container h3, .slide-container h4 {
             color: #F8FAFC;
             font-weight: 700;
             margin: 0;
         }
-        .slide-container h1 { font-size: 5vw; letter-spacing: -1px; }
-        .slide-container .slide-title { font-size: 3.5vw; font-weight: 700; margin-bottom: 30px; text-align: left; width: 100%; color: #F8FAFC; }
-        .slide-container h3 { font-size: 2vw; font-weight: 500; margin-bottom: 15px; color: #38BDF8; }
+        .slide-container h1 { font-size: 4.5vw; letter-spacing: -1px; }
+        .slide-container .slide-title { font-size: 3vw; font-weight: 700; margin-bottom: 30px; text-align: left; width: 100%; color: #F8FAFC; }
+        .slide-container h3 { font-size: 1.8vw; font-weight: 500; margin-bottom: 15px; color: #38BDF8; }
         
         .slide-container p, .slide-container li, .slide-container .subtitle, 
         .slide-container td, .slide-container th, 
         .slide-container .bar .label, .slide-container .chart-summary {
             color: #CBD5E1;
             font-family: 'Urbanist', sans-serif;
-            font-size: 1.4vw;
+            font-size: 1.3vw;
             line-height: 1.5;
         }
-        .slide-container .subtitle { font-size: 1.8vw; font-weight: 400; margin: 20px auto; color: #94A3B8; }
+        .slide-container .subtitle { font-size: 1.6vw; font-weight: 400; margin: 20px auto; color: #94A3B8; }
 
         .slide-container .content-area {
             align-items: center; display: flex; flex-direction: column; flex-grow: 1; justify-content: center; width: 100%;
         }
 
-        /* HIGHLIGHT COLORS */
         .accent-text { color: #38BDF8; }
 
         /* 3. LAYOUT DEFINITIONS */
         .title-layout { text-align: center; }
         
         .section-title-layout { align-items: center; display: flex; flex-direction: column; height: 100%; justify-content: center; text-align: center; width: 100%; }
-        .section-title-layout h2 { font-size: 4vw; margin-bottom: 20px; }
-        .section-title-layout p { font-size: 1.5vw; margin: 0 auto; max-width: 900px; }
+        .section-title-layout h2 { font-size: 3.5vw; margin-bottom: 20px; }
+        .section-title-layout p { font-size: 1.4vw; margin: 0 auto; max-width: 900px; }
         .section-title-layout hr { background-color: #2563EB; border: none; height: 6px; margin: 30px auto; width: 120px; border-radius: 3px;}
 
-        /* TWO COLUMN TILED TEXT */
         .two-column { align-items: flex-start; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; width: 100%; }
-        .two-column.align-center { align-items: center; }
-        .two-column.tiled { align-items: stretch; }
         .two-column.tiled > div { background-color: #1E293B; border-radius: 12px; border: 1px solid #334155; padding: 30px; text-align: left; }
         .two-column.tiled h3 { color: #38BDF8; margin-bottom: 20px;}
         .two-column ul { list-style: none; margin: 0; padding: 0; }
         .two-column li { margin-bottom: 15px; position: relative; padding-left: 30px; }
         .two-column li::before { content: '\f0da'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: #38BDF8; position: absolute; left: 0; top: 2px; }
 
-        /* DATA BOXES */
         .data-box {
             background-color: rgba(37, 99, 235, 0.1);
             border-left: 4px solid #38BDF8;
@@ -139,16 +185,14 @@
             padding: 30px;
             width: 100%;
         }
-        .data-box h4 { color: #F8FAFC; font-size: 1.8vw; margin-bottom: 15px; }
+        .data-box h4 { color: #F8FAFC; font-size: 1.6vw; margin-bottom: 15px; }
         .data-box i { color: #38BDF8; margin-right: 10px; }
 
-        /* HIGHLIGHT NUMBERS */
         .highlight-numbers-layout > div:first-child { flex: 0 0 40%; text-align: center; display: flex; flex-direction: column; justify-content: center; position: relative;}
-        .highlight-numbers-layout .number { color: #38BDF8; font-size: 8vw; font-weight: 700; line-height: 1; margin-bottom: 10px; text-shadow: 0 0 40px rgba(56, 189, 248, 0.2);}
-        .highlight-numbers-layout .number-label { font-size: 1.8vw; font-weight: 700; color: #F8FAFC; text-transform: uppercase; letter-spacing: 2px;}
-        .highlight-numbers-layout .citation { font-size: 1vw; color: #64748B; font-style: italic; margin-top: 30px; line-height: 1.3; }
+        .highlight-numbers-layout .number { color: #38BDF8; font-size: 7vw; font-weight: 700; line-height: 1; margin-bottom: 10px; text-shadow: 0 0 40px rgba(56, 189, 248, 0.2);}
+        .highlight-numbers-layout .number-label { font-size: 1.6vw; font-weight: 700; color: #F8FAFC; text-transform: uppercase; letter-spacing: 2px;}
+        .highlight-numbers-layout .citation { font-size: 0.9vw; color: #64748B; font-style: italic; margin-top: 30px; line-height: 1.3; }
 
-        /* TIMELINE */
         .timeline-layout { align-items: stretch; display: flex; height: stretch; justify-content: space-between; position: relative; width: 100%; }
         .timeline-layout .timeline-line { background-color: #334155; height: 4px; left: 0; position: absolute; top: 50%; transform: translateY(-2px); width: 100%; z-index: 0; }
         .timeline-item { position: relative; text-align: center; width: 18%; z-index: 1;}
@@ -156,64 +200,57 @@
         .timeline-item .content-wrapper { left: 0; position: absolute; width: 100%; background-color: #1E293B; padding: 20px 10px; border-radius: 8px; border: 1px solid #334155;}
         .timeline-item:nth-child(odd) .content-wrapper { bottom: 50%; margin-bottom: 30px; }
         .timeline-item:nth-child(even) .content-wrapper { margin-top: 30px; top: 50%; }
-        .timeline-item h3 { color: #38BDF8; font-size: 1.4vw; margin-bottom: 10px;}
-        .timeline-item p { font-size: 1vw; margin: 0; line-height: 1.4;}
+        .timeline-item h3 { color: #38BDF8; font-size: 1.2vw; margin-bottom: 10px;}
+        .timeline-item p { font-size: 0.9vw; margin: 0; line-height: 1.4;}
 
-        /* TILED TEXT WITH ICONS */
         .tiled-content { align-items: stretch; display: flex; gap: 30px; justify-content: center; width: 100%; }
         .tile { align-items: center; background-color: #1E293B; border-radius: 12px; border: 1px solid #334155; display: flex; flex-direction: column; flex: 1; justify-content: flex-start; padding: 30px 20px; text-align: center; }
-        .tile .icon { color: #38BDF8; font-size: 3vw; margin-bottom: 20px; }
-        .tile h3 { color: #F8FAFC; font-size: 1.6vw; }
+        .tile .icon { color: #38BDF8; font-size: 2.5vw; margin-bottom: 20px; }
+        .tile h3 { color: #F8FAFC; font-size: 1.4vw; }
 
-        /* BAR CHART */
         .chart-container { display: flex; flex-direction: column; gap: 20px; width: 100%; padding: 10px 40px;}
         .bar { align-items: center; display: flex; gap: 20px; }
-        .bar .label { color: #F8FAFC; flex: 0 0 300px; font-weight: 700; text-align: right; font-size: 1.4vw;}
+        .bar .label { color: #F8FAFC; flex: 0 0 300px; font-weight: 700; text-align: right; font-size: 1.2vw;}
         .bar .bar-inner { background-color: #1E293B; border-radius: 8px; flex-grow: 1; height: 45px; border: 1px solid #334155;}
-        .bar .bar-fill { align-items: center; border-radius: 8px; color: white; display: flex; font-size: 1.2vw; font-weight: 700; height: 100%; justify-content: center; padding: 0 10px; white-space: nowrap; }
+        .bar .bar-fill { align-items: center; border-radius: 8px; color: white; display: flex; font-size: 1.1vw; font-weight: 700; height: 100%; justify-content: center; padding: 0 10px; white-space: nowrap; }
         .chart-summary { font-style: italic; margin-top: 30px; max-width: 90%; text-align: center; color: #94A3B8;}
 
-        /* TABLE */
         .table-layout { width: 100%; }
         .table-layout table { border-collapse: collapse; width: 100%; background-color: #1E293B; border-radius: 12px; overflow: hidden;}
         .table-layout th, .table-layout td { border-bottom: 1px solid #334155; padding: 15px 20px; text-align: left; }
-        .table-layout th { background-color: #0F172A; color: #38BDF8; font-size: 1.4vw; font-weight: 700; border-bottom: 2px solid #2563EB;}
-        .table-layout td { font-size: 1.2vw; }
+        .table-layout th { background-color: #0F172A; color: #38BDF8; font-size: 1.3vw; font-weight: 700; border-bottom: 2px solid #2563EB;}
+        .table-layout td { font-size: 1.1vw; }
         .table-layout tr:last-child td { border-bottom: none; }
-        .table-layout td strong { color: #F8FAFC; display: block; margin-bottom: 5px; font-size: 1.3vw;}
+        .table-layout td strong { color: #F8FAFC; display: block; margin-bottom: 5px; font-size: 1.2vw;}
 
-        /* QUOTE */
         .quote-layout { margin: 0 auto; text-align: center; width: 85%; }
-        .quote-layout blockquote { color: #F8FAFC; font-size: 3vw; font-weight: 500; line-height: 1.3; margin: 0 0 30px 0; padding: 0 50px; position: relative; }
-        .quote-layout blockquote::before, .quote-layout blockquote::after { color: #2563EB; content: '"'; font-size: 8vw; line-height: 0; position: absolute; opacity: 0.5;}
-        .quote-layout blockquote::before { left: -20px; top: 40px; }
-        .quote-layout blockquote::after { bottom: 0px; right: -20px; }
-        .quote-layout cite { color: #38BDF8; font-size: 1.6vw; font-style: normal; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;}
+        .quote-layout blockquote { color: #F8FAFC; font-size: 2.8vw; font-weight: 500; line-height: 1.3; margin: 0 0 30px 0; padding: 0 50px; position: relative; }
+        .quote-layout blockquote::before, .quote-layout blockquote::after { color: #2563EB; content: '"'; font-size: 7vw; line-height: 0; position: absolute; opacity: 0.5;}
+        .quote-layout cite { color: #38BDF8; font-size: 1.4vw; font-style: normal; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;}
 
-        /* Q&A */
         .qa-layout { margin: 0 auto; text-align: center; width: 100%; align-self: center; }
-        .qa-layout h2 { font-size: 6vw; margin-bottom: 20px; color: #F8FAFC; }
-        .qa-layout p { font-size: 2vw; color: #94A3B8;}
-        .qa-layout .contact-info { color: #38BDF8; font-size: 1.5vw; margin-top: 50px; font-weight: 700; letter-spacing: 2px;}
-
-        /* Hide Scrollbar while maintaining functionality */
-        body::-webkit-scrollbar { display: none; }
-        body { -ms-overflow-style: none; scrollbar-width: none; }
+        .qa-layout h2 { font-size: 5vw; margin-bottom: 20px; color: #F8FAFC; }
+        .qa-layout .contact-info { color: #38BDF8; font-size: 1.4vw; margin-top: 50px; font-weight: 700; letter-spacing: 2px;}
 
         @media (max-width: 900px) {
-            .slide-container { padding: 30px; }
+            .slide-container { padding: 40px; }
             .slide-container h1 { font-size: 8vw; }
             .slide-container .slide-title { font-size: 6vw; }
             .slide-container p, .slide-container li, .slide-container td, .slide-container .bar .label { font-size: 3.5vw; }
             .two-column { grid-template-columns: 1fr; gap: 20px; }
             .chart-container .bar .label { flex: 0 0 100px; font-size: 3vw; }
+            .timeline-layout { flex-direction: column; align-items: flex-start; gap: 40px; }
+            .timeline-layout .timeline-line { width: 4px; height: 100%; left: 20px; top: 0; transform: none; }
+            .timeline-item { width: 100%; text-align: left; padding-left: 50px; }
+            .timeline-item::after { left: 20px; }
+            .timeline-item .content-wrapper { position: static; margin: 0 !important; }
         }
     </style>
 </head>
 <body>
 
 <!-- Slide 1: Title_Slide -->
-<div class="slide-container" id="slide1">
+<div class="slide-container active" id="slide1">
     <div class="title-layout">
         <h1>Schema Technical <span class="accent-text">Documentation</span></h1>
         <p class="subtitle">Technical Authoring: Engineering legally defensible Risk Controls, <br>eradicating field ambiguity, and securing ISO 13485 Document Control.</p>
@@ -419,52 +456,97 @@
     </div>
 </div>
 
-<div class="nav-hint">
-    <div class="nav-btn" onclick="prevSlide()"><i class="fa-solid fa-chevron-up"></i></div>
-    <div class="nav-btn" onclick="nextSlide()"><i class="fa-solid fa-chevron-down"></i></div>
+<!-- Navigation Interface -->
+<div class="nav-controls">
+    <span class="slide-counter" id="counter">1 / 10</span>
+    <button class="nav-btn btn-prev disabled" id="prevBtn" title="Previous Slide">
+        <i class="fa-solid fa-chevron-left"></i>
+    </button>
+    <button class="nav-btn btn-next" id="nextBtn" title="Next Slide">
+        <i class="fa-solid fa-chevron-right"></i>
+    </button>
 </div>
 
 <script>
-    // Navigation Logic
     const slides = document.querySelectorAll('.slide-container');
-    let currentSlideIndex = 0;
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const counter = document.getElementById('counter');
+    let currentIndex = 0;
 
-    function nextSlide() {
-        if (currentSlideIndex < slides.length - 1) {
-            currentSlideIndex++;
-            slides[currentSlideIndex].scrollIntoView({ behavior: 'smooth' });
+    function updatePresentation() {
+        slides.forEach((slide, index) => {
+            if (index === currentIndex) {
+                slide.classList.add('active');
+            } else {
+                slide.classList.remove('active');
+            }
+        });
+
+        // Update Counter
+        counter.textContent = `${currentIndex + 1} / ${slides.length}`;
+
+        // Update Button States
+        if (currentIndex === 0) {
+            prevBtn.classList.add('disabled');
+        } else {
+            prevBtn.classList.remove('disabled');
+        }
+
+        if (currentIndex === slides.length - 1) {
+            nextBtn.classList.add('disabled');
+        } else {
+            nextBtn.classList.remove('disabled');
         }
     }
 
-    function prevSlide() {
-        if (currentSlideIndex > 0) {
-            currentSlideIndex--;
-            slides[currentSlideIndex].scrollIntoView({ behavior: 'smooth' });
+    function nextSlide(e) {
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        if (currentIndex < slides.length - 1) {
+            currentIndex++;
+            updatePresentation();
         }
     }
 
-    // Click anywhere on slide to advance
-    document.addEventListener('click', (e) => {
-        if (!e.target.closest('.nav-btn')) nextSlide();
-    });
+    function prevSlide(e) {
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        if (currentIndex > 0) {
+            currentIndex--;
+            updatePresentation();
+        }
+    }
+
+    // Control Listeners
+    nextBtn.addEventListener('click', nextSlide);
+    prevBtn.addEventListener('click', prevSlide);
 
     // Keyboard support
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
             e.preventDefault();
             nextSlide();
         }
-        if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
             e.preventDefault();
             prevSlide();
         }
     });
 
-    // Sync current index on scroll (for mousewheel/touch)
-    window.addEventListener('scroll', () => {
-        const index = Math.round(window.scrollY / window.innerHeight);
-        currentSlideIndex = index;
+    // Global click-to-advance (excluding buttons)
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.nav-controls')) {
+            nextSlide();
+        }
     });
+
+    // Initialize
+    updatePresentation();
 </script>
 
 </body>
