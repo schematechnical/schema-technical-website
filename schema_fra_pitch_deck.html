@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schema Technical - FRA Pitch Deck</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* 1. CORE SETUP & NORMALIZE */
+        * { box-sizing: border-box; }
+        p { margin: 0; margin-bottom: 15px; }
+        body {
+            background-color: #0F172A;
+            display: grid;
+            gap: 20px;
+            grid-template-columns: 1fr;
+            margin: 0;
+            min-height: 100vh;
+            padding: 20px 0;
+            place-items: center;
+        }
+
+        /* 1.1 SLIDE CONTAINER BASE */
+        .slide-container {
+            align-items: center;
+            background-color: #0F172A;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            font-family: 'Urbanist', sans-serif;
+            height: 720px;
+            justify-content: center;
+            overflow: hidden;
+            padding: 60px;
+            position: relative;
+            width: 1280px;
+        }
+
+        /* 1.2 BACKGROUND EFFECTS */
+        .slide-container::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle at center, rgba(37, 99, 235, 0.08) 0%, rgba(15, 23, 42, 0) 60%);
+            z-index: 0;
+            pointer-events: none;
+        }
+        .slide-container::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #2563EB, #38BDF8);
+            z-index: 0;
+        }
+        .slide-container > * { position: relative; z-index: 1; width: 100%; }
+
+        /* 2. TYPOGRAPHY */
+        .slide-container h1, .slide-container h2, .slide-container h3, .slide-container h4 {
+            color: #F8FAFC;
+            font-weight: 700;
+            margin: 0;
+        }
+        .slide-container h1 { font-size: 70px; letter-spacing: -1px; }
+        .slide-container .slide-title { font-size: 45px; font-weight: 700; margin-bottom: 40px; text-align: left; width: 100%; color: #F8FAFC; }
+        .slide-container h3 { font-size: 32px; font-weight: 500; margin-bottom: 15px; color: #38BDF8; }
+        
+        .slide-container p, .slide-container li, .slide-container .subtitle, 
+        .slide-container td, .slide-container th, 
+        .slide-container .bar .label, .slide-container .chart-summary {
+            color: #CBD5E1;
+            font-family: 'Urbanist', sans-serif;
+            font-size: 20px;
+            line-height: 1.5;
+        }
+        .slide-container .subtitle { font-size: 24px; font-weight: 400; margin: 20px auto; color: #94A3B8; }
+
+        .slide-container .content-area {
+            align-items: center; display: flex; flex-direction: column; flex-grow: 1; justify-content: center; width: 100%;
+        }
+
+        /* HIGHLIGHT COLORS */
+        .accent-text { color: #38BDF8; }
+
+        /* 3. LAYOUT DEFINITIONS */
+        .title-layout { text-align: center; }
+        
+        .section-title-layout { align-items: center; display: flex; flex-direction: column; height: 100%; justify-content: center; text-align: center; width: 100%; }
+        .section-title-layout h2 { font-size: 65px; margin-bottom: 20px; }
+        .section-title-layout p { font-size: 24px; margin: 0 auto; max-width: 900px; }
+        .section-title-layout hr { background-color: #2563EB; border: none; height: 6px; margin: 30px auto; width: 120px; border-radius: 3px;}
+
+        /* TWO COLUMN TILED TEXT */
+        .two-column { align-items: flex-start; display: grid; grid-template-columns: 1fr 1fr; gap: 50px; width: 100%; }
+        .two-column.align-center { align-items: center; }
+        .two-column.tiled { align-items: stretch; }
+        .two-column.tiled > div { background-color: #1E293B; border-radius: 12px; border: 1px solid #334155; padding: 40px; text-align: left; }
+        .two-column.tiled h3 { color: #38BDF8; margin-bottom: 20px;}
+        .two-column ul { list-style: none; margin: 0; padding: 0; }
+        .two-column li { margin-bottom: 20px; position: relative; padding-left: 30px; }
+        .two-column li::before { content: '\f0da'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: #38BDF8; position: absolute; left: 0; top: 2px; }
+
+        /* DATA BOXES */
+        .data-box {
+            background-color: rgba(37, 99, 235, 0.1);
+            border-left: 4px solid #38BDF8;
+            border-radius: 8px;
+            padding: 40px;
+            width: 100%;
+        }
+        .data-box h4 {
+            color: #F8FAFC;
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+        .data-box i {
+            color: #38BDF8;
+            margin-right: 10px;
+        }
+
+        /* HIGHLIGHT NUMBERS */
+        .highlight-numbers-layout > div:first-child { flex: 0 0 40%; text-align: center; display: flex; flex-direction: column; justify-content: center; position: relative;}
+        .highlight-numbers-layout .number { color: #38BDF8; font-size: 160px; font-weight: 700; line-height: 1; margin-bottom: 10px; text-shadow: 0 0 40px rgba(56, 189, 248, 0.2);}
+        .highlight-numbers-layout .number-label { font-size: 32px; font-weight: 700; color: #F8FAFC; text-transform: uppercase; letter-spacing: 2px;}
+        .highlight-numbers-layout .citation { font-size: 14px; color: #64748B; font-style: italic; margin-top: 30px; line-height: 1.3; }
+
+        /* TIMELINE */
+        .timeline-layout { align-items: stretch; display: flex; height: stretch; justify-content: space-between; position: relative; width: 100%; }
+        .timeline-layout .timeline-line { background-color: #334155; height: 4px; left: 0; position: absolute; top: 50%; transform: translateY(-2px); width: 100%; z-index: 0; }
+        .timeline-item { position: relative; text-align: center; width: 23%; z-index: 1;}
+        .timeline-item::after { background-color: #0F172A; border-radius: 50%; border: 4px solid #38BDF8; content: ''; height: 24px; left: 50%; position: absolute; top: 50%; transform: translate(-50%, -50%); width: 24px; z-index: 2; }
+        .timeline-item .content-wrapper { left: 0; position: absolute; width: 100%; background-color: #1E293B; padding: 30px 20px; border-radius: 8px; border: 1px solid #334155;}
+        .timeline-item:nth-child(odd) .content-wrapper { bottom: 50%; margin-bottom: 35px; }
+        .timeline-item:nth-child(even) .content-wrapper { margin-top: 35px; top: 50%; }
+        .timeline-item h3 { color: #38BDF8; font-size: 24px; margin-bottom: 10px;}
+        .timeline-item p { font-size: 16px; margin: 0; line-height: 1.4;}
+
+        /* TILED TEXT WITH ICONS */
+        .tiled-content { align-items: stretch; display: flex; gap: 40px; justify-content: center; width: 100%; }
+        .tile { align-items: center; background-color: #1E293B; border-radius: 12px; border: 1px solid #334155; display: flex; flex-direction: column; flex: 1; justify-content: flex-start; padding: 40px 30px; text-align: center; }
+        .tile .icon { color: #38BDF8; font-size: 50px; margin-bottom: 25px; }
+        .tile h3 { color: #F8FAFC; }
+
+        /* BAR CHART */
+        .chart-container { display: flex; flex-direction: column; gap: 30px; width: 100%; padding: 20px 40px;}
+        .bar { align-items: center; display: flex; gap: 20px; }
+        .bar .label { color: #F8FAFC; flex: 0 0 350px; font-weight: 700; text-align: right; font-size: 22px;}
+        .bar .bar-inner { background-color: #1E293B; border-radius: 8px; flex-grow: 1; height: 55px; border: 1px solid #334155;}
+        .bar .bar-fill { align-items: center; border-radius: 8px; color: white; display: flex; font-size: 20px; font-weight: 700; height: 100%; justify-content: center; padding: 0 10px; white-space: nowrap; }
+        .chart-summary { font-style: italic; margin-top: 40px; max-width: 90%; text-align: center; color: #94A3B8;}
+
+        /* TABLE */
+        .table-layout { width: 100%; }
+        .table-layout table { border-collapse: collapse; width: 100%; background-color: #1E293B; border-radius: 12px; overflow: hidden;}
+        .table-layout th, .table-layout td { border-bottom: 1px solid #334155; padding: 18px 25px; text-align: left; }
+        .table-layout th { background-color: #0F172A; color: #38BDF8; font-size: 20px; font-weight: 700; border-bottom: 2px solid #2563EB;}
+        .table-layout td { font-size: 18px; }
+        .table-layout tr:last-child td { border-bottom: none; }
+        .table-layout td strong { color: #F8FAFC; display: block; margin-bottom: 5px; font-size: 20px;}
+
+        /* QUOTE */
+        .quote-layout { margin: 0 auto; text-align: center; width: 85%; }
+        .quote-layout blockquote { color: #F8FAFC; font-size: 48px; font-weight: 500; line-height: 1.3; margin: 0 0 40px 0; padding: 0 50px; position: relative; }
+        .quote-layout blockquote::before, .quote-layout blockquote::after { color: #2563EB; content: '"'; font-size: 120px; line-height: 0; position: absolute; opacity: 0.5;}
+        .quote-layout blockquote::before { left: -20px; top: 40px; }
+        .quote-layout blockquote::after { bottom: 0px; right: -20px; }
+        .quote-layout cite { color: #38BDF8; font-size: 24px; font-style: normal; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;}
+
+        /* Q&A */
+        .qa-layout { margin: 0 auto; text-align: center; width: 100%; align-self: center; }
+        .qa-layout h2 { font-size: 90px; margin-bottom: 20px; color: #F8FAFC; }
+        .qa-layout p { font-size: 28px; color: #94A3B8;}
+        .qa-layout .contact-info { color: #38BDF8; font-size: 24px; margin-top: 50px; font-weight: 700; letter-spacing: 2px;}
+    </style>
+</head>
+<body>
+
+<!-- Slide 1: Title_Slide -->
+<div class="slide-container" id="slide1">
+    <div class="title-layout">
+        <h1>Schema Technical <span class="accent-text">FRA</span></h1>
+        <p class="subtitle">Field Reliability Analysis: Forensic root cause execution to eliminate<br>"No Fault Found" loops and close regulatory CAPAs with objective physics.</p>
+    </div>
+</div>
+
+<!-- Slide 2: Highlighted_Numbers -->
+<div class="slide-container" id="slide2">
+    <h2 class="slide-title">The Investigation Void</h2>
+    <div class="content-area">
+        <div class="two-column highlight-numbers-layout">
+            <div>
+                <div class="number">NFF</div>
+                <div class="number-label">No Fault Found</div>
+                <p class="citation">*Component swapping without forensic analysis leads directly to recidivism. You cannot close a CAPA on a "best guess."</p>
+            </div>
+            <div>
+                <h3>The "Component Swapping" Trap</h3>
+                <p>When field hardware fails, depots often strip and rebuild units until the symptom disappears. This destroys the forensic evidence required to find the true root cause.</p>
+                <p>Returning an unverified unit to the clinical field drives up "No Fault Found" (NFF) rates, erodes patient trust, and leaves your ISO 13485 Quality Management System dangerously exposed to recurring hazards.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 3: Timeline -->
+<div class="slide-container" id="slide3">
+    <h2 class="slide-title">The 6-Phase FRA Protocol</h2>
+    <div class="content-area">
+        <div class="timeline-layout">
+            <div class="timeline-line"></div>
+            <div class="timeline-item">
+                <div class="content-wrapper">
+                    <h3>1 & 2: Quarantine</h3>
+                    <p>Securing the Failed-From-Field (FFF) unit and extracting telemetry prior to any physical disturbance.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="content-wrapper">
+                    <h3>3: Teardown</h3>
+                    <p>Comparative disassembly against a Known Good Unit (KGU) to capture torque metrics and isolation data.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="content-wrapper">
+                    <h3>4: Root Cause</h3>
+                    <p>Translating physical metrology into the 5-Whys and Ishikawa methodologies to classify the fault.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="content-wrapper">
+                    <h3>5 & 6: CAPA Closure</h3>
+                    <p>Safe reassembly and definition of the exact Verification of Effectiveness (VoE) metric for QARA.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 4: Two_Column_Tiled_Text -->
+<div class="slide-container" id="slide4">
+    <h2 class="slide-title">The Comparative Baseline</h2>
+    <div class="content-area">
+        <div class="two-column tiled">
+            <div>
+                <h3>The Flawed Approach</h3>
+                <p>Attempting to diagnose a complex failure by analyzing a single broken unit in isolation. Without a baseline, thermal deformations or torque backouts are impossible to mathematically verify.</p>
+            </div>
+            <div>
+                <h3>The KGU Mandate</h3>
+                <p>Schema Technical never audits in isolation. We strictly mandate a <strong>Known Good Unit (KGU)</strong> for every investigation to lock the comparative delta:</p>
+                <ul>
+                    <li>If the FFF torque is 0.4Nm, but the KGU is 1.5Nm, we have absolute proof of assembly failure.</li>
+                    <li>If FFF telemetry spikes but KGU is flat, we have proof of digital friction.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 5: Data Box Layout -->
+<div class="slide-container" id="slide5">
+    <h2 class="slide-title">CAPA Integration</h2>
+    <div class="content-area">
+        <div class="two-column align-center">
+            <div>
+                <h3>Satisfying ISO 13485 (Clause 8.5)</h3>
+                <p>We do not deliver speculative opinions. We deliver the definitive engineering data required for your QARA team to formally close Corrective and Preventive Actions.</p>
+                <p>Every FRA report clearly defines whether the root cause originates from Design (DfM), Manufacturing Process, Service Protocol, or Clinical Use-Error—allowing precise routing of Engineering Change Orders (ECO).</p>
+            </div>
+            <div>
+                <div class="data-box">
+                    <h4><i class="fa-solid fa-microscope"></i> Defining the VoE</h4>
+                    <p>We supply the strict <strong>Verification of Effectiveness (VoE)</strong> metric. We tell your Quality team exactly what measurable test must be passed (e.g., 60-second pressure decay < 0.1 mbar) to legally prove the CAPA is mitigated.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 6: Tiled_Text_With_Icons -->
+<div class="slide-container" id="slide6">
+    <h2 class="slide-title">Forensic Execution Vectors</h2>
+    <div class="content-area">
+        <div class="tiled-content">
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-shield-halved"></i></div>
+                <h3>Non-Destructive (NDT)</h3>
+                <p>Execution of baseline IEC 62353 safety tests and thermal imaging to capture electrical and hardware states before geometry is broken.</p>
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-ruler-combined"></i></div>
+                <h3>Invasive Metrology</h3>
+                <p>Using calibrated torque drivers, digital calipers, and UV markers to identify fastener backout, fluid ingress, and compromised isolation barriers.</p>
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-diagram-project"></i></div>
+                <h3>Root Cause Logic</h3>
+                <p>Mapping physical evidence into structured 5-Whys and Ishikawa (Fishbone) models to prevent the investigation from terminating at "Human Error".</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 7: Bar_Chart_For_Comparisons -->
+<div class="slide-container" id="slide7">
+    <h2 class="slide-title">Mitigating Reliability Risk</h2>
+    <div class="content-area">
+        <div class="chart-container">
+            <div class="bar">
+                <div class="label">Component Swapping (Symptomatic)</div>
+                <div class="bar-inner"><div class="bar-fill" style="width: 85%; background: linear-gradient(90deg, #991B1B, #EF4444);">High Field Recidivism & NFF Rates</div></div>
+            </div>
+            <div class="bar">
+                <div class="label">Physics-Based FRA (Systemic)</div>
+                <div class="bar-inner"><div class="bar-fill" style="width: 35%; min-width: max-content; padding: 0 20px; background: linear-gradient(90deg, #166534, #22C55E);">Permanent CAPA Closure</div></div>
+            </div>
+        </div>
+        <p class="chart-summary">Treating symptoms blindly on the depot bench guarantees that the same failure mode will strike again. A forensic FRA identifies the underlying process or design flaw, allowing for an Engineering Change Order that permanently eliminates the field hazard.</p>
+    </div>
+</div>
+
+<!-- Slide 8: Table -->
+<div class="slide-container" id="slide8">
+    <h2 class="slide-title">The Deliverable Package</h2>
+    <div class="content-area">
+        <div class="table-layout">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Asset Type</th>
+                        <th>Deliverable Content</th>
+                        <th>Primary Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Formal Audit Report</strong><br>(REP-FRA-001)</td>
+                        <td>A regulatory-grade document detailing physical failure modes, Ishikawa analysis, and the required VoE metric.</td>
+                        <td>Provides QARA and R&D with the objective, physics-based evidence required to formally close the CAPA.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Spoliation Control</strong><br>(Chain of Custody)</td>
+                        <td>Strict inbound triage enforcing baseline safety and forbidding unapproved depot-level cleaning or resets.</td>
+                        <td>Protects forensic evidence from being accidentally destroyed by well-meaning technicians.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Executive Debrief</strong><br>(Video Conference)</td>
+                        <td>A comprehensive presentation with R&D and Quality leadership to present the forensic findings.</td>
+                        <td>Aligns cross-functional teams immediately on whether the fix requires an ECO, a software patch, or a training update.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 9: Quote -->
+<div class="slide-container" id="slide9">
+    <div class="content-area">
+        <div class="quote-layout">
+            <blockquote>"You cannot close a regulatory CAPA with a best guess. You close it with physics."</blockquote>
+            <cite>SCHEMA TECHNICAL</cite>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 10: Q&A -->
+<div class="slide-container" id="slide10">
+    <div class="qa-layout">
+        <h2>Stop Guessing.</h2>
+        <p>Find the root cause. Engineer the fix.</p>
+        <div class="contact-info">
+            SCHEMA TECHNICAL | Field Reliability Analysis
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

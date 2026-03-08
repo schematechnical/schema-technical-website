@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schema Technical - SDR Pitch Deck</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; }
+        p { margin: 0; margin-bottom: 15px; }
+        body {
+            background-color: #0F172A;
+            display: grid;
+            gap: 20px;
+            grid-template-columns: 1fr;
+            margin: 0;
+            min-height: 100vh;
+            padding: 20px 0;
+            place-items: center;
+        }
+
+        .slide-container {
+            align-items: center;
+            background-color: #0F172A;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            font-family: 'Urbanist', sans-serif;
+            height: 720px;
+            justify-content: center;
+            overflow: hidden;
+            padding: 60px;
+            position: relative;
+            width: 1280px;
+        }
+
+        .slide-container::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle at center, rgba(37, 99, 235, 0.08) 0%, rgba(15, 23, 42, 0) 60%);
+            z-index: 0;
+            pointer-events: none;
+        }
+        .slide-container::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #2563EB, #38BDF8);
+            z-index: 0;
+        }
+        .slide-container > * { position: relative; z-index: 1; width: 100%; }
+
+        .slide-container h1, .slide-container h2, .slide-container h3, .slide-container h4 {
+            color: #F8FAFC;
+            font-weight: 700;
+            margin: 0;
+        }
+        .slide-container h1 { font-size: 70px; letter-spacing: -1px; }
+        .slide-container .slide-title { font-size: 45px; font-weight: 700; margin-bottom: 40px; text-align: left; width: 100%; color: #F8FAFC; }
+        .slide-container h3 { font-size: 32px; font-weight: 500; margin-bottom: 15px; color: #38BDF8; }
+        
+        .slide-container p, .slide-container li, .slide-container .subtitle, 
+        .slide-container td, .slide-container th, 
+        .slide-container .bar .label, .slide-container .chart-summary {
+            color: #CBD5E1;
+            font-family: 'Urbanist', sans-serif;
+            font-size: 20px;
+            line-height: 1.5;
+        }
+        .slide-container .subtitle { font-size: 24px; font-weight: 400; margin: 20px auto; color: #94A3B8; }
+
+        .slide-container .content-area {
+            align-items: center; display: flex; flex-direction: column; flex-grow: 1; justify-content: center; width: 100%;
+        }
+
+        .accent-text { color: #38BDF8; }
+
+        .title-layout { text-align: center; }
+        
+        .section-title-layout { align-items: center; display: flex; flex-direction: column; height: 100%; justify-content: center; text-align: center; width: 100%; }
+        .section-title-layout h2 { font-size: 65px; margin-bottom: 20px; }
+        .section-title-layout p { font-size: 24px; margin: 0 auto; max-width: 900px; }
+        .section-title-layout hr { background-color: #2563EB; border: none; height: 6px; margin: 30px auto; width: 120px; border-radius: 3px;}
+
+        .two-column { align-items: flex-start; display: grid; grid-template-columns: 1fr 1fr; gap: 50px; width: 100%; }
+        .two-column.align-center { align-items: center; }
+        .two-column.tiled { align-items: stretch; }
+        .two-column.tiled > div { background-color: #1E293B; border-radius: 12px; border: 1px solid #334155; padding: 40px; text-align: left; }
+        .two-column.tiled h3 { color: #38BDF8; margin-bottom: 20px;}
+        .two-column ul { list-style: none; margin: 0; padding: 0; }
+        .two-column li { margin-bottom: 20px; position: relative; padding-left: 30px; }
+        .two-column li::before { content: '\f0da'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: #38BDF8; position: absolute; left: 0; top: 2px; }
+
+        .data-box {
+            background-color: rgba(37, 99, 235, 0.1);
+            border-left: 4px solid #38BDF8;
+            border-radius: 8px;
+            padding: 40px;
+            width: 100%;
+        }
+        .data-box h4 {
+            color: #F8FAFC;
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+        .data-box i {
+            color: #38BDF8;
+            margin-right: 10px;
+        }
+
+        .highlight-numbers-layout > div:first-child { flex: 0 0 40%; text-align: center; display: flex; flex-direction: column; justify-content: center; position: relative;}
+        .highlight-numbers-layout .number { color: #38BDF8; font-size: 160px; font-weight: 700; line-height: 1; margin-bottom: 10px; text-shadow: 0 0 40px rgba(56, 189, 248, 0.2);}
+        .highlight-numbers-layout .number-label { font-size: 32px; font-weight: 700; color: #F8FAFC; text-transform: uppercase; letter-spacing: 2px;}
+        .highlight-numbers-layout .citation { font-size: 14px; color: #64748B; font-style: italic; margin-top: 30px; line-height: 1.3; }
+
+        .timeline-layout { align-items: stretch; display: flex; height: stretch; justify-content: space-between; position: relative; width: 100%; }
+        .timeline-layout .timeline-line { background-color: #334155; height: 4px; left: 0; position: absolute; top: 50%; transform: translateY(-2px); width: 100%; z-index: 0; }
+        .timeline-item { position: relative; text-align: center; width: 23%; z-index: 1;}
+        .timeline-item::after { background-color: #0F172A; border-radius: 50%; border: 4px solid #38BDF8; content: ''; height: 24px; left: 50%; position: absolute; top: 50%; transform: translate(-50%, -50%); width: 24px; z-index: 2; }
+        .timeline-item .content-wrapper { left: 0; position: absolute; width: 100%; background-color: #1E293B; padding: 30px 20px; border-radius: 8px; border: 1px solid #334155;}
+        .timeline-item:nth-child(odd) .content-wrapper { bottom: 50%; margin-bottom: 35px; }
+        .timeline-item:nth-child(even) .content-wrapper { margin-top: 35px; top: 50%; }
+        .timeline-item h3 { color: #38BDF8; font-size: 24px; margin-bottom: 10px;}
+        .timeline-item p { font-size: 16px; margin: 0; line-height: 1.4;}
+
+        .tiled-content { align-items: stretch; display: flex; gap: 40px; justify-content: center; width: 100%; }
+        .tile { align-items: center; background-color: #1E293B; border-radius: 12px; border: 1px solid #334155; display: flex; flex-direction: column; flex: 1; justify-content: flex-start; padding: 40px 30px; text-align: center; }
+        .tile .icon { color: #38BDF8; font-size: 50px; margin-bottom: 25px; }
+        .tile h3 { color: #F8FAFC; }
+
+        .chart-container { display: flex; flex-direction: column; gap: 30px; width: 100%; padding: 20px 40px;}
+        .bar { align-items: center; display: flex; gap: 20px; }
+        .bar .label { color: #F8FAFC; flex: 0 0 300px; font-weight: 700; text-align: right; font-size: 22px;}
+        .bar .bar-inner { background-color: #1E293B; border-radius: 8px; flex-grow: 1; height: 55px; border: 1px solid #334155;}
+        .bar .bar-fill { align-items: center; border-radius: 8px; color: white; display: flex; font-size: 20px; font-weight: 700; height: 100%; justify-content: center; padding: 0 10px; white-space: nowrap; }
+        .chart-summary { font-style: italic; margin-top: 40px; max-width: 90%; text-align: center; color: #94A3B8;}
+
+        .table-layout { width: 100%; }
+        .table-layout table { border-collapse: collapse; width: 100%; background-color: #1E293B; border-radius: 12px; overflow: hidden;}
+        .table-layout th, .table-layout td { border-bottom: 1px solid #334155; padding: 18px 25px; text-align: left; }
+        .table-layout th { background-color: #0F172A; color: #38BDF8; font-size: 20px; font-weight: 700; border-bottom: 2px solid #2563EB;}
+        .table-layout td { font-size: 18px; }
+        .table-layout tr:last-child td { border-bottom: none; }
+        .table-layout td strong { color: #F8FAFC; display: block; margin-bottom: 5px; font-size: 20px;}
+
+        .quote-layout { margin: 0 auto; text-align: center; width: 85%; }
+        .quote-layout blockquote { color: #F8FAFC; font-size: 48px; font-weight: 500; line-height: 1.3; margin: 0 0 40px 0; padding: 0 50px; position: relative; }
+        .quote-layout blockquote::before, .quote-layout blockquote::after { color: #2563EB; content: '"'; font-size: 120px; line-height: 0; position: absolute; opacity: 0.5;}
+        .quote-layout blockquote::before { left: -20px; top: 40px; }
+        .quote-layout blockquote::after { bottom: 0px; right: -20px; }
+        .quote-layout cite { color: #38BDF8; font-size: 24px; font-style: normal; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;}
+
+        .qa-layout { margin: 0 auto; text-align: center; width: 100%; align-self: center; }
+        .qa-layout h2 { font-size: 90px; margin-bottom: 20px; color: #F8FAFC; }
+        .qa-layout p { font-size: 28px; color: #94A3B8;}
+        .qa-layout .contact-info { color: #38BDF8; font-size: 24px; margin-top: 50px; font-weight: 700; letter-spacing: 2px;}
+    </style>
+</head>
+<body>
+
+<div class="slide-container" id="slide1">
+    <div class="title-layout">
+        <h1>Schema Technical <span class="accent-text">SDR</span></h1>
+        <p class="subtitle">Service Design Review: Forensic engineering audits that protect margins,<br>scale field operations, and lock down regulatory compliance prior to design transfer.</p>
+    </div>
+</div>
+
+<div class="slide-container" id="slide2">
+    <h2 class="slide-title">The Design-to-Service Disconnect</h2>
+    <div class="content-area">
+        <div class="two-column highlight-numbers-layout">
+            <div>
+                <div class="number">80%</div>
+                <div class="number-label">Of Lifecycle Costs</div>
+                <p class="citation">*Source: Defense Acquisition University (DAU) &amp; INCOSE Systems Engineering Fundamentals. Up to 80% of total lifecycle sustainment costs are permanently locked in by the end of the design phase.</p>
+            </div>
+            <div>
+                <h3>The Margin Trap</h3>
+                <p>Without a forensic Service Design Review (SDR), prototypes scale into the field with hidden mechanical dependencies and digital blocks.</p>
+                <p>This oversight forces simple interventions into expensive, depot-level repairs, driving unacceptable warranty drain and destroying commercial margins before the first unit is even sold.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="slide-container" id="slide3">
+    <h2 class="slide-title">The 7-Phase SDR Protocol</h2>
+    <div class="content-area">
+        <div class="timeline-layout">
+            <div class="timeline-line"></div>
+            <div class="timeline-item">
+                <div class="content-wrapper">
+                    <h3>1 & 2: Baseline</h3>
+                    <p>Intake verification against CAD and RMF. Execution of baseline IEC 62353 safety tests.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="content-wrapper">
+                    <h3>3: Teardown</h3>
+                    <p>Deep disassembly to calculate MTTR, Service Priority Numbers, and mechanical blocks.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="content-wrapper">
+                    <h3>4: Reassembly</h3>
+                    <p>Validation of fastener lifecycles (torque limits) and isolation of cable pinch-hazards.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="content-wrapper">
+                    <h3>5 - 7: Compliance</h3>
+                    <p>Audit of digital service logic, functional load testing, and global regulatory labelling.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="slide-container" id="slide4">
+    <h2 class="slide-title">Eliminating Subjectivity</h2>
+    <div class="content-area">
+        <div class="two-column tiled">
+            <div>
+                <h3>The Flawed Approach</h3>
+                <p>Traditional design reviews rely on subjective engineering opinions (e.g., "The pump is too hard to reach"). Subjective feedback is easily dismissed by R&D teams pushing for rapid launch deadlines, leaving field service exposed.</p>
+            </div>
+            <div>
+                <h3>The SPN Mathematics</h3>
+                <p>Schema Technical replaces opinion with hard math. We calculate the <strong>Service Priority Number (SPN)</strong> for every primary assembly:</p>
+                <ul>
+                    <li><strong>SPN = Access &times; Complexity &times; Failure Rate</strong></li>
+                    <li>Any FRU scoring > 12 requires mandatory Engineering Change Orders (ECO).</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="slide-container" id="slide5">
+    <h2 class="slide-title">Regulatory Weaponisation</h2>
+    <div class="content-area">
+        <div class="two-column align-center">
+            <div>
+                <h3>Translating Friction into Compliance</h3>
+                <p>We do not just report mechanical frustrations; we translate them into strict QARA mandates.</p>
+                <p>An unkeyed ribbon cable or a blind fastener isn't just a service nuisance—it is a latent patient safety hazard (Use Error). We tie every physical design flaw directly to <strong>ISO 13485</strong> (DfS), <strong>ISO 14971</strong> (Risk Management), and <strong>IEC 62366-1</strong> (Usability).</p>
+            </div>
+            <div>
+                <div class="data-box">
+                    <h4><i class="fa-solid fa-file-shield"></i> QMS Integration</h4>
+                    <p>By mapping physical teardown findings directly to regulatory hazard codes, we provide Quality Directors with the objective, auditable data required to block flawed hardware from reaching the field.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="slide-container" id="slide6">
+    <h2 class="slide-title">Forensic Audit Vectors</h2>
+    <div class="content-area">
+        <div class="tiled-content">
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+                <h3>Mechanical Integrity</h3>
+                <p>We validate fastener thread lifecycles using calibrated torque limits and inspect internal routing for cable strain and crush hazards upon reassembly.</p>
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-laptop-code"></i></div>
+                <h3>Digital Friction</h3>
+                <p>We audit the software environment for hardware pair-locking, latency, diagnostic code granularity, and Bare Metal OS recovery speed.</p>
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-bolt"></i></div>
+                <h3>Electrical Safety</h3>
+                <p>We perform IEC 62353 safety tests before and after the teardown to ensure field interventions do not compromise Earth Continuity or Leakage limits.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="slide-container" id="slide7">
+    <h2 class="slide-title">Example SPN Mitigation</h2>
+    <div class="content-area">
+        <div class="chart-container">
+            <div class="bar">
+                <div class="label">Pre-SDR (Glued Battery)</div>
+                <div class="bar-inner"><div class="bar-fill" style="width: 85%; background: linear-gradient(90deg, #991B1B, #EF4444);">SPN: 50 (Critical Fail)</div></div>
+            </div>
+            <div class="bar">
+                <div class="label">Post-SDR (Captive Bracket)</div>
+                <div class="bar-inner"><div class="bar-fill" style="width: 25%; min-width: max-content; padding: 0 20px; background: linear-gradient(90deg, #166534, #22C55E);">SPN: 10 (Approved)</div></div>
+            </div>
+        </div>
+        <p class="chart-summary">By identifying destructive access dependencies (e.g., structural adhesive) during the SDR phase, R&D can pivot to bracketed retention before the BOM locks. This drops the Service Priority Number from a critical safety risk to a commercially viable field task.</p>
+    </div>
+</div>
+
+<div class="slide-container" id="slide8">
+    <h2 class="slide-title">The Deliverable Package</h2>
+    <div class="content-area">
+        <div class="table-layout">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Asset Type</th>
+                        <th>Deliverable Content</th>
+                        <th>Primary Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Formal Audit Report</strong><br>(PDF Document)</td>
+                        <td>A regulatory-grade document detailing SPN metrics, identified gaps, and specific ISO 14971 hazard traceability links.</td>
+                        <td>Provides R&D leadership with objective data to justify BOM changes before tooling locks.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>HTM Delta Export</strong><br>(.csv / .xlsx Data)</td>
+                        <td>A raw data export mapping physical serviceability flaws directly to the client's internal Hazard Traceability Matrix.</td>
+                        <td>Allows QARA to immediately ingest findings into their CAPA systems, satisfying Notified Body requirements.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Executive Debrief</strong><br>(Video Conference)</td>
+                        <td>A comprehensive presentation with R&D and QARA leadership to review physical findings and prioritize mitigations.</td>
+                        <td>Aligns cross-functional teams and accelerates the Engineering Change Request (ECR) pipeline.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="slide-container" id="slide9">
+    <div class="content-area">
+        <div class="quote-layout">
+            <blockquote>"We do not provide subjective feedback. We provide mathematical, regulatory mandates that protect hardware margins at scale."</blockquote>
+            <cite>SCHEMA TECHNICAL</cite>
+        </div>
+    </div>
+</div>
+
+<div class="slide-container" id="slide10">
+    <div class="qa-layout">
+        <h2>Defend Your Margins.</h2>
+        <p>Audit the prototype before the BOM locks.</p>
+        <div class="contact-info">
+            SCHEMA TECHNICAL | Service Design Review
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

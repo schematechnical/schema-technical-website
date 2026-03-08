@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schema Technical - SNA Pitch Deck</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; }
+        p { margin: 0; margin-bottom: 15px; }
+        body {
+            background-color: #0F172A;
+            display: grid;
+            gap: 20px;
+            grid-template-columns: 1fr;
+            margin: 0;
+            min-height: 100vh;
+            padding: 20px 0;
+            place-items: center;
+        }
+
+        .slide-container {
+            align-items: center;
+            background-color: #0F172A;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            font-family: 'Urbanist', sans-serif;
+            height: 720px;
+            justify-content: center;
+            overflow: hidden;
+            padding: 60px;
+            position: relative;
+            width: 1280px;
+        }
+
+        .slide-container::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle at center, rgba(37, 99, 235, 0.08) 0%, rgba(15, 23, 42, 0) 60%);
+            z-index: 0;
+            pointer-events: none;
+        }
+        .slide-container::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #2563EB, #38BDF8);
+            z-index: 0;
+        }
+        .slide-container > * { position: relative; z-index: 1; width: 100%; }
+
+        .slide-container h1, .slide-container h2, .slide-container h3, .slide-container h4 {
+            color: #F8FAFC;
+            font-weight: 700;
+            margin: 0;
+        }
+        .slide-container h1 { font-size: 70px; letter-spacing: -1px; }
+        .slide-container .slide-title { font-size: 45px; font-weight: 700; margin-bottom: 40px; text-align: left; width: 100%; color: #F8FAFC; }
+        .slide-container h3 { font-size: 32px; font-weight: 500; margin-bottom: 15px; color: #38BDF8; }
+        
+        .slide-container p, .slide-container li, .slide-container .subtitle, 
+        .slide-container td, .slide-container th, 
+        .slide-container .bar .label, .slide-container .chart-summary {
+            color: #CBD5E1;
+            font-family: 'Urbanist', sans-serif;
+            font-size: 20px;
+            line-height: 1.5;
+        }
+        .slide-container .subtitle { font-size: 24px; font-weight: 400; margin: 20px auto; color: #94A3B8; }
+
+        .slide-container .content-area {
+            align-items: center; display: flex; flex-direction: column; flex-grow: 1; justify-content: center; width: 100%;
+        }
+
+        .accent-text { color: #38BDF8; }
+
+        .title-layout { text-align: center; }
+        
+        .section-title-layout { align-items: center; display: flex; flex-direction: column; height: 100%; justify-content: center; text-align: center; width: 100%; }
+        .section-title-layout h2 { font-size: 65px; margin-bottom: 20px; }
+        .section-title-layout p { font-size: 24px; margin: 0 auto; max-width: 900px; }
+        .section-title-layout hr { background-color: #2563EB; border: none; height: 6px; margin: 30px auto; width: 120px; border-radius: 3px;}
+
+        .two-column { align-items: flex-start; display: grid; grid-template-columns: 1fr 1fr; gap: 50px; width: 100%; }
+        .two-column.align-center { align-items: center; }
+        .two-column.tiled { align-items: stretch; }
+        .two-column.tiled > div { background-color: #1E293B; border-radius: 12px; border: 1px solid #334155; padding: 40px; text-align: left; }
+        .two-column.tiled h3 { color: #38BDF8; margin-bottom: 20px;}
+        .two-column ul { list-style: none; margin: 0; padding: 0; }
+        .two-column li { margin-bottom: 20px; position: relative; padding-left: 30px; }
+        .two-column li::before { content: '\f0da'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: #38BDF8; position: absolute; left: 0; top: 2px; }
+
+        .data-box {
+            background-color: rgba(37, 99, 235, 0.1);
+            border-left: 4px solid #38BDF8;
+            border-radius: 8px;
+            padding: 40px;
+            width: 100%;
+        }
+        .data-box h4 {
+            color: #F8FAFC;
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+        .data-box i {
+            color: #38BDF8;
+            margin-right: 10px;
+        }
+
+        .highlight-numbers-layout > div:first-child { flex: 0 0 40%; text-align: center; display: flex; flex-direction: column; justify-content: center; position: relative;}
+        .highlight-numbers-layout .number { color: #38BDF8; font-size: 160px; font-weight: 700; line-height: 1; margin-bottom: 10px; text-shadow: 0 0 40px rgba(56, 189, 248, 0.2);}
+        .highlight-numbers-layout .number-label { font-size: 32px; font-weight: 700; color: #F8FAFC; text-transform: uppercase; letter-spacing: 2px;}
+        .highlight-numbers-layout .citation { font-size: 14px; color: #64748B; font-style: italic; margin-top: 30px; line-height: 1.3; }
+
+        .timeline-layout { align-items: stretch; display: flex; height: stretch; justify-content: space-between; position: relative; width: 100%; }
+        .timeline-layout .timeline-line { background-color: #334155; height: 4px; left: 0; position: absolute; top: 50%; transform: translateY(-2px); width: 100%; z-index: 0; }
+        .timeline-item { position: relative; text-align: center; width: 23%; z-index: 1;}
+        .timeline-item::after { background-color: #0F172A; border-radius: 50%; border: 4px solid #38BDF8; content: ''; height: 24px; left: 50%; position: absolute; top: 50%; transform: translate(-50%, -50%); width: 24px; z-index: 2; }
+        .timeline-item .content-wrapper { left: 0; position: absolute; width: 100%; background-color: #1E293B; padding: 30px 20px; border-radius: 8px; border: 1px solid #334155;}
+        .timeline-item:nth-child(odd) .content-wrapper { bottom: 50%; margin-bottom: 35px; }
+        .timeline-item:nth-child(even) .content-wrapper { margin-top: 35px; top: 50%; }
+        .timeline-item h3 { color: #38BDF8; font-size: 24px; margin-bottom: 10px;}
+        .timeline-item p { font-size: 16px; margin: 0; line-height: 1.4;}
+
+        .tiled-content { align-items: stretch; display: flex; gap: 40px; justify-content: center; width: 100%; }
+        .tile { align-items: center; background-color: #1E293B; border-radius: 12px; border: 1px solid #334155; display: flex; flex-direction: column; flex: 1; justify-content: flex-start; padding: 40px 30px; text-align: center; }
+        .tile .icon { color: #38BDF8; font-size: 50px; margin-bottom: 25px; }
+        .tile h3 { color: #F8FAFC; }
+
+        .chart-container { display: flex; flex-direction: column; gap: 30px; width: 100%; padding: 20px 40px;}
+        .bar { align-items: center; display: flex; gap: 20px; }
+        .bar .label { color: #F8FAFC; flex: 0 0 350px; font-weight: 700; text-align: right; font-size: 22px;}
+        .bar .bar-inner { background-color: #1E293B; border-radius: 8px; flex-grow: 1; height: 55px; border: 1px solid #334155;}
+        .bar .bar-fill { align-items: center; border-radius: 8px; color: white; display: flex; font-size: 20px; font-weight: 700; height: 100%; justify-content: center; padding: 0 10px; white-space: nowrap; }
+        .chart-summary { font-style: italic; margin-top: 40px; max-width: 90%; text-align: center; color: #94A3B8;}
+
+        .table-layout { width: 100%; }
+        .table-layout table { border-collapse: collapse; width: 100%; background-color: #1E293B; border-radius: 12px; overflow: hidden;}
+        .table-layout th, .table-layout td { border-bottom: 1px solid #334155; padding: 18px 25px; text-align: left; }
+        .table-layout th { background-color: #0F172A; color: #38BDF8; font-size: 20px; font-weight: 700; border-bottom: 2px solid #2563EB;}
+        .table-layout td { font-size: 18px; }
+        .table-layout tr:last-child td { border-bottom: none; }
+        .table-layout td strong { color: #F8FAFC; display: block; margin-bottom: 5px; font-size: 20px;}
+
+        .quote-layout { margin: 0 auto; text-align: center; width: 85%; }
+        .quote-layout blockquote { color: #F8FAFC; font-size: 48px; font-weight: 500; line-height: 1.3; margin: 0 0 40px 0; padding: 0 50px; position: relative; }
+        .quote-layout blockquote::before, .quote-layout blockquote::after { color: #2563EB; content: '"'; font-size: 120px; line-height: 0; position: absolute; opacity: 0.5;}
+        .quote-layout blockquote::before { left: -20px; top: 40px; }
+        .quote-layout blockquote::after { bottom: 0px; right: -20px; }
+        .quote-layout cite { color: #38BDF8; font-size: 24px; font-style: normal; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;}
+
+        .qa-layout { margin: 0 auto; text-align: center; width: 100%; align-self: center; }
+        .qa-layout h2 { font-size: 90px; margin-bottom: 20px; color: #F8FAFC; }
+        .qa-layout p { font-size: 28px; color: #94A3B8;}
+        .qa-layout .contact-info { color: #38BDF8; font-size: 24px; margin-top: 50px; font-weight: 700; letter-spacing: 2px;}
+    </style>
+</head>
+<body>
+
+<div class="slide-container" id="slide1">
+    <div class="title-layout">
+        <h1>Schema Technical <span class="accent-text">SNA</span></h1>
+        <p class="subtitle">Service Network Architecture: Engineering compliant training transfer,<br>securing third-party competency, and ring-fencing OEM liability.</p>
+    </div>
+</div>
+
+<div class="slide-container" id="slide2">
+    <h2 class="slide-title">The Outsourcing Liability Trap</h2>
+    <div class="content-area">
+        <div class="two-column highlight-numbers-layout">
+            <div>
+                <div class="number">100%</div>
+                <div class="number-label">OEM Liability</div>
+                <p class="citation">*Source: ISO 13485 Clause 4.1.5 (Control of Outsourced Processes). Outsourcing field service or depot repairs does not outsource regulatory responsibility.</p>
+            </div>
+            <div>
+                <h3>Training is a Regulatory Control</h3>
+                <p>Handing a third-party technician an SOP without validated competency transfer is a critical regulatory violation.</p>
+                <p>If an unverified field engineer breaks a flex cable or misses a grounding bond, the Notified Body targets the OEM. Training cannot be treated as an HR exercise; it must be an engineered, auditable QMS hard-gate.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="slide-container" id="slide3">
+    <h2 class="slide-title">The 4-Stage Competency Model</h2>
+    <div class="content-area">
+        <div class="timeline-layout">
+            <div class="timeline-line"></div>
+            <div class="timeline-item">
+                <div class="content-wrapper">
+                    <h3>1: Preparation</h3>
+                    <p>Briefing specific ISO 14971 Risk Management File (RMF) hazards and ESD context before touching hardware.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="content-wrapper">
+                    <h3>2: Presentation</h3>
+                    <p>Line-by-line walk-through of the OEM Service Manual, highlighting critical mechanical tolerances.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="content-wrapper">
+                    <h3>3: Application</h3>
+                    <p>The Master Trainer physically executes a flawless bench rebuild, setting the absolute visual standard.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="content-wrapper">
+                    <h3>4: Consolidation</h3>
+                    <p>100% independent trainee execution. Silently graded against binary pass/fail QMS rubrics.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="slide-container" id="slide4">
+    <h2 class="slide-title">Eliminating Subjective Grading</h2>
+    <div class="content-area">
+        <div class="two-column tiled">
+            <div>
+                <h3>The Flawed Approach</h3>
+                <p>Subjective grading (e.g., "The engineer tried to isolate the mains") creates inconsistent depot output. If a trainer passes a technician based on "effort," the validated Service Manual becomes legally void.</p>
+            </div>
+            <div>
+                <h3>Binary Assessment Rubric</h3>
+                <p>Schema Technical enforces absolute, binary engineering hard-gates. Competence is objective:</p>
+                <ul>
+                    <li>Fails to apply mandated BOM torque = <strong>Instant Fail</strong></li>
+                    <li>Fails to test ESD grounding = <strong>Instant Fail</strong></li>
+                    <li>Fails post-repair leakage (IEC 62353) = <strong>Instant Fail</strong></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="slide-container" id="slide5">
+    <h2 class="slide-title">Regulatory Shielding</h2>
+    <div class="content-area">
+        <div class="two-column align-center">
+            <div>
+                <h3>Locking the Legal Standard</h3>
+                <p>We do not train third-party engineers on unapproved curriculums. We engineer the syllabus, and force the OEM to formally approve it <em>before</em> we step onto the depot floor.</p>
+                <p>By signing the Master Training Matrix, the OEM satisfies ISO 13485 Cl 6.2.2. They agree our binary rubric adequately mitigates their hardware risks, successfully ring-fencing liability.</p>
+            </div>
+            <div>
+                <div class="data-box">
+                    <h4><i class="fa-solid fa-file-signature"></i> QARA Pre-Approval</h4>
+                    <p>If a trainee passes our approved curriculum and subsequently causes a field failure, the fault lies with the OEM's validated source data, not the training execution. We protect your legal perimeter.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="slide-container" id="slide6">
+    <h2 class="slide-title">Curriculum Architecture</h2>
+    <div class="content-area">
+        <div class="tiled-content">
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-book-open"></i></div>
+                <h3>Category A (Theory)</h3>
+                <p>Cognitive modules presenting zero physical risk. Assessed via written verification of RMF context, software logic, QMS logging, and clinical use cases.</p>
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-microchip"></i></div>
+                <h3>Category B (Practical)</h3>
+                <p>Invasive hardware modules carrying severe latent defect risks. Exclusively assessed via 100% independent physical execution on the engineering bench.</p>
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-link"></i></div>
+                <h3>Hazard Traceability</h3>
+                <p>Every single module in the curriculum is explicitly mapped back to a specific ISO 14971 RMF Traceability ID, proving the training mitigates the exact design risk.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="slide-container" id="slide7">
+    <h2 class="slide-title">Mitigating Regulatory Liability</h2>
+    <div class="content-area">
+        <div class="chart-container">
+            <div class="bar">
+                <div class="label">Subjective Training (Shadowing)</div>
+                <div class="bar-inner"><div class="bar-fill" style="width: 85%; background: linear-gradient(90deg, #991B1B, #EF4444);">High Audit Risk (Non-Compliant)</div></div>
+            </div>
+            <div class="bar">
+                <div class="label">Schema Binary Hard-Gates</div>
+                <div class="bar-inner"><div class="bar-fill" style="width: 35%; min-width: max-content; padding: 0 20px; background: linear-gradient(90deg, #166534, #22C55E);">ISO 13485 Compliant</div></div>
+            </div>
+        </div>
+        <p class="chart-summary">Subjective "shadowing" fails to satisfy Notified Body requirements for objective competency verification. Transitioning a third-party depot to Schema Technical's binary Pass/Fail matrix provides undeniable, documented proof of ISO 13485 Clause 6.2.2 compliance.</p>
+    </div>
+</div>
+
+<div class="slide-container" id="slide8">
+    <h2 class="slide-title">The Deliverable Package</h2>
+    <div class="content-area">
+        <div class="table-layout">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Asset Type</th>
+                        <th>Deliverable Content</th>
+                        <th>Primary Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Master Training Matrix</strong><br>(ST-REC-MAT-001)</td>
+                        <td>The definitive, legally binding syllabus and binary grading rubric, pre-approved by OEM QARA.</td>
+                        <td>Locks the regulatory standard and transfers curriculum design liability away from the training provider.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Competency SOP</strong><br>(ST-SOP-SNA-003)</td>
+                        <td>The overarching QMS procedure governing the execution of the 4-Stage delivery model.</td>
+                        <td>Provides the Notified Body with the procedural proof of ISO 13485 Cl 6.2.2 compliance.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Execution Records</strong><br>(ST-REC-TRN-001)</td>
+                        <td>The auditable, individual proof of binary competence signed by both the Master Trainer and Trainee.</td>
+                        <td>The exact physical evidence uploaded into the DHF/Training Matrix to clear engineers for field deployment.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="slide-container" id="slide9">
+    <div class="content-area">
+        <div class="quote-layout">
+            <blockquote>"A validated Service Manual is legally void if the competency transfer is subjective."</blockquote>
+            <cite>SCHEMA TECHNICAL</cite>
+        </div>
+    </div>
+</div>
+
+<div class="slide-container" id="slide10">
+    <div class="qa-layout">
+        <h2>Secure Your Network.</h2>
+        <p>Engineer the competency. Lock the liability.</p>
+        <div class="contact-info">
+            SCHEMA TECHNICAL | Service Network Architecture
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
