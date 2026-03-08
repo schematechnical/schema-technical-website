@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schema Technical | Free Engineering Resources</title>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root { --navy: #0f172a; --slate: #475569; --blue: #2563eb; --light: #f8fafc; --white: #ffffff; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
+        body { background-color: var(--light); color: var(--navy); line-height: 1.6; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+        .btn { display: inline-flex; align-items: center; justify-content: center; height: 50px; padding: 0 24px; border-radius: 4px; font-weight: 600; text-decoration: none; background: var(--blue); color: var(--white); border: 1px solid var(--blue); cursor: pointer; transition: 0.3s; }
+        .btn:hover { background: var(--navy); border-color: var(--navy); }
+        .btn-white { background-color: var(--white); color: var(--navy); border: 1px solid #e2e8f0; display: inline-flex; align-items: center; justify-content: center; height: 50px; padding: 0 24px; border-radius: 4px; font-weight: 600; font-size: 1rem; text-decoration: none; transition: all 0.3s; cursor: pointer;}
+        .btn-white:hover { background-color: #e2e8f0; transform: translateY(-2px); }
+
+        /* --- UNIFIED HEADER & NAV STYLES --- */
+        header { background: var(--white); padding: 15px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 1000; }
+        nav { display: flex; justify-content: space-between; align-items: center; position: relative;}
+        .logo img { height: 80px; display: block; }
+        .nav-links { display: flex; align-items: center; }
+        .nav-links > a, .dropdown .dropbtn { margin-left: 25px; text-decoration: none; color: var(--slate); font-weight: 500; font-size: 0.95rem; background: none; border: none; cursor: pointer; font-family: inherit; display: flex; align-items: center; }
+        .nav-links > a:hover, .dropdown .dropbtn:hover { color: var(--blue); }
+
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-content { display: none; position: absolute; background-color: var(--white); min-width: 260px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1); z-index: 2000; border-radius: 4px; top: 100%; left: 25px; border: 1px solid #e2e8f0; }
+        .dropdown-content a { color: var(--slate); padding: 12px 16px; text-decoration: none; display: block; margin-left: 0; border-bottom: 1px solid #f1f5f9; font-size: 0.9rem; }
+        .dropdown-content a:last-child { border-bottom: none; }
+        .dropdown-content a:hover { background-color: #f8fafc; color: var(--blue); }
+
+        @media (min-width: 901px) {
+            .dropdown:hover .dropdown-content { display: block; }
+            .dropdown:hover .dropbtn { color: var(--blue); }
+        }
+
+        .menu-toggle { display: none; flex-direction: column; cursor: pointer; padding: 5px; }
+        .menu-toggle span { height: 3px; width: 25px; background: var(--navy); margin-bottom: 5px; border-radius: 2px; transition: all 0.3s ease; }
+        .menu-toggle span:last-child { margin-bottom: 0; }
+
+        .spoke-header { padding: 80px 0; text-align: center; background: var(--navy); color: var(--white); margin-bottom: 60px; }
+        .spoke-header h1 { font-size: 3rem; margin-bottom: 15px; }
+        .spoke-header p { color: #cbd5e1; font-size: 1.2rem; max-width: 700px; margin: 0 auto; }
+
+        /* Resources Grid */
+        .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; margin-bottom: 60px;}
+        .service-card { background: var(--white); padding: 40px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-top: 4px solid var(--blue); display: flex; flex-direction: column; }
+        .icon-box svg { width: 50px; height: 50px; margin-bottom: 20px; fill: none; stroke: var(--blue); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+        .service-tag { display: inline-block; background: #e0f2fe; color: #0369a1; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; margin-bottom: 20px; letter-spacing: 0.5px; width: fit-content; text-transform: uppercase; }
+        .service-card h3 { font-size: 1.4rem; margin-bottom: 15px; }
+        .service-card p { color: var(--slate); margin-bottom: 20px; }
+        
+        .resource-form { margin-top: auto; display: flex; flex-direction: column; gap: 10px; padding-top: 20px; }
+        .resource-form input[type="email"] { padding: 12px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 0.95rem; width: 100%; }
+        .resource-form button { width: 100%; text-align: center; }
+        .hidden-honeypot { display: none; }
+        .form-success { margin-top: auto; padding-top: 20px; color: #059669; font-weight: 600; font-size: 0.95rem; text-align: center; }
+
+        /* Calculator */
+        .calculator-wrapper { background: var(--white); border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.05); margin-bottom: 100px;}
+        .calc-header { background: var(--navy); color: var(--white); padding: 30px; text-align: center; border-bottom: 4px solid var(--blue); }
+        .calc-header h3 { font-size: 1.8rem; margin-bottom: 10px; }
+        .calc-grid { display: grid; grid-template-columns: 1fr 1fr; }
+        .calc-inputs { padding: 40px; }
+        .calc-input-group { margin-bottom: 20px; }
+        .calc-input-group label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--navy); font-size: 0.9rem; }
+        .calc-input-group input { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 1rem; }
+        .calc-outputs { background: var(--navy); padding: 40px; display: flex; flex-direction: column; gap: 20px; justify-content: center; }
+        .calc-output-card { background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 6px; border-left: 4px solid var(--blue); }
+        .calc-output-card.highlight { background: rgba(37, 99, 235, 0.15); border-color: #60a5fa; }
+        .calc-output-card h4 { font-size: 0.85rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; }
+        .calc-output-card .val { font-size: 1.8rem; font-weight: 700; color: var(--white); }
+        .calc-output-card.highlight .val { color: #60a5fa; font-size: 2.2rem; }
+
+        footer { background: #020617; color: #94a3b8; padding: 40px 0; text-align: center; font-size: 0.9rem; }
+
+        @media (max-width: 900px) {
+            .menu-toggle { display: flex; }
+            .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: var(--white); padding: 20px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); align-items: flex-start; border-top: 1px solid #e2e8f0; }
+            .nav-links.active { display: flex; }
+            .nav-links > a, .nav-links .btn { margin: 10px 0; font-size: 1.1rem; width: 100%; }
+            .nav-links .btn { text-align: center; }
+            
+            .dropdown { margin-left: 0; width: 100%; margin: 10px 0; }
+            .dropdown .dropbtn { font-size: 1.1rem; padding: 0; width: 100%; text-align: left; justify-content: space-between; margin-left: 0;}
+            .dropdown-content { position: static; box-shadow: none; border: none; border-left: 2px solid var(--blue); padding-left: 10px; display: none; margin-top: 10px; min-width: 100%; }
+            .dropdown.active .dropdown-content { display: block; }
+            .dropdown-content a { margin: 5px 0; padding: 5px 0; font-size: 1rem; border: none; width: auto;}
+
+            .services-grid, .calc-grid { grid-template-columns: 1fr; }
+            .logo img { height: 60px; } 
+            .spoke-header h1 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <a href="index.html"><img src="Company logo.jpg" alt="Schema Technical Logo"></a>
+                </div>
+                <div class="menu-toggle" onclick="toggleMobileMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="nav-links" id="main-nav">
+                    <a href="index.html#about" onclick="closeMobileMenu()">About</a>
+                    <div class="dropdown" onclick="toggleDropdown(event)">
+                        <button class="dropbtn">Services <i class="fa-solid fa-chevron-down" style="font-size: 0.8rem; margin-left: 5px;"></i></button>
+                        <div class="dropdown-content">
+                            <a href="sdr.html">Service Design Review (SDR)</a>
+                            <a href="authoring.html">Technical Authoring</a>
+                            <a href="sna.html">Service Network (SNA)</a>
+                            <a href="fra.html">Reliability Analysis (FRA)</a>
+                        </div>
+                    </div>
+                    <a href="index.html#pricing" onclick="closeMobileMenu()">Pricing</a>
+                    <a href="resources.html" onclick="closeMobileMenu()">Resources</a>
+                    <a href="articles.html" onclick="closeMobileMenu()">Articles</a>
+                    <a href="index.html#contact" onclick="closeMobileMenu()">Contact</a>
+                    <a href="https://outlook.office.com/book/SchemaTechnicalLtd@schematechnical.co.uk/" target="_blank" class="btn" style="color: white; margin-left: 25px;" onclick="closeMobileMenu()">Book Discovery Call</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="spoke-header">
+        <div class="container">
+            <h1>Free Resources & Templates</h1>
+            <p>Downloadable ISO frameworks, diagnostic tools, and engineering checklists.</p>
+            <p style="font-size: 0.95rem; margin-top: 20px;"><em>Email addresses are used solely for delivering the requested document. We do not collect, store, or distribute your data.</em></p>
+        </div>
+    </div>
+
+    <div class="container">
+        
+        <div class="services-grid">
+            <!-- Resource 1 -->
+            <div class="service-card">
+                <div class="icon-box">
+                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><path d="m9 15 2 2 4-4"></path></svg>
+                </div>
+                <span class="service-tag">PDF GUIDE</span>
+                <h3>Pre-Production Serviceability Audit</h3>
+                <p>A 20-point engineering checklist to identify and eliminate catastrophic serviceability risks before you freeze your design and cut tooling.</p>
+                <form class="resource-form" name="resource_request" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+                    <p class="hidden-honeypot"><label>Don’t fill this out if you're human: <input name="bot-field" /></label></p>
+                    <input type="hidden" name="form-name" value="resource_request">
+                    <input type="hidden" name="document_requested" value="Pre-Production Serviceability Audit">
+                    <input type="email" name="email" placeholder="Enter work email..." required>
+                    <button type="submit" class="btn">Email me this PDF</button>
+                </form>
+            </div>
+
+            <!-- Resource 2 -->
+            <div class="service-card">
+                <div class="icon-box">
+                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><circle cx="12" cy="14" r="2"></circle><path d="M12 11v1"></path><path d="M12 16v1"></path><path d="M14.6 12.5l-.87.5"></path><path d="M10.27 15l-.87.5"></path><path d="M14.6 15.5l-.87-.5"></path><path d="M10.27 13l-.87-.5"></path></svg>
+                </div>
+                <span class="service-tag">PDF GUIDE</span>
+                <h3>The QMS Service Bridge</h3>
+                <p>Learn how to align your R&D engineering data with ISO 13485 and MDR Compliance to satisfy QA/RA auditors during Post-Market deployment.</p>
+                <form class="resource-form" name="resource_request" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+                    <p class="hidden-honeypot"><label>Don’t fill this out if you're human: <input name="bot-field" /></label></p>
+                    <input type="hidden" name="form-name" value="resource_request">
+                    <input type="hidden" name="document_requested" value="The QMS Service Bridge">
+                    <input type="email" name="email" placeholder="Enter work email..." required>
+                    <button type="submit" class="btn">Email me this PDF</button>
+                </form>
+            </div>
+
+            <!-- Resource 3 -->
+            <div class="service-card">
+                <div class="icon-box">
+                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                </div>
+                <span class="service-tag">PDF DOCUMENT</span>
+                <h3>Schema Capability Statement</h3>
+                <p>A concise one-page breakdown of our fractional service architecture offerings, deliverables, and how we engage with MedTech startups.</p>
+                <form class="resource-form" name="resource_request" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+                    <p class="hidden-honeypot"><label>Don’t fill this out if you're human: <input name="bot-field" /></label></p>
+                    <input type="hidden" name="form-name" value="resource_request">
+                    <input type="hidden" name="document_requested" value="Schema Capability Statement">
+                    <input type="email" name="email" placeholder="Enter work email..." required>
+                    <button type="submit" class="btn">Email me this PDF</button>
+                </form>
+            </div>
+
+            <!-- Resource 4 -->
+            <div class="service-card">
+                <div class="icon-box">
+                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                </div>
+                <span class="service-tag">DOCX TEMPLATE</span>
+                <h3>Technical Service Manual</h3>
+                <p>An ISO 13485 compliant boilerplate template for authoring your field service manuals, complete with troubleshooting and parts catalogue formatting.</p>
+                <form class="resource-form" name="resource_request" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+                    <p class="hidden-honeypot"><label>Don’t fill this out if you're human: <input name="bot-field" /></label></p>
+                    <input type="hidden" name="form-name" value="resource_request">
+                    <input type="hidden" name="document_requested" value="Technical Service Manual Template">
+                    <input type="email" name="email" placeholder="Enter work email..." required>
+                    <button type="submit" class="btn">Email me this Template</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Calculator -->
+        <div class="calculator-wrapper">
+            <div class="calc-header">
+                <h3>Warranty Bleed Calculator</h3>
+                <p style="color: #cbd5e1; font-size: 1.05rem;">Calculate your hidden field service exposure based on MTBF and repair times.</p>
+            </div>
+            <div class="calc-grid">
+                <div class="calc-inputs">
+                    <div class="calc-input-group">
+                        <label>Installed Base (Number of Units)</label>
+                        <input type="number" id="calc-base" value="1000" oninput="calculateWarranty()">
+                    </div>
+                    <div class="calc-input-group">
+                        <label>Target MTBF (Months)</label>
+                        <input type="number" id="calc-mtbf" value="24" oninput="calculateWarranty()">
+                    </div>
+                    <div class="calc-input-group">
+                        <label>FSE Daily Rate (£)</label>
+                        <input type="number" id="calc-rate" value="800" oninput="calculateWarranty()">
+                    </div>
+                    <div class="calc-input-group">
+                        <label>Mean Time To Repair (Hours)</label>
+                        <input type="number" id="calc-mttr" value="4" oninput="calculateWarranty()">
+                    </div>
+                    <div class="calc-input-group">
+                        <label>Cost of Spare Part (£)</label>
+                        <input type="number" id="calc-part" value="5" oninput="calculateWarranty()">
+                    </div>
+                </div>
+                
+                <div class="calc-outputs">
+                    <div class="calc-output-card">
+                        <h4>Expected Failures Per Year</h4>
+                        <div class="val" id="out-failures">500</div>
+                    </div>
+                    <div class="calc-output-card">
+                        <h4>True Labour Cost per Repair</h4>
+                        <div class="val" id="out-labour">£400.00</div>
+                    </div>
+                    <div class="calc-output-card">
+                        <h4>Total Cost Per Incident</h4>
+                        <div class="val" id="out-incident">£405.00</div>
+                    </div>
+                    <div class="calc-output-card highlight">
+                        <h4>Annual Warranty Bleed</h4>
+                        <div class="val" id="out-bleed">£202,500</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Schema Technical. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMobileMenu() { document.getElementById('main-nav').classList.toggle('active'); }
+        function closeMobileMenu() {
+            document.getElementById('main-nav').classList.remove('active');
+            const dropdown = document.querySelector('.dropdown');
+            if(dropdown) dropdown.classList.remove('active');
+        }
+        function toggleDropdown(e) {
+            if (window.innerWidth <= 900) {
+                e.currentTarget.classList.toggle('active');
+            }
+        }
+
+        document.querySelectorAll('.resource-form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                fetch("/", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: new URLSearchParams(formData).toString()
+                }).then(() => {
+                    this.innerHTML = '<div class="form-success">Request received! The document will be sent to your inbox shortly.</div>';
+                }).catch(error => alert("There was an error submitting your request."));
+            });
+        });
+
+        function calculateWarranty() {
+            const installedBase = parseFloat(document.getElementById('calc-base').value) || 0;
+            const mtbf = parseFloat(document.getElementById('calc-mtbf').value) || 0;
+            const dailyRate = parseFloat(document.getElementById('calc-rate').value) || 0;
+            const mttr = parseFloat(document.getElementById('calc-mttr').value) || 0;
+            const partCost = parseFloat(document.getElementById('calc-part').value) || 0;
+
+            if(mtbf > 0) {
+                const expectedFailures = (installedBase / mtbf) * 12;
+                const hourlyRate = dailyRate / 8;
+                const labourCost = hourlyRate * mttr;
+                const costPerIncident = labourCost + partCost;
+                const annualBleed = expectedFailures * costPerIncident;
+
+                document.getElementById('out-failures').innerText = Math.round(expectedFailures).toLocaleString('en-GB');
+                document.getElementById('out-labour').innerText = '£' + labourCost.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                document.getElementById('out-incident').innerText = '£' + costPerIncident.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                document.getElementById('out-bleed').innerText = '£' + annualBleed.toLocaleString('en-GB', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+            }
+        }
+        calculateWarranty();
+    </script>
+</body>
+</html>

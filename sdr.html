@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schema Technical | Service Design Review (SDR)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --navy: #0f172a; 
+            --slate: #475569; 
+            --blue: #2563eb; 
+            --light: #f8fafc; 
+            --white: #ffffff;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
+        body { background-color: var(--light); color: var(--navy); line-height: 1.6; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+        .btn { display: inline-flex; align-items: center; justify-content: center; height: 50px; padding: 0 24px; border-radius: 4px; font-weight: 600; text-decoration: none; background: var(--blue); color: var(--white); border: 1px solid var(--blue); cursor: pointer; transition: 0.3s; }
+        .btn:hover { background: var(--navy); border-color: var(--navy); }
+
+        /* --- UNIFIED HEADER & NAV STYLES --- */
+        header { background: var(--white); padding: 15px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 1000; }
+        nav { display: flex; justify-content: space-between; align-items: center; position: relative;}
+        .logo img { height: 80px; display: block; }
+        .nav-links { display: flex; align-items: center; }
+        .nav-links > a, .dropdown .dropbtn { margin-left: 25px; text-decoration: none; color: var(--slate); font-weight: 500; font-size: 0.95rem; background: none; border: none; cursor: pointer; font-family: inherit; display: flex; align-items: center; }
+        .nav-links > a:hover, .dropdown .dropbtn:hover { color: var(--blue); }
+
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-content { display: none; position: absolute; background-color: var(--white); min-width: 260px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1); z-index: 2000; border-radius: 4px; top: 100%; left: 25px; border: 1px solid #e2e8f0; }
+        .dropdown-content a { color: var(--slate); padding: 12px 16px; text-decoration: none; display: block; margin-left: 0; border-bottom: 1px solid #f1f5f9; font-size: 0.9rem; }
+        .dropdown-content a:last-child { border-bottom: none; }
+        .dropdown-content a:hover { background-color: #f8fafc; color: var(--blue); }
+
+        @media (min-width: 901px) {
+            .dropdown:hover .dropdown-content { display: block; }
+            .dropdown:hover .dropbtn { color: var(--blue); }
+        }
+
+        .menu-toggle { display: none; flex-direction: column; cursor: pointer; padding: 5px; }
+        .menu-toggle span { height: 3px; width: 25px; background: var(--navy); margin-bottom: 5px; border-radius: 2px; transition: all 0.3s ease; }
+        .menu-toggle span:last-child { margin-bottom: 0; }
+
+        /* Spoke Page specific CSS */
+        .spoke-header {
+            padding: 60px 0 40px;
+            text-align: center;
+        }
+        .spoke-header h1 {
+            font-size: 2.5rem;
+            color: var(--navy);
+            margin-bottom: 15px;
+        }
+        .spoke-header p {
+            color: var(--slate);
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .deck-container {
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto 60px auto;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .deck-iframe {
+            width: 100%;
+            height: 720px;
+            border: none;
+            display: block;
+            background: #0F172A; /* Match deck background */
+        }
+
+        .sow-section {
+            background: var(--white);
+            padding: 80px 0;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .sow-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 50px;
+            align-items: start;
+        }
+
+        .sow-content h2 {
+            font-size: 2rem;
+            color: var(--navy);
+            margin-bottom: 20px;
+        }
+        .sow-content h3 {
+            font-size: 1.4rem;
+            color: var(--blue);
+            margin: 30px 0 15px 0;
+        }
+        .sow-content p { margin-bottom: 15px; color: var(--slate); font-size: 1.05rem; }
+        .sow-content ul { margin-left: 20px; margin-bottom: 20px; color: var(--slate); font-size: 1.05rem;}
+        .sow-content li { margin-bottom: 8px; }
+
+        .sow-pricing {
+            background: var(--light);
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 30px;
+            position: sticky;
+            top: 120px;
+        }
+        .sow-pricing h3 { font-size: 1.5rem; margin-bottom: 20px; color: var(--navy); border-bottom: 2px solid var(--blue); padding-bottom: 10px;}
+        
+        .tier-block { margin-bottom: 25px; }
+        .tier-block h4 { font-size: 1.1rem; color: var(--navy); display: flex; justify-content: space-between;}
+        .tier-block h4 span { color: var(--blue); font-weight: 700; }
+        .tier-block p { font-size: 0.9rem; color: var(--slate); margin-top: 5px; }
+        
+        @media (max-width: 900px) {
+            .menu-toggle { display: flex; }
+            .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: var(--white); padding: 20px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); align-items: flex-start; border-top: 1px solid #e2e8f0; }
+            .nav-links.active { display: flex; }
+            .nav-links > a, .nav-links .btn { margin: 10px 0; font-size: 1.1rem; width: 100%; }
+            .nav-links .btn { text-align: center; }
+            
+            .dropdown { margin-left: 0; width: 100%; margin: 10px 0; }
+            .dropdown .dropbtn { font-size: 1.1rem; padding: 0; width: 100%; text-align: left; justify-content: space-between; margin-left: 0;}
+            .dropdown-content { position: static; box-shadow: none; border: none; border-left: 2px solid var(--blue); padding-left: 10px; display: none; margin-top: 10px; min-width: 100%; }
+            .dropdown.active .dropdown-content { display: block; }
+            .dropdown-content a { margin: 5px 0; padding: 5px 0; font-size: 1rem; border: none; width: auto;}
+
+            .sow-grid { grid-template-columns: 1fr; }
+            .deck-iframe { height: 400px; } 
+            .logo img { height: 60px; } 
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <a href="index.html"><img src="Company logo.jpg" alt="Schema Technical Logo"></a>
+                </div>
+                <div class="menu-toggle" onclick="toggleMobileMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="nav-links" id="main-nav">
+                    <a href="index.html#about" onclick="closeMobileMenu()">About</a>
+                    <div class="dropdown" onclick="toggleDropdown(event)">
+                        <button class="dropbtn">Services <i class="fa-solid fa-chevron-down" style="font-size: 0.8rem; margin-left: 5px;"></i></button>
+                        <div class="dropdown-content">
+                            <a href="sdr.html">Service Design Review (SDR)</a>
+                            <a href="authoring.html">Technical Authoring</a>
+                            <a href="sna.html">Service Network (SNA)</a>
+                            <a href="fra.html">Reliability Analysis (FRA)</a>
+                        </div>
+                    </div>
+                    <a href="index.html#pricing" onclick="closeMobileMenu()">Pricing</a>
+                    <a href="resources.html" onclick="closeMobileMenu()">Resources</a>
+                    <a href="articles.html" onclick="closeMobileMenu()">Articles</a>
+                    <a href="index.html#contact" onclick="closeMobileMenu()">Contact</a>
+                    <a href="https://outlook.office.com/book/SchemaTechnicalLtd@schematechnical.co.uk/" target="_blank" class="btn" style="color: white; margin-left: 25px;" onclick="closeMobileMenu()">Book Discovery Call</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="spoke-header">
+            <h1>Service Design Review (SDR)</h1>
+            <p>Forensic pre-freeze hardware auditing. We dismantle your prototype to identify margin-destroying field failures before you commit to tooling.</p>
+        </div>
+        
+        <!-- EMBEDDED SLIDE DECK -->
+        <div class="deck-container">
+            <!-- IMPORTANT: You must upload schema_sdr_pitch_deck.html to the same folder as this file -->
+            <iframe class="deck-iframe" src="schema_sdr_pitch_deck.html" title="SDR Pitch Deck"></iframe>
+        </div>
+    </div>
+
+    <section class="sow-section">
+        <div class="container">
+            <div class="sow-grid">
+                
+                <div class="sow-content">
+                    <h2>Scope of Work & Deliverables</h2>
+                    <p>The Service Design Review (SDR) is a highly forensic, physical engineering audit executed prior to your final design freeze. The objective is to intercept unmitigated physical risks, routing failures, and access bottlenecks that will cause your Mean Time To Repair (MTTR) to spike in the field.</p>
+                    
+                    <h3>Phase 1: Forensic Teardown</h3>
+                    <p>Schema Technical will execute a complete mechanical disassembly of one (1) physical, production-equivalent device. We map the accessibility and physical friction associated with reaching your top 5 highest-risk Field Replaceable Units (FRUs).</p>
+
+                    <h3>Phase 2: Formal Audit Report (REP-SDR-001)</h3>
+                    <p>We deliver a strict, regulatory-grade engineering dossier detailing:</p>
+                    <ul>
+                        <li><strong>Downtime Metrics:</strong> Calculating the exact MTTR for specific components based on fastener count and loom obstruction.</li>
+                        <li><strong>Red Flag Interventions:</strong> Immediate, actionable CAD revisions required prior to tooling (e.g., trapped cables, blinded captive nuts, missing IP seals).</li>
+                        <li><strong>Special Tooling Demands:</strong> Identifying areas where proprietary jigs are required due to poor sub-assembly alignment.</li>
+                    </ul>
+
+                    <h3>Phase 3: Executive Debrief</h3>
+                    <p>A comprehensive video conference with your R&D and Quality leadership to present the physical evidence and agree on the required Engineering Change Orders (ECOs) before mass production begins.</p>
+                    
+                    <h3 style="color: #b91c1c;">Liability Clause (Blind Auditing)</h3>
+                    <p>Schema Technical does not conduct SDRs purely from CAD files. We require physical access to a prototype. Assessing cable flex, real-world tolerance stacking, and human ergonomics requires a physical bench audit to guarantee accuracy.</p>
+                </div>
+
+                <div class="sow-pricing">
+                    <h3>Transparent Commercials</h3>
+                    <p style="font-size: 0.9rem; margin-bottom: 20px;">SDR fees are strictly bounded by the mechanical complexity of the target hardware to protect project velocity.</p>
+                    
+                    <div class="tier-block">
+                        <h4>Tier 1: Standard <span>From £2,500</span></h4>
+                        <p><strong>Max 3 Days.</strong> &lt; 50 serviceable parts. Passive cooling, single enclosure access. No active fluidics or complex optics.</p>
+                    </div>
+
+                    <div class="tier-block">
+                        <h4>Tier 2: Advanced <span>From £3,500</span></h4>
+                        <p><strong>Max 5 Days.</strong> 50 - 200 serviceable parts. Moving electromechanical assemblies, multi-PCBA architecture, basic fluidics.</p>
+                    </div>
+
+                    <div class="tier-block">
+                        <h4>Tier 3: Complex <span>From £4,950</span></h4>
+                        <p><strong>From 5 Days.</strong> &gt; 200 parts, robotics, Class 3/4 optics. Baseline covers targeted sub-systems only.</p>
+                    </div>
+
+                    <a href="https://outlook.office.com/book/SchemaTechnicalLtd@schematechnical.co.uk/" target="_blank" class="btn" style="width: 100%; margin-top: 15px;">Book Project Scope Call</a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer style="background: #020617; color: #94a3b8; padding: 40px 0; text-align: center; font-size: 0.9rem; margin-top: 0;">
+        <p>&copy; 2026 Schema Technical. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function toggleMobileMenu() { document.getElementById('main-nav').classList.toggle('active'); }
+        function closeMobileMenu() {
+            document.getElementById('main-nav').classList.remove('active');
+            const dropdown = document.querySelector('.dropdown');
+            if(dropdown) dropdown.classList.remove('active');
+        }
+        function toggleDropdown(e) {
+            if (window.innerWidth <= 900) {
+                e.currentTarget.classList.toggle('active');
+            }
+        }
+    </script>
+</body>
+</html>
