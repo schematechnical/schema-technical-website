@@ -12,32 +12,33 @@
         /* 1. CORE SETUP & NORMALIZE */
         * { box-sizing: border-box; }
         p { margin: 0; margin-bottom: 15px; }
+        
         body {
             background-color: #0F172A;
-            display: grid;
-            gap: 20px;
-            grid-template-columns: 1fr;
             margin: 0;
-            min-height: 100vh;
-            padding: 20px 0;
-            place-items: center;
+            padding: 0;
+            overflow-x: hidden;
+            overflow-y: auto;
+            scroll-snap-type: y mandatory; /* Forces scroll to lock to slides */
+            scroll-behavior: smooth;
+            height: 100vh;
+            width: 100vw;
         }
 
         /* 1.1 SLIDE CONTAINER BASE */
         .slide-container {
             align-items: center;
             background-color: #0F172A;
-            border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             display: flex;
             flex-direction: column;
             font-family: 'Urbanist', sans-serif;
-            height: 720px;
+            height: 100vh; /* Fill the iframe viewport */
+            width: 100vw;
             justify-content: center;
-            overflow: hidden;
             padding: 60px;
             position: relative;
-            width: 1280px;
+            scroll-snap-align: start; /* Snap target */
+            overflow: hidden;
         }
 
         /* 1.2 BACKGROUND EFFECTS */
@@ -58,7 +59,32 @@
             background: linear-gradient(90deg, #2563EB, #38BDF8);
             z-index: 0;
         }
-        .slide-container > * { position: relative; z-index: 1; width: 100%; }
+        .slide-container > * { position: relative; z-index: 1; width: 100%; max-width: 1200px; }
+
+        /* Navigation Arrows Overlay */
+        .nav-hint {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+        .nav-hint:hover { opacity: 1; }
+        .nav-btn {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid #334155;
+            color: #F8FAFC;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
 
         /* 2. TYPOGRAPHY */
         .slide-container h1, .slide-container h2, .slide-container h3, .slide-container h4 {
@@ -66,19 +92,19 @@
             font-weight: 700;
             margin: 0;
         }
-        .slide-container h1 { font-size: 70px; letter-spacing: -1px; }
-        .slide-container .slide-title { font-size: 45px; font-weight: 700; margin-bottom: 40px; text-align: left; width: 100%; color: #F8FAFC; }
-        .slide-container h3 { font-size: 32px; font-weight: 500; margin-bottom: 15px; color: #38BDF8; }
+        .slide-container h1 { font-size: 5vw; letter-spacing: -1px; }
+        .slide-container .slide-title { font-size: 3.5vw; font-weight: 700; margin-bottom: 30px; text-align: left; width: 100%; color: #F8FAFC; }
+        .slide-container h3 { font-size: 2vw; font-weight: 500; margin-bottom: 15px; color: #38BDF8; }
         
         .slide-container p, .slide-container li, .slide-container .subtitle, 
         .slide-container td, .slide-container th, 
         .slide-container .bar .label, .slide-container .chart-summary {
             color: #CBD5E1;
             font-family: 'Urbanist', sans-serif;
-            font-size: 20px;
+            font-size: 1.4vw;
             line-height: 1.5;
         }
-        .slide-container .subtitle { font-size: 24px; font-weight: 400; margin: 20px auto; color: #94A3B8; }
+        .slide-container .subtitle { font-size: 1.8vw; font-weight: 400; margin: 20px auto; color: #94A3B8; }
 
         .slide-container .content-area {
             align-items: center; display: flex; flex-direction: column; flex-grow: 1; justify-content: center; width: 100%;
@@ -91,18 +117,18 @@
         .title-layout { text-align: center; }
         
         .section-title-layout { align-items: center; display: flex; flex-direction: column; height: 100%; justify-content: center; text-align: center; width: 100%; }
-        .section-title-layout h2 { font-size: 65px; margin-bottom: 20px; }
-        .section-title-layout p { font-size: 24px; margin: 0 auto; max-width: 900px; }
+        .section-title-layout h2 { font-size: 4vw; margin-bottom: 20px; }
+        .section-title-layout p { font-size: 1.5vw; margin: 0 auto; max-width: 900px; }
         .section-title-layout hr { background-color: #2563EB; border: none; height: 6px; margin: 30px auto; width: 120px; border-radius: 3px;}
 
         /* TWO COLUMN TILED TEXT */
-        .two-column { align-items: flex-start; display: grid; grid-template-columns: 1fr 1fr; gap: 50px; width: 100%; }
+        .two-column { align-items: flex-start; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; width: 100%; }
         .two-column.align-center { align-items: center; }
         .two-column.tiled { align-items: stretch; }
-        .two-column.tiled > div { background-color: #1E293B; border-radius: 12px; border: 1px solid #334155; padding: 40px; text-align: left; }
+        .two-column.tiled > div { background-color: #1E293B; border-radius: 12px; border: 1px solid #334155; padding: 30px; text-align: left; }
         .two-column.tiled h3 { color: #38BDF8; margin-bottom: 20px;}
         .two-column ul { list-style: none; margin: 0; padding: 0; }
-        .two-column li { margin-bottom: 20px; position: relative; padding-left: 30px; }
+        .two-column li { margin-bottom: 15px; position: relative; padding-left: 30px; }
         .two-column li::before { content: '\f0da'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: #38BDF8; position: absolute; left: 0; top: 2px; }
 
         /* DATA BOXES */
@@ -110,72 +136,78 @@
             background-color: rgba(37, 99, 235, 0.1);
             border-left: 4px solid #38BDF8;
             border-radius: 8px;
-            padding: 40px;
+            padding: 30px;
             width: 100%;
         }
-        .data-box h4 {
-            color: #F8FAFC;
-            font-size: 28px;
-            margin-bottom: 15px;
-        }
-        .data-box i {
-            color: #38BDF8;
-            margin-right: 10px;
-        }
+        .data-box h4 { color: #F8FAFC; font-size: 1.8vw; margin-bottom: 15px; }
+        .data-box i { color: #38BDF8; margin-right: 10px; }
 
         /* HIGHLIGHT NUMBERS */
         .highlight-numbers-layout > div:first-child { flex: 0 0 40%; text-align: center; display: flex; flex-direction: column; justify-content: center; position: relative;}
-        .highlight-numbers-layout .number { color: #38BDF8; font-size: 140px; font-weight: 700; line-height: 1; margin-bottom: 10px; text-shadow: 0 0 40px rgba(56, 189, 248, 0.2);}
-        .highlight-numbers-layout .number-label { font-size: 28px; font-weight: 700; color: #F8FAFC; text-transform: uppercase; letter-spacing: 2px;}
-        .highlight-numbers-layout .citation { font-size: 14px; color: #64748B; font-style: italic; margin-top: 30px; line-height: 1.3; }
+        .highlight-numbers-layout .number { color: #38BDF8; font-size: 8vw; font-weight: 700; line-height: 1; margin-bottom: 10px; text-shadow: 0 0 40px rgba(56, 189, 248, 0.2);}
+        .highlight-numbers-layout .number-label { font-size: 1.8vw; font-weight: 700; color: #F8FAFC; text-transform: uppercase; letter-spacing: 2px;}
+        .highlight-numbers-layout .citation { font-size: 1vw; color: #64748B; font-style: italic; margin-top: 30px; line-height: 1.3; }
 
         /* TIMELINE */
         .timeline-layout { align-items: stretch; display: flex; height: stretch; justify-content: space-between; position: relative; width: 100%; }
         .timeline-layout .timeline-line { background-color: #334155; height: 4px; left: 0; position: absolute; top: 50%; transform: translateY(-2px); width: 100%; z-index: 0; }
         .timeline-item { position: relative; text-align: center; width: 18%; z-index: 1;}
-        .timeline-item::after { background-color: #0F172A; border-radius: 50%; border: 4px solid #38BDF8; content: ''; height: 24px; left: 50%; position: absolute; top: 50%; transform: translate(-50%, -50%); width: 24px; z-index: 2; }
-        .timeline-item .content-wrapper { left: 0; position: absolute; width: 100%; background-color: #1E293B; padding: 25px 15px; border-radius: 8px; border: 1px solid #334155;}
-        .timeline-item:nth-child(odd) .content-wrapper { bottom: 50%; margin-bottom: 35px; }
-        .timeline-item:nth-child(even) .content-wrapper { margin-top: 35px; top: 50%; }
-        .timeline-item h3 { color: #38BDF8; font-size: 20px; margin-bottom: 10px;}
-        .timeline-item p { font-size: 15px; margin: 0; line-height: 1.4;}
+        .timeline-item::after { background-color: #0F172A; border-radius: 50%; border: 4px solid #38BDF8; content: ''; height: 20px; left: 50%; position: absolute; top: 50%; transform: translate(-50%, -50%); width: 20px; z-index: 2; }
+        .timeline-item .content-wrapper { left: 0; position: absolute; width: 100%; background-color: #1E293B; padding: 20px 10px; border-radius: 8px; border: 1px solid #334155;}
+        .timeline-item:nth-child(odd) .content-wrapper { bottom: 50%; margin-bottom: 30px; }
+        .timeline-item:nth-child(even) .content-wrapper { margin-top: 30px; top: 50%; }
+        .timeline-item h3 { color: #38BDF8; font-size: 1.4vw; margin-bottom: 10px;}
+        .timeline-item p { font-size: 1vw; margin: 0; line-height: 1.4;}
 
         /* TILED TEXT WITH ICONS */
-        .tiled-content { align-items: stretch; display: flex; gap: 40px; justify-content: center; width: 100%; }
-        .tile { align-items: center; background-color: #1E293B; border-radius: 12px; border: 1px solid #334155; display: flex; flex-direction: column; flex: 1; justify-content: flex-start; padding: 40px 30px; text-align: center; }
-        .tile .icon { color: #38BDF8; font-size: 50px; margin-bottom: 25px; }
-        .tile h3 { color: #F8FAFC; }
+        .tiled-content { align-items: stretch; display: flex; gap: 30px; justify-content: center; width: 100%; }
+        .tile { align-items: center; background-color: #1E293B; border-radius: 12px; border: 1px solid #334155; display: flex; flex-direction: column; flex: 1; justify-content: flex-start; padding: 30px 20px; text-align: center; }
+        .tile .icon { color: #38BDF8; font-size: 3vw; margin-bottom: 20px; }
+        .tile h3 { color: #F8FAFC; font-size: 1.6vw; }
 
         /* BAR CHART */
-        .chart-container { display: flex; flex-direction: column; gap: 30px; width: 100%; padding: 20px 40px;}
+        .chart-container { display: flex; flex-direction: column; gap: 20px; width: 100%; padding: 10px 40px;}
         .bar { align-items: center; display: flex; gap: 20px; }
-        .bar .label { color: #F8FAFC; flex: 0 0 350px; font-weight: 700; text-align: right; font-size: 22px;}
-        .bar .bar-inner { background-color: #1E293B; border-radius: 8px; flex-grow: 1; height: 55px; border: 1px solid #334155;}
-        .bar .bar-fill { align-items: center; border-radius: 8px; color: white; display: flex; font-size: 20px; font-weight: 700; height: 100%; justify-content: center; padding: 0 10px; white-space: nowrap; }
-        .chart-summary { font-style: italic; margin-top: 40px; max-width: 90%; text-align: center; color: #94A3B8;}
+        .bar .label { color: #F8FAFC; flex: 0 0 300px; font-weight: 700; text-align: right; font-size: 1.4vw;}
+        .bar .bar-inner { background-color: #1E293B; border-radius: 8px; flex-grow: 1; height: 45px; border: 1px solid #334155;}
+        .bar .bar-fill { align-items: center; border-radius: 8px; color: white; display: flex; font-size: 1.2vw; font-weight: 700; height: 100%; justify-content: center; padding: 0 10px; white-space: nowrap; }
+        .chart-summary { font-style: italic; margin-top: 30px; max-width: 90%; text-align: center; color: #94A3B8;}
 
         /* TABLE */
         .table-layout { width: 100%; }
         .table-layout table { border-collapse: collapse; width: 100%; background-color: #1E293B; border-radius: 12px; overflow: hidden;}
-        .table-layout th, .table-layout td { border-bottom: 1px solid #334155; padding: 18px 25px; text-align: left; }
-        .table-layout th { background-color: #0F172A; color: #38BDF8; font-size: 20px; font-weight: 700; border-bottom: 2px solid #2563EB;}
-        .table-layout td { font-size: 18px; }
+        .table-layout th, .table-layout td { border-bottom: 1px solid #334155; padding: 15px 20px; text-align: left; }
+        .table-layout th { background-color: #0F172A; color: #38BDF8; font-size: 1.4vw; font-weight: 700; border-bottom: 2px solid #2563EB;}
+        .table-layout td { font-size: 1.2vw; }
         .table-layout tr:last-child td { border-bottom: none; }
-        .table-layout td strong { color: #F8FAFC; display: block; margin-bottom: 5px; font-size: 20px;}
+        .table-layout td strong { color: #F8FAFC; display: block; margin-bottom: 5px; font-size: 1.3vw;}
 
         /* QUOTE */
         .quote-layout { margin: 0 auto; text-align: center; width: 85%; }
-        .quote-layout blockquote { color: #F8FAFC; font-size: 48px; font-weight: 500; line-height: 1.3; margin: 0 0 40px 0; padding: 0 50px; position: relative; }
-        .quote-layout blockquote::before, .quote-layout blockquote::after { color: #2563EB; content: '"'; font-size: 120px; line-height: 0; position: absolute; opacity: 0.5;}
+        .quote-layout blockquote { color: #F8FAFC; font-size: 3vw; font-weight: 500; line-height: 1.3; margin: 0 0 30px 0; padding: 0 50px; position: relative; }
+        .quote-layout blockquote::before, .quote-layout blockquote::after { color: #2563EB; content: '"'; font-size: 8vw; line-height: 0; position: absolute; opacity: 0.5;}
         .quote-layout blockquote::before { left: -20px; top: 40px; }
         .quote-layout blockquote::after { bottom: 0px; right: -20px; }
-        .quote-layout cite { color: #38BDF8; font-size: 24px; font-style: normal; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;}
+        .quote-layout cite { color: #38BDF8; font-size: 1.6vw; font-style: normal; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;}
 
         /* Q&A */
         .qa-layout { margin: 0 auto; text-align: center; width: 100%; align-self: center; }
-        .qa-layout h2 { font-size: 90px; margin-bottom: 20px; color: #F8FAFC; }
-        .qa-layout p { font-size: 28px; color: #94A3B8;}
-        .qa-layout .contact-info { color: #38BDF8; font-size: 24px; margin-top: 50px; font-weight: 700; letter-spacing: 2px;}
+        .qa-layout h2 { font-size: 6vw; margin-bottom: 20px; color: #F8FAFC; }
+        .qa-layout p { font-size: 2vw; color: #94A3B8;}
+        .qa-layout .contact-info { color: #38BDF8; font-size: 1.5vw; margin-top: 50px; font-weight: 700; letter-spacing: 2px;}
+
+        /* Hide Scrollbar while maintaining functionality */
+        body::-webkit-scrollbar { display: none; }
+        body { -ms-overflow-style: none; scrollbar-width: none; }
+
+        @media (max-width: 900px) {
+            .slide-container { padding: 30px; }
+            .slide-container h1 { font-size: 8vw; }
+            .slide-container .slide-title { font-size: 6vw; }
+            .slide-container p, .slide-container li, .slide-container td, .slide-container .bar .label { font-size: 3.5vw; }
+            .two-column { grid-template-columns: 1fr; gap: 20px; }
+            .chart-container .bar .label { flex: 0 0 100px; font-size: 3vw; }
+        }
     </style>
 </head>
 <body>
@@ -188,7 +220,7 @@
     </div>
 </div>
 
-<!-- Slide 2: Highlighted_Numbers -->
+<!-- Slide 2: Information for Safety -->
 <div class="slide-container" id="slide2">
     <h2 class="slide-title">The Information for Safety Mandate</h2>
     <div class="content-area">
@@ -247,7 +279,7 @@
     </div>
 </div>
 
-<!-- Slide 4: Two_Column_Tiled_Text -->
+<!-- Slide 4: Teardown vs Desk Drafting -->
 <div class="slide-container" id="slide4">
     <h2 class="slide-title">Eliminating "Desk-Drafted" Manuals</h2>
     <div class="content-area">
@@ -289,7 +321,7 @@
     </div>
 </div>
 
-<!-- Slide 6: Tiled_Text_With_Icons -->
+<!-- Slide 6: ISO 13485 Clause 4.2.4 -->
 <div class="slide-container" id="slide6">
     <h2 class="slide-title">Solving ISO 13485 Clause 4.2.4</h2>
     <div class="content-area">
@@ -313,7 +345,7 @@
     </div>
 </div>
 
-<!-- Slide 7: Bar_Chart_For_Comparisons -->
+<!-- Slide 7: Comparison Chart -->
 <div class="slide-container" id="slide7">
     <h2 class="slide-title">The Operational Delta</h2>
     <div class="content-area">
@@ -324,7 +356,6 @@
             </div>
             <div class="bar">
                 <div class="label">Schema Readiness Framework</div>
-                <!-- FIXED: min-width lock prevents spill-out on variable renders -->
                 <div class="bar-inner"><div class="bar-fill" style="width: 45%; min-width: max-content; padding: 0 20px; background: linear-gradient(90deg, #166534, #22C55E);">ISO 13485 Compliant Risk Control</div></div>
             </div>
         </div>
@@ -387,6 +418,54 @@
         </div>
     </div>
 </div>
+
+<div class="nav-hint">
+    <div class="nav-btn" onclick="prevSlide()"><i class="fa-solid fa-chevron-up"></i></div>
+    <div class="nav-btn" onclick="nextSlide()"><i class="fa-solid fa-chevron-down"></i></div>
+</div>
+
+<script>
+    // Navigation Logic
+    const slides = document.querySelectorAll('.slide-container');
+    let currentSlideIndex = 0;
+
+    function nextSlide() {
+        if (currentSlideIndex < slides.length - 1) {
+            currentSlideIndex++;
+            slides[currentSlideIndex].scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
+    function prevSlide() {
+        if (currentSlideIndex > 0) {
+            currentSlideIndex--;
+            slides[currentSlideIndex].scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
+    // Click anywhere on slide to advance
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.nav-btn')) nextSlide();
+    });
+
+    // Keyboard support
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') {
+            e.preventDefault();
+            nextSlide();
+        }
+        if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+            e.preventDefault();
+            prevSlide();
+        }
+    });
+
+    // Sync current index on scroll (for mousewheel/touch)
+    window.addEventListener('scroll', () => {
+        const index = Math.round(window.scrollY / window.innerHeight);
+        currentSlideIndex = index;
+    });
+</script>
 
 </body>
 </html>
