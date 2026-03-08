@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        /* 1. PRESENTATION ENGINE */
+        /* 1. CORE SETUP & PRESENTATION LOGIC */
         * { box-sizing: border-box; }
         p { margin: 0; margin-bottom: 15px; }
         
@@ -69,7 +69,24 @@
         }
         .slide-container > * { position: relative; z-index: 1; width: 100%; max-width: 1200px; }
 
-        /* Navigation Controls */
+        #mobile-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            z-index: 3000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px;
+            color: #F8FAFC;
+            font-family: 'Urbanist', sans-serif;
+        }
+        #mobile-overlay i { font-size: 60px; color: #2563EB; margin-bottom: 20px; }
+        #mobile-overlay h2 { font-size: 24px; margin-bottom: 10px; }
+        #mobile-overlay p { color: #94A3B8; margin-bottom: 30px; }
+
         .nav-controls {
             position: fixed;
             bottom: 30px;
@@ -77,38 +94,45 @@
             display: flex;
             align-items: center;
             gap: 15px;
-            z-index: 100;
+            z-index: 2000;
         }
-        
         .nav-btn {
             background: #2563EB;
             border: none;
             color: #F8FAFC;
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
             transition: transform 0.2s, background 0.2s;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
+        }
+        .nav-btn:hover { background: #3b82f6; transform: scale(1.1); }
+        .nav-btn.disabled { background: #1e293b; color: #475569; cursor: not-allowed; box-shadow: none; }
+        .fullscreen-btn { background: #1e293b; border: 1px solid #334155; }
+        .slide-counter {
+            color: #F8FAFC;
+            font-family: 'Urbanist', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            background: rgba(15, 23, 42, 0.8);
+            padding: 8px 16px;
+            border-radius: 30px;
+            border: 1px solid #2563EB;
         }
 
-        .nav-btn:hover { background: #3b82f6; transform: scale(1.1); }
-        .nav-btn:active { transform: scale(0.95); }
-        .nav-btn.disabled { background: #1e293b; color: #475569; cursor: not-allowed; box-shadow: none; }
-        .slide-counter { color: #94A3B8; font-family: 'Urbanist', sans-serif; font-weight: 700; font-size: 0.9rem; letter-spacing: 1px; background: rgba(15, 23, 42, 0.6); padding: 5px 12px; border-radius: 20px; border: 1px solid #334155; }
-
         @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7); }
-            70% { box-shadow: 0 0 0 15px rgba(37, 99, 235, 0); }
+            0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.8); }
+            70% { box-shadow: 0 0 0 20px rgba(37, 99, 235, 0); }
             100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
         }
         .btn-next:not(.disabled) { animation: pulse 2s infinite; }
 
-        /* 2. TYPOGRAPHY */
         .slide-container h1, .slide-container h2, .slide-container h3, .slide-container h4 { color: #F8FAFC; font-weight: 700; margin: 0; }
         .slide-container h1 { font-size: 4.5vw; letter-spacing: -1px; }
         .slide-container .slide-title { font-size: 3vw; font-weight: 700; margin-bottom: 30px; text-align: left; width: 100%; color: #F8FAFC; }
@@ -118,7 +142,6 @@
         .slide-container .content-area { align-items: center; display: flex; flex-direction: column; flex-grow: 1; justify-content: center; width: 100%; }
         .accent-text { color: #38BDF8; }
 
-        /* 3. LAYOUTS */
         .title-layout { text-align: center; }
         .section-title-layout { align-items: center; display: flex; flex-direction: column; height: 100%; justify-content: center; text-align: center; width: 100%; }
         .section-title-layout h2 { font-size: 3.5vw; margin-bottom: 20px; }
@@ -183,10 +206,19 @@
             .timeline-item { width: 100%; text-align: left; padding-left: 50px; }
             .timeline-item::after { left: 20px; }
             .timeline-item .content-wrapper { position: static; margin: 0 !important; }
+            #mobile-overlay { display: flex; }
         }
+        @media (max-width: 900px) and (orientation: landscape) { #mobile-overlay { display: none; } }
     </style>
 </head>
 <body>
+
+<div id="mobile-overlay">
+    <i class="fa-solid fa-expand"></i>
+    <h2>Optimize Presentation</h2>
+    <p>This technical brief is optimized for a full-screen experience.</p>
+    <button class="btn" style="background: #2563EB; color: white; border: none; padding: 15px 30px; border-radius: 4px; font-weight: 700; cursor: pointer;" onclick="toggleFullscreen()">Enter Presentation Mode</button>
+</div>
 
 <div class="slide-container active" id="slide1">
     <div class="title-layout">
@@ -379,6 +411,7 @@
 </div>
 
 <div class="nav-controls">
+    <button class="nav-btn fullscreen-btn" onclick="toggleFullscreen()" title="Fullscreen mode"><i class="fa-solid fa-expand"></i></button>
     <span class="slide-counter" id="counter">1 / 10</span>
     <button class="nav-btn btn-prev disabled" id="prevBtn" title="Previous Slide"><i class="fa-solid fa-chevron-left"></i></button>
     <button class="nav-btn btn-next" id="nextBtn" title="Next Slide"><i class="fa-solid fa-chevron-right"></i></button>
@@ -389,6 +422,7 @@
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
     const counter = document.getElementById('counter');
+    const overlay = document.getElementById('mobile-overlay');
     let currentIndex = 0;
 
     function updatePresentation() {
@@ -401,12 +435,25 @@
     function nextSlide(e) { if (e) { e.preventDefault(); e.stopPropagation(); } if (currentIndex < slides.length - 1) { currentIndex++; updatePresentation(); } }
     function prevSlide(e) { if (e) { e.preventDefault(); e.stopPropagation(); } if (currentIndex > 0) { currentIndex--; updatePresentation(); } }
 
+    function toggleFullscreen() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(err => console.error(err.message));
+            overlay.style.display = 'none';
+        } else if (document.exitFullscreen) { document.exitFullscreen(); }
+    }
+
     nextBtn.addEventListener('click', nextSlide);
     prevBtn.addEventListener('click', prevSlide);
-    document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'ArrowDown') { e.preventDefault(); nextSlide(); } if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); prevSlide(); } });
-    document.addEventListener('click', (e) => { if (!e.target.closest('.nav-controls')) nextSlide(); });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); prevSlide(); }
+    });
+    document.addEventListener('click', (e) => { if (!e.target.closest('.nav-controls') && !e.target.closest('#mobile-overlay')) nextSlide(); });
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 900 || window.innerWidth > window.innerHeight) overlay.style.display = 'none';
+        else if (window.innerWidth <= 900 && !document.fullscreenElement) overlay.style.display = 'flex';
+    });
     updatePresentation();
 </script>
-
 </body>
 </html>
