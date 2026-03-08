@@ -355,7 +355,6 @@
                     <a href="resources.html" onclick="closeMobileMenu()">Resources</a>
                     <a href="articles.html" onclick="closeMobileMenu()">Articles</a>
                     <a href="#contact" onclick="closeMobileMenu()">Contact</a>
-                    <a href="https://outlook.office.com/book/SchemaTechnicalLtd@schematechnical.co.uk/" target="_blank" class="btn" style="color: white; margin-left: 25px;" onclick="closeMobileMenu()">Book Discovery Call</a>
                 </div>
             </nav>
         </div>
@@ -396,7 +395,6 @@
             </div>
             
             <div class="services-grid">
-                <!-- SDR -->
                 <div class="service-card">
                     <div class="icon-box">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
@@ -416,7 +414,6 @@
                     <a href="sdr.html" class="btn full-service-btn">Full SDR Briefing</a>
                 </div>
 
-                <!-- DOCS -->
                 <div class="service-card">
                     <div class="icon-box">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
@@ -437,7 +434,6 @@
                     <a href="authoring.html" class="btn full-service-btn">Full Authoring Briefing</a>
                 </div>
 
-                <!-- SNA -->
                 <div class="service-card">
                     <div class="icon-box">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 16V8l-9-5l-9 5v8l9 5z"/><path d="M12 22v-6"/><path d="M12 8v6"/><path d="M8 10l4 2 4-2"/></svg>
@@ -457,7 +453,6 @@
                     <a href="sna.html" class="btn full-service-btn">Full SNA Briefing</a>
                 </div>
 
-                <!-- FRA -->
                 <div class="service-card">
                     <div class="icon-box">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4"/><path d="M12 16V12"/></svg>
@@ -489,7 +484,6 @@
             </div>
 
             <div class="pricing-grid">
-                <!-- SDR Pricing -->
                 <div class="pricing-card featured">
                     <h3>Pre-Freeze Audit (SDR)</h3>
                     <div class="price">From £2,500</div>
@@ -503,7 +497,6 @@
                     <a href="sdr.html" class="btn" style="width:100%; text-align:center;">View SDR Scope</a>
                 </div>
 
-                <!-- Documentation Pricing -->
                 <div class="pricing-card">
                     <h3>Technical Authoring</h3>
                     <div class="price">From £350</div>
@@ -517,7 +510,6 @@
                     <a href="authoring.html" class="btn" style="width:100%; text-align:center; margin: 10px 0 0 0; padding: 12px 0;">View Authoring Scope</a>
                 </div>
 
-                <!-- SNA Pricing -->
                 <div class="pricing-card">
                     <h3>Service Network (SNA)</h3>
                     <div class="price">From £1,500</div>
@@ -531,7 +523,6 @@
                     <a href="sna.html" class="btn" style="width:100%; text-align:center; margin: 10px 0 0 0; padding: 12px 0;">View SNA Scope</a>
                 </div>
 
-                <!-- Reliability Pricing -->
                 <div class="pricing-card">
                     <h3>Reliability (FRA)</h3>
                     <div class="price">From £4,500</div>
@@ -630,7 +621,6 @@
         </div>
     </footer>
 
-    <!-- CONFIGURATOR MODAL OVERLAY -->
     <div class="modal-overlay" id="config-modal" onclick="closeModal(event, 'config-modal')">
         <div class="modal-content" onclick="event.stopPropagation()">
             <button class="modal-close" onclick="closeModal(event, 'config-modal')">&times;</button>
@@ -642,7 +632,6 @@
             
             <div id="configurator-container" style="margin-top: 30px;">
                 
-                <!-- STEP 1: Disqualification Gate -->
                 <div class="config-step active" id="step-1">
                     <p class="config-question" style="font-size: 1.25rem; color: var(--navy); font-weight: 600; margin-bottom: 15px;">1. What is the core architecture of your medical device?</p>
                     <div class="config-options-grid">
@@ -673,7 +662,6 @@
                     </div>
                 </div>
 
-                <!-- STEP 2: Core Diagnostic -->
                 <div class="config-step" id="step-2">
                     <p class="config-question" style="font-size: 1.25rem; color: var(--navy); font-weight: 600; margin-bottom: 15px;">3. What is the current lifecycle stage of the physical hardware?</p>
                     <div class="config-options-grid">
@@ -761,7 +749,6 @@
                     </div>
                 </div>
 
-                <!-- STEP 3: Results Panel -->
                 <div class="config-step" id="step-result">
                     <div id="result-content"></div>
                     <div class="form-group" style="margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 25px;" id="email-capture-block">
@@ -777,7 +764,6 @@
         </div>
     </div>
 
-    <!-- Hidden form for Netlify -->
     <form name="assessment_report" netlify netlify-honeypot="bot-field" hidden>
         <input type="text" name="email" />
         <textarea name="report_data"></textarea>
