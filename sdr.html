@@ -181,10 +181,15 @@
         </div>
         
         <!-- EMBEDDED SLIDE DECK -->
-        <div class="deck-container">
-            <!-- IMPORTANT: You must upload schema_sdr_pitch_deck.html to the same folder as this file -->
-            <iframe class="deck-iframe" src="schema_sdr_pitch_deck.html" title="SDR Pitch Deck"></iframe>
-        </div>
+       <div class="deck-container" style="position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 60px;">
+    <!-- IMPORTANT: 'src' below must match the specific service file name (e.g. schema_sdr_pitch_deck.html) -->
+    <iframe class="deck-iframe" 
+            src="schema_sdr_pitch_deck.html" 
+            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; background: #0F172A;" 
+            title="Service Pitch Deck"
+            scrolling="no">
+    </iframe>
+</div>
     </div>
 
     <section class="sow-section">
