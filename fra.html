@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schema Technical | Field Reliability Analysis (FRA)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root { --navy: #0f172a; --slate: #475569; --blue: #2563eb; --light: #f8fafc; --white: #ffffff; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
+        body { background-color: var(--light); color: var(--navy); line-height: 1.6; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+        .btn { display: inline-flex; align-items: center; justify-content: center; height: 50px; padding: 0 24px; border-radius: 4px; font-weight: 600; text-decoration: none; background: var(--blue); color: var(--white); border: 1px solid var(--blue); cursor: pointer; transition: 0.3s; }
+        .btn:hover { background: var(--navy); border-color: var(--navy); }
+
+        /* --- UNIFIED HEADER & NAV STYLES --- */
+        header { background: var(--white); padding: 15px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 1000; }
+        nav { display: flex; justify-content: space-between; align-items: center; position: relative;}
+        .logo img { height: 80px; display: block; }
+        .nav-links { display: flex; align-items: center; }
+        .nav-links > a, .dropdown .dropbtn { margin-left: 25px; text-decoration: none; color: var(--slate); font-weight: 500; font-size: 0.95rem; background: none; border: none; cursor: pointer; font-family: inherit; display: flex; align-items: center; }
+        .nav-links > a:hover, .dropdown .dropbtn:hover { color: var(--blue); }
+
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-content { display: none; position: absolute; background-color: var(--white); min-width: 260px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1); z-index: 2000; border-radius: 4px; top: 100%; left: 25px; border: 1px solid #e2e8f0; }
+        .dropdown-content a { color: var(--slate); padding: 12px 16px; text-decoration: none; display: block; margin-left: 0; border-bottom: 1px solid #f1f5f9; font-size: 0.9rem; }
+        .dropdown-content a:last-child { border-bottom: none; }
+        .dropdown-content a:hover { background-color: #f8fafc; color: var(--blue); }
+
+        @media (min-width: 901px) {
+            .dropdown:hover .dropdown-content { display: block; }
+            .dropdown:hover .dropbtn { color: var(--blue); }
+        }
+
+        .menu-toggle { display: none; flex-direction: column; cursor: pointer; padding: 5px; }
+        .menu-toggle span { height: 3px; width: 25px; background: var(--navy); margin-bottom: 5px; border-radius: 2px; transition: all 0.3s ease; }
+        .menu-toggle span:last-child { margin-bottom: 0; }
+
+        /* Spoke Page specific CSS */
+        .spoke-header { padding: 60px 0 40px; text-align: center; }
+        .spoke-header h1 { font-size: 2.5rem; color: var(--navy); margin-bottom: 15px; }
+        .spoke-header p { color: var(--slate); font-size: 1.2rem; max-width: 800px; margin: 0 auto; }
+
+        .deck-container { width: 100%; max-width: 1280px; margin: 0 auto 60px auto; border-radius: 8px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .deck-iframe { width: 100%; height: 720px; border: none; display: block; background: #0F172A; }
+
+        .sow-section { background: var(--white); padding: 80px 0; border-top: 1px solid #e2e8f0; }
+        .sow-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 50px; align-items: start; }
+
+        .sow-content h2 { font-size: 2rem; color: var(--navy); margin-bottom: 20px; }
+        .sow-content h3 { font-size: 1.4rem; color: var(--blue); margin: 30px 0 15px 0; }
+        .sow-content p { margin-bottom: 15px; color: var(--slate); font-size: 1.05rem; }
+        .sow-content ul { margin-left: 20px; margin-bottom: 20px; color: var(--slate); font-size: 1.05rem;}
+        .sow-content li { margin-bottom: 8px; }
+
+        .sow-pricing { background: var(--light); border: 1px solid #e2e8f0; border-radius: 8px; padding: 30px; position: sticky; top: 120px; }
+        .sow-pricing h3 { font-size: 1.5rem; margin-bottom: 20px; color: var(--navy); border-bottom: 2px solid var(--blue); padding-bottom: 10px;}
+        .tier-block { margin-bottom: 25px; }
+        .tier-block h4 { font-size: 1.1rem; color: var(--navy); display: flex; justify-content: space-between;}
+        .tier-block h4 span { color: var(--blue); font-weight: 700; }
+        .tier-block p { font-size: 0.9rem; color: var(--slate); margin-top: 5px; }
+        
+        @media (max-width: 900px) {
+            .menu-toggle { display: flex; }
+            .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: var(--white); padding: 20px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); align-items: flex-start; border-top: 1px solid #e2e8f0; }
+            .nav-links.active { display: flex; }
+            .nav-links > a, .nav-links .btn { margin: 10px 0; font-size: 1.1rem; width: 100%; }
+            .nav-links .btn { text-align: center; }
+            
+            .dropdown { margin-left: 0; width: 100%; margin: 10px 0; }
+            .dropdown .dropbtn { font-size: 1.1rem; padding: 0; width: 100%; text-align: left; justify-content: space-between; margin-left: 0;}
+            .dropdown-content { position: static; box-shadow: none; border: none; border-left: 2px solid var(--blue); padding-left: 10px; display: none; margin-top: 10px; min-width: 100%; }
+            .dropdown.active .dropdown-content { display: block; }
+            .dropdown-content a { margin: 5px 0; padding: 5px 0; font-size: 1rem; border: none; width: auto;}
+
+            .sow-grid { grid-template-columns: 1fr; }
+            .deck-iframe { height: 400px; } 
+            .logo img { height: 60px; } 
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <a href="index.html"><img src="Company logo.jpg" alt="Schema Technical Logo"></a>
+                </div>
+                <div class="menu-toggle" onclick="toggleMobileMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="nav-links" id="main-nav">
+                    <a href="index.html#about" onclick="closeMobileMenu()">About</a>
+                    <div class="dropdown" onclick="toggleDropdown(event)">
+                        <button class="dropbtn">Services <i class="fa-solid fa-chevron-down" style="font-size: 0.8rem; margin-left: 5px;"></i></button>
+                        <div class="dropdown-content">
+                            <a href="sdr.html">Service Design Review (SDR)</a>
+                            <a href="authoring.html">Technical Authoring</a>
+                            <a href="sna.html">Service Network (SNA)</a>
+                            <a href="fra.html" style="color: var(--blue);">Reliability Analysis (FRA)</a>
+                        </div>
+                    </div>
+                    <a href="index.html#pricing" onclick="closeMobileMenu()">Pricing</a>
+                    <a href="resources.html" onclick="closeMobileMenu()">Resources</a>
+                    <a href="articles.html" onclick="closeMobileMenu()">Articles</a>
+                    <a href="index.html#contact" onclick="closeMobileMenu()">Contact</a>
+                    <a href="https://outlook.office.com/book/SchemaTechnicalLtd@schematechnical.co.uk/" target="_blank" class="btn" style="color: white; margin-left: 25px;" onclick="closeMobileMenu()">Book Discovery Call</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="spoke-header">
+            <h1>Field Reliability Analysis (FRA)</h1>
+            <p>Forensic root cause execution to eliminate "No Fault Found" loops and permanently close regulatory CAPAs with objective physics.</p>
+        </div>
+        
+        <div class="deck-container">
+            <iframe class="deck-iframe" src="schema_fra_pitch_deck.html" title="FRA Pitch Deck"></iframe>
+        </div>
+    </div>
+
+    <section class="sow-section">
+        <div class="container">
+            <div class="sow-grid">
+                
+                <div class="sow-content">
+                    <h2>Scope of Work & Methodology</h2>
+                    <p>The objective of an FRA is to transition from subjective field complaints to objective, physics-based evidence. We isolate the physical failure mode, execute a 5-Whys logic progression, and provide the engineering data required to formally close an ISO 13485 Clause 8.5 CAPA.</p>
+                    
+                    <h3>Phase 1 & 2: Quarantine & Baseline</h3>
+                    <p>Contextual alignment of CRM/ERP failure logs and extraction of raw telemetry. Capture of external physical states, thermal imprints, and execution of IEC 62353 electrical baselines.</p>
+
+                    <h3>Phase 3: Invasive Teardown</h3>
+                    <p>Comparative disassembly against a Known Good Unit (KGU) to capture break-torque metrics, seal integrity, and isolation barrier deviations.</p>
+
+                    <h3>Phase 4: Root Cause Determination</h3>
+                    <p>Application of the 5-Whys and Ishikawa methodologies to definitively classify the fault as Design (DfM/DfS), Manufacturing, Use-Error, or Service execution.</p>
+
+                    <h3>Phase 5 & 6: Reporting & VoE</h3>
+                    <p>Re-commissioning of the failed asset to a safe state, followed by the translation of metrology data into a regulatory-grade report, including the strict Verification of Effectiveness (VoE) metric.</p>
+                    
+                    <h3 style="color: #b91c1c;">Liability Clause (Spoliation of Evidence)</h3>
+                    <p>The client must provide a Decontamination Certificate strictly limiting cleaning to a surface-level wipe. Units subjected to deep internal cleaning, fluid flushing, or depot-level "tinkering" prior to handover will be rejected, as this destroys forensic evidence (e.g., fluid ingress tidemarks, thermal deformation).</p>
+                </div>
+
+                <div class="sow-pricing">
+                    <h3>Sustaining \& Diagnostic Packages</h3>
+                    <p style="font-size: 0.9rem; margin-bottom: 20px;">FRA is deployed as either a targeted project response to a field crisis or an ongoing sustaining retainer.</p>
+                    
+                    <div class="tier-block">
+                        <h4>C1: Investigation Package <span>£4,500</span></h4>
+                        <p>End-to-end 6-Phase FRA Execution for up to 3 Failed-From-Field (FFF) units + 1 KGU baseline. Capped at a maximum of 5 days of forensic analysis.</p>
+                    </div>
+
+                    <div class="tier-block">
+                        <h4>C1: RCA Extension <span>£850 / Day</span></h4>
+                        <p>Additional forensic analysis days (if required and authorised) due to complex intermittent faults or missing client data.</p>
+                    </div>
+
+                    <div class="tier-block">
+                        <h4>C2: Sustaining Retainer <span>£1,500 / mo</span></h4>
+                        <p>Guarantees 2 days per month of priority engineering support for R&D technical triage and QMS review. <i>(Subject to a minimum 3-month term).</i></p>
+                    </div>
+
+                    <a href="https://outlook.office.com/book/SchemaTechnicalLtd@schematechnical.co.uk/" target="_blank" class="btn" style="width: 100%; margin-top: 15px;">Book Triage Call</a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer style="background: #020617; color: #94a3b8; padding: 40px 0; text-align: center; font-size: 0.9rem; margin-top: 0;">
+        <p>&copy; 2026 Schema Technical. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function toggleMobileMenu() { document.getElementById('main-nav').classList.toggle('active'); }
+        function closeMobileMenu() {
+            document.getElementById('main-nav').classList.remove('active');
+            const dropdown = document.querySelector('.dropdown');
+            if(dropdown) dropdown.classList.remove('active');
+        }
+        function toggleDropdown(e) {
+            if (window.innerWidth <= 900) {
+                e.currentTarget.classList.toggle('active');
+            }
+        }
+    </script>
+</body>
+</html>

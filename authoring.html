@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schema Technical | Technical Authoring</title>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root { --navy: #0f172a; --slate: #475569; --blue: #2563eb; --light: #f8fafc; --white: #ffffff; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
+        body { background-color: var(--light); color: var(--navy); line-height: 1.6; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+        .btn { display: inline-flex; align-items: center; justify-content: center; height: 50px; padding: 0 24px; border-radius: 4px; font-weight: 600; text-decoration: none; background: var(--blue); color: var(--white); border: 1px solid var(--blue); cursor: pointer; transition: 0.3s; }
+        .btn:hover { background: var(--navy); border-color: var(--navy); }
+
+        /* --- UNIFIED HEADER & NAV STYLES --- */
+        header { background: var(--white); padding: 15px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 1000; }
+        nav { display: flex; justify-content: space-between; align-items: center; position: relative;}
+        .logo img { height: 80px; display: block; }
+        .nav-links { display: flex; align-items: center; }
+        .nav-links > a, .dropdown .dropbtn { margin-left: 25px; text-decoration: none; color: var(--slate); font-weight: 500; font-size: 0.95rem; background: none; border: none; cursor: pointer; font-family: inherit; display: flex; align-items: center; }
+        .nav-links > a:hover, .dropdown .dropbtn:hover { color: var(--blue); }
+
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-content { display: none; position: absolute; background-color: var(--white); min-width: 260px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1); z-index: 2000; border-radius: 4px; top: 100%; left: 25px; border: 1px solid #e2e8f0; }
+        .dropdown-content a { color: var(--slate); padding: 12px 16px; text-decoration: none; display: block; margin-left: 0; border-bottom: 1px solid #f1f5f9; font-size: 0.9rem; }
+        .dropdown-content a:last-child { border-bottom: none; }
+        .dropdown-content a:hover { background-color: #f8fafc; color: var(--blue); }
+
+        @media (min-width: 901px) {
+            .dropdown:hover .dropdown-content { display: block; }
+            .dropdown:hover .dropbtn { color: var(--blue); }
+        }
+
+        .menu-toggle { display: none; flex-direction: column; cursor: pointer; padding: 5px; }
+        .menu-toggle span { height: 3px; width: 25px; background: var(--navy); margin-bottom: 5px; border-radius: 2px; transition: all 0.3s ease; }
+        .menu-toggle span:last-child { margin-bottom: 0; }
+
+        /* Spoke Page specific CSS */
+        .spoke-header { padding: 60px 0 40px; text-align: center; }
+        .spoke-header h1 { font-size: 2.5rem; color: var(--navy); margin-bottom: 15px; }
+        .spoke-header p { color: var(--slate); font-size: 1.2rem; max-width: 800px; margin: 0 auto; }
+
+        .deck-container { width: 100%; max-width: 1280px; margin: 0 auto 60px auto; border-radius: 8px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .deck-iframe { width: 100%; height: 720px; border: none; display: block; background: #0F172A; }
+
+        .sow-section { background: var(--white); padding: 80px 0; border-top: 1px solid #e2e8f0; }
+        .sow-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 50px; align-items: start; }
+
+        .sow-content h2 { font-size: 2rem; color: var(--navy); margin-bottom: 20px; }
+        .sow-content h3 { font-size: 1.4rem; color: var(--blue); margin: 30px 0 15px 0; }
+        .sow-content p { margin-bottom: 15px; color: var(--slate); font-size: 1.05rem; }
+        .sow-content ul { margin-left: 20px; margin-bottom: 20px; color: var(--slate); font-size: 1.05rem;}
+        .sow-content li { margin-bottom: 8px; }
+
+        .sow-pricing { background: var(--light); border: 1px solid #e2e8f0; border-radius: 8px; padding: 30px; position: sticky; top: 120px; }
+        .sow-pricing h3 { font-size: 1.5rem; margin-bottom: 20px; color: var(--navy); border-bottom: 2px solid var(--blue); padding-bottom: 10px;}
+        .tier-block { margin-bottom: 25px; }
+        .tier-block h4 { font-size: 1.1rem; color: var(--navy); display: flex; justify-content: space-between;}
+        .tier-block h4 span { color: var(--blue); font-weight: 700; }
+        .tier-block p { font-size: 0.9rem; color: var(--slate); margin-top: 5px; }
+        
+        @media (max-width: 900px) {
+            .menu-toggle { display: flex; }
+            .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: var(--white); padding: 20px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); align-items: flex-start; border-top: 1px solid #e2e8f0; }
+            .nav-links.active { display: flex; }
+            .nav-links > a, .nav-links .btn { margin: 10px 0; font-size: 1.1rem; width: 100%; }
+            .nav-links .btn { text-align: center; }
+            
+            .dropdown { margin-left: 0; width: 100%; margin: 10px 0; }
+            .dropdown .dropbtn { font-size: 1.1rem; padding: 0; width: 100%; text-align: left; justify-content: space-between; margin-left: 0;}
+            .dropdown-content { position: static; box-shadow: none; border: none; border-left: 2px solid var(--blue); padding-left: 10px; display: none; margin-top: 10px; min-width: 100%; }
+            .dropdown.active .dropdown-content { display: block; }
+            .dropdown-content a { margin: 5px 0; padding: 5px 0; font-size: 1rem; border: none; width: auto;}
+
+            .sow-grid { grid-template-columns: 1fr; }
+            .deck-iframe { height: 400px; } 
+            .logo img { height: 60px; } 
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <a href="index.html"><img src="Company logo.jpg" alt="Schema Technical Logo"></a>
+                </div>
+                <div class="menu-toggle" onclick="toggleMobileMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="nav-links" id="main-nav">
+                    <a href="index.html#about" onclick="closeMobileMenu()">About</a>
+                    <div class="dropdown" onclick="toggleDropdown(event)">
+                        <button class="dropbtn">Services <i class="fa-solid fa-chevron-down" style="font-size: 0.8rem; margin-left: 5px;"></i></button>
+                        <div class="dropdown-content">
+                            <a href="sdr.html">Service Design Review (SDR)</a>
+                            <a href="authoring.html" style="color: var(--blue);">Technical Authoring</a>
+                            <a href="sna.html">Service Network (SNA)</a>
+                            <a href="fra.html">Reliability Analysis (FRA)</a>
+                        </div>
+                    </div>
+                    <a href="index.html#pricing" onclick="closeMobileMenu()">Pricing</a>
+                    <a href="resources.html" onclick="closeMobileMenu()">Resources</a>
+                    <a href="articles.html" onclick="closeMobileMenu()">Articles</a>
+                    <a href="index.html#contact" onclick="closeMobileMenu()">Contact</a>
+                    <a href="https://outlook.office.com/book/SchemaTechnicalLtd@schematechnical.co.uk/" target="_blank" class="btn" style="color: white; margin-left: 25px;" onclick="closeMobileMenu()">Book Discovery Call</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="spoke-header">
+            <h1>Technical Authoring</h1>
+            <p>Engineering legally defensible Risk Controls, eradicating field ambiguity, and securing ISO 13485 Document Control through locked Digital Service Portals.</p>
+        </div>
+        
+        <div class="deck-container">
+            <iframe class="deck-iframe" src="schema_ta_pitch_deck.html" title="Technical Authoring Pitch Deck"></iframe>
+        </div>
+    </div>
+
+    <section class="sow-section">
+        <div class="container">
+            <div class="sow-grid">
+                
+                <div class="sow-content">
+                    <h2>Scope of Work & Methodology</h2>
+                    <p>In the MedTech sector, service manuals are formal, legally binding risk control measures ("Information for Safety"). Schema Technical processes your documentation through our proprietary 5-Phase Authoring architecture.</p>
+                    
+                    <h3>Phase 1: Pre-Authoring Intake</h3>
+                    <p>Securing the Risk Management File (RMF), GA CAD (.STEP), hazard limits, and physical production-equivalent hardware to establish the regulatory baseline.</p>
+
+                    <h3>Phase 2: Structural Anatomy</h3>
+                    <p>Reconciling the physical hardware against the CAD and engineering the core Safe-State isolation sequences (mains/pneumatic discharge).</p>
+
+                    <h3>Phase 3: Syntax & Hazard Injection</h3>
+                    <p>Drafting the procedures using strict, verb-first imperative syntax and applying ISO 3864 signal words (DANGER/WARNING/CAUTION) explicitly at the point of physical hazard.</p>
+
+                    <h3>Phase 4: Physical Validation</h3>
+                    <p>Executing the authored drafts strictly on the bench to validate physical tool clearances and generate highly targeted vector line-art directly from the CAD data.</p>
+
+                    <h3>Phase 5: Regulatory Handover</h3>
+                    <p>Final QARA and R&D review cycles to verify technical limits prior to formal ingestion into your QMS or Digital Service Portal.</p>
+                    
+                    <h3 style="color: #b91c1c;">Liability Clause (No Blind Drafting)</h3>
+                    <p>Schema Technical does not author strictly from CAD. The Client must provide one (1) physical, production-equivalent Device Under Test (DUT) and all associated proprietary alignment jigs. If the authoring team cannot physically prove the tooling clearance on the bench, the manual cannot be validated.</p>
+                </div>
+
+                <div class="sow-pricing">
+                    <h3>Modular Authoring Scopes</h3>
+                    <p style="font-size: 0.9rem; margin-bottom: 20px;">Documentation is scoped and priced according to its functional tier and regulatory safety profile.</p>
+                    
+                    <div class="tier-block">
+                        <h4>Readiness Framework <span>From £3,500</span></h4>
+                        <p>The core architectural spine. Includes Digital Service Portal setup, safety rules, required tooling matrices, and Preventative Maintenance (PPM) schedules.</p>
+                    </div>
+
+                    <div class="tier-block">
+                        <h4>FRU Work Instructions <span>From £350 / ea</span></h4>
+                        <p>Highly visual, modular replacement guides for standard Field Replaceable Units (e.g., fans, standard PCBs). Typically 2-4 pages per assembly.</p>
+                    </div>
+
+                    <div class="tier-block">
+                        <h4>Complex Procedures <span>From £850 / ea</span></h4>
+                        <p>Advanced instructions requiring proprietary alignment jigs, software calibration intervention, or deep-level multi-stage teardowns.</p>
+                    </div>
+
+                    <a href="https://outlook.office.com/book/SchemaTechnicalLtd@schematechnical.co.uk/" target="_blank" class="btn" style="width: 100%; margin-top: 15px;">Scope Your Documents</a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer style="background: #020617; color: #94a3b8; padding: 40px 0; text-align: center; font-size: 0.9rem; margin-top: 0;">
+        <p>&copy; 2026 Schema Technical. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function toggleMobileMenu() { document.getElementById('main-nav').classList.toggle('active'); }
+        function closeMobileMenu() {
+            document.getElementById('main-nav').classList.remove('active');
+            const dropdown = document.querySelector('.dropdown');
+            if(dropdown) dropdown.classList.remove('active');
+        }
+        function toggleDropdown(e) {
+            if (window.innerWidth <= 900) {
+                e.currentTarget.classList.toggle('active');
+            }
+        }
+    </script>
+</body>
+</html>
