@@ -73,7 +73,8 @@
         #mobile-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.98); z-index: 3000; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px; color: #F8FAFC; font-family: 'Urbanist', sans-serif; }
         #mobile-overlay i { font-size: 60px; color: #2563EB; margin-bottom: 20px; }
         #mobile-overlay h2 { font-size: 24px; margin-bottom: 10px; }
-        #mobile-overlay p { color: #94A3B8; margin-bottom: 30px; }
+        #mobile-overlay p { color: #94A3B8; margin-bottom: 30px; font-size: 1.1rem; line-height: 1.5; }
+        .overlay-actions { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
 
         /* NAVIGATION CONTROLS */
         .nav-controls { position: fixed; bottom: 30px; right: 30px; display: flex; align-items: center; gap: 15px; z-index: 2000; }
@@ -128,10 +129,13 @@
 <body>
 
 <div id="mobile-overlay">
-    <i class="fa-solid fa-expand"></i>
+    <i class="fa-solid fa-rotate"></i>
     <h2>Optimize Presentation</h2>
-    <p>This technical brief is optimized for a full-screen experience.</p>
-    <button class="btn" style="background: #2563EB; color: white; border: none; padding: 15px 30px; border-radius: 4px; font-weight: 700; cursor: pointer;" onclick="toggleFullscreen()">Enter Presentation Mode</button>
+    <p>For the best experience, please rotate your device to <strong>landscape mode</strong> or enter Fullscreen.</p>
+    <div class="overlay-actions">
+        <button class="btn" style="background: #2563EB; color: white; border: none; padding: 15px 30px; border-radius: 4px; font-weight: 700; cursor: pointer; font-family: 'Urbanist', sans-serif;" onclick="toggleFullscreen()">Fullscreen Mode</button>
+        <button class="btn" style="background: #1E293B; color: #F8FAFC; border: 1px solid #334155; padding: 15px 30px; border-radius: 4px; font-weight: 700; cursor: pointer; font-family: 'Urbanist', sans-serif;" onclick="dismissOverlay()">Dismiss</button>
+    </div>
 </div>
 
 <div class="slide-container active" id="slide1">
@@ -278,10 +282,10 @@
 </div>
 
 <div class="nav-controls">
-    <button class="nav-btn fullscreen-btn" onclick="toggleFullscreen()"><i class="fa-solid fa-expand"></i></button>
+    <button class="nav-btn fullscreen-btn" onclick="toggleFullscreen()" title="Fullscreen mode"><i class="fa-solid fa-expand"></i></button>
     <span class="slide-counter" id="counter">1 / 10</span>
-    <button class="nav-btn btn-prev disabled" id="prevBtn"><i class="fa-solid fa-chevron-left"></i></button>
-    <button class="nav-btn btn-next" id="nextBtn"><i class="fa-solid fa-chevron-right"></i></button>
+    <button class="nav-btn btn-prev disabled" id="prevBtn" title="Previous Slide"><i class="fa-solid fa-chevron-left"></i></button>
+    <button class="nav-btn btn-next" id="nextBtn" title="Next Slide"><i class="fa-solid fa-chevron-right"></i></button>
 </div>
 
 <script>
@@ -291,6 +295,7 @@
     const counter = document.getElementById('counter');
     const overlay = document.getElementById('mobile-overlay');
     let currentIndex = 0;
+    let overlayDismissed = false;
 
     function updatePresentation() {
         slides.forEach((slide, index) => index === currentIndex ? slide.classList.add('active') : slide.classList.remove('active'));
@@ -302,13 +307,42 @@
     function nextSlide(e) { if (e) { e.preventDefault(); e.stopPropagation(); } if (currentIndex < slides.length - 1) { currentIndex++; updatePresentation(); } }
     function prevSlide(e) { if (e) { e.preventDefault(); e.stopPropagation(); } if (currentIndex > 0) { currentIndex--; updatePresentation(); } }
 
+    function dismissOverlay() {
+        overlayDismissed = true;
+        overlay.style.display = 'none';
+    }
+
     function toggleFullscreen() {
         const docEl = document.documentElement;
         const requestFs = docEl.requestFullscreen || docEl.webkitRequestFullscreen || docEl.mozRequestFullScreen || docEl.msRequestFullscreen;
         const exitFs = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
+        
+        // Hardware Bypass: Detect iOS devices (all browsers on iOS use restricted Apple WebKit)
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        
         if (!document.fullscreenElement && !document.webkitFullscreenElement) {
-            if (requestFs) { requestFs.call(docEl).then(() => { overlay.style.display = 'none'; }).catch(err => { overlay.style.display = 'none'; }); }
-        } else if (exitFs) { exitFs.call(document); }
+            if (isIOS || !requestFs) {
+                // Synchronous pop-out prevents mobile browsers from blocking the popup
+                window.open(window.location.href, '_blank');
+                dismissOverlay();
+                return;
+            }
+            
+            let promise = requestFs.call(docEl);
+            if (promise !== undefined) {
+                promise.then(() => {
+                    dismissOverlay();
+                }).catch(err => {
+                    console.error(err.message);
+                    window.open(window.location.href, '_blank');
+                    dismissOverlay();
+                });
+            } else {
+                dismissOverlay();
+            }
+        } else if (exitFs) { 
+            exitFs.call(document); 
+        }
     }
 
     nextBtn.addEventListener('click', nextSlide);
@@ -317,13 +351,25 @@
         if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); nextSlide(); }
         if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); prevSlide(); }
     });
-    document.addEventListener('click', (e) => { if (!e.target.closest('.nav-controls') && !e.target.closest('#mobile-overlay')) nextSlide(); });
-    window.addEventListener('resize', () => {
-        const isMobile = window.innerWidth <= 900; const isPortrait = window.innerHeight > window.innerWidth;
-        const isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement);
-        if (isMobile && isPortrait && !isFullscreen) overlay.style.display = 'flex';
-        else overlay.style.display = 'none';
+    
+    document.addEventListener('click', (e) => { 
+        if (!e.target.closest('.nav-controls') && !e.target.closest('#mobile-overlay')) {
+            nextSlide(); 
+        }
     });
+
+    window.addEventListener('resize', () => {
+        const isMobile = window.innerWidth <= 900; 
+        const isPortrait = window.innerHeight > window.innerWidth;
+        const isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement);
+        
+        if (isMobile && isPortrait && !isFullscreen && !overlayDismissed) {
+            overlay.style.display = 'flex';
+        } else {
+            overlay.style.display = 'none';
+        }
+    });
+
     updatePresentation();
 </script>
 </body>

@@ -379,6 +379,7 @@
     const counter = document.getElementById('counter');
     const overlay = document.getElementById('mobile-overlay');
     let currentIndex = 0;
+    let overlayDismissed = false;
 
     function updatePresentation() {
         slides.forEach((slide, index) => index === currentIndex ? slide.classList.add('active') : slide.classList.remove('active'));
@@ -390,13 +391,42 @@
     function nextSlide(e) { if (e) { e.preventDefault(); e.stopPropagation(); } if (currentIndex < slides.length - 1) { currentIndex++; updatePresentation(); } }
     function prevSlide(e) { if (e) { e.preventDefault(); e.stopPropagation(); } if (currentIndex > 0) { currentIndex--; updatePresentation(); } }
 
+    function dismissOverlay() {
+        overlayDismissed = true;
+        overlay.style.display = 'none';
+    }
+
     function toggleFullscreen() {
         const docEl = document.documentElement;
         const requestFs = docEl.requestFullscreen || docEl.webkitRequestFullscreen || docEl.mozRequestFullScreen || docEl.msRequestFullscreen;
         const exitFs = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
+        
+        // Hardware Bypass: Detect iOS devices (all browsers on iOS use restricted Apple WebKit)
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        
         if (!document.fullscreenElement && !document.webkitFullscreenElement) {
-            if (requestFs) { requestFs.call(docEl).then(() => { overlay.style.display = 'none'; }).catch(err => { overlay.style.display = 'none'; }); }
-        } else if (exitFs) { exitFs.call(document); }
+            if (isIOS || !requestFs) {
+                // Synchronous pop-out prevents mobile browsers from blocking the popup
+                window.open(window.location.href, '_blank');
+                dismissOverlay();
+                return;
+            }
+            
+            let promise = requestFs.call(docEl);
+            if (promise !== undefined) {
+                promise.then(() => {
+                    dismissOverlay();
+                }).catch(err => {
+                    console.error(err.message);
+                    window.open(window.location.href, '_blank');
+                    dismissOverlay();
+                });
+            } else {
+                dismissOverlay();
+            }
+        } else if (exitFs) { 
+            exitFs.call(document); 
+        }
     }
 
     nextBtn.addEventListener('click', nextSlide);
@@ -405,13 +435,25 @@
         if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); nextSlide(); }
         if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); prevSlide(); }
     });
-    document.addEventListener('click', (e) => { if (!e.target.closest('.nav-controls') && !e.target.closest('#mobile-overlay')) nextSlide(); });
-    window.addEventListener('resize', () => {
-        const isMobile = window.innerWidth <= 900; const isPortrait = window.innerHeight > window.innerWidth;
-        const isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement);
-        if (isMobile && isPortrait && !isFullscreen) overlay.style.display = 'flex';
-        else overlay.style.display = 'none';
+    
+    document.addEventListener('click', (e) => { 
+        if (!e.target.closest('.nav-controls') && !e.target.closest('#mobile-overlay')) {
+            nextSlide(); 
+        }
     });
+
+    window.addEventListener('resize', () => {
+        const isMobile = window.innerWidth <= 900; 
+        const isPortrait = window.innerHeight > window.innerWidth;
+        const isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement);
+        
+        if (isMobile && isPortrait && !isFullscreen && !overlayDismissed) {
+            overlay.style.display = 'flex';
+        } else {
+            overlay.style.display = 'none';
+        }
+    });
+
     updatePresentation();
 </script>
 </body>
