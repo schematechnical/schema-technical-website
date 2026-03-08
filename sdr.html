@@ -62,27 +62,31 @@
             margin: 0 auto;
         }
 
-        .deck-container {
+        /* FULL BLEED DECK CONTAINER */
+        .full-bleed-deck {
             width: 100%;
-            max-width: 1280px;
-            margin: 0 auto 60px auto;
-            border-radius: 8px;
+            height: 75vh;
+            min-height: 500px;
+            background-color: var(--navy);
+            position: relative;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-top: 1px solid #1e293b;
+            border-bottom: 1px solid #1e293b;
         }
         
-        .deck-iframe {
+        .full-bleed-deck iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: 720px;
+            height: 100%;
             border: none;
             display: block;
-            background: #0F172A; /* Match deck background */
         }
 
         .sow-section {
             background: var(--white);
             padding: 80px 0;
-            border-top: 1px solid #e2e8f0;
         }
 
         .sow-grid {
@@ -135,8 +139,13 @@
             .dropdown-content a { margin: 5px 0; padding: 5px 0; font-size: 1rem; border: none; width: auto;}
 
             .sow-grid { grid-template-columns: 1fr; }
-            .deck-iframe { height: 400px; } 
             .logo img { height: 60px; } 
+
+            .full-bleed-deck {
+                height: auto;
+                min-height: auto;
+                aspect-ratio: 16 / 9;
+            }
         }
     </style>
 </head>
@@ -168,7 +177,6 @@
                     <a href="resources.html" onclick="closeMobileMenu()">Resources</a>
                     <a href="articles.html" onclick="closeMobileMenu()">Articles</a>
                     <a href="index.html#contact" onclick="closeMobileMenu()">Contact</a>
-                    <a href="https://outlook.office.com/book/SchemaTechnicalLtd@schematechnical.co.uk/" target="_blank" class="btn" style="color: white; margin-left: 25px;" onclick="closeMobileMenu()">Book Discovery Call</a>
                 </div>
             </nav>
         </div>
@@ -179,19 +187,11 @@
             <h1>Service Design Review (SDR)</h1>
             <p>Forensic pre-freeze hardware auditing. We dismantle your prototype to identify margin-destroying field failures before you commit to tooling.</p>
         </div>
+    </div>
         
-        <!-- EMBEDDED SLIDE DECK -->
-       <div class="deck-container" style="position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 60px;">
-    <!-- IMPORTANT: 'src' below must match the specific service file name (e.g. schema_sdr_pitch_deck.html) -->
-    <iframe class="deck-iframe" 
-        src="schema_sdr_pitch_deck.html" 
-        allow="fullscreen"
-        allowfullscreen
-        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; background: #0F172A;" 
-        title="Service Pitch Deck"
-        scrolling="no">
-</iframe>
-</div>
+    <!-- FULL BLEED EMBEDDED SLIDE DECK -->
+    <div class="full-bleed-deck">
+        <iframe src="schema_sdr_pitch_deck.html" allow="fullscreen" allowfullscreen title="Service Pitch Deck" scrolling="no"></iframe>
     </div>
 
     <section class="sow-section">
