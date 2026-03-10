@@ -124,6 +124,15 @@
         .tier-block h4 { font-size: 1.1rem; color: var(--navy); display: flex; justify-content: space-between;}
         .tier-block h4 span { color: var(--blue); font-weight: 700; }
         .tier-block p { font-size: 0.9rem; color: var(--slate); margin-top: 5px; }
+
+        /* Sheridan Transparency CSS */
+        .sheridan-box { background: #fee2e2; border-left: 4px solid #b91c1c; padding: 20px; margin-bottom: 30px; border-radius: 0 4px 4px 0; }
+        .sheridan-box h4 { color: #b91c1c; margin-bottom: 5px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; }
+        .sheridan-box p { color: #7f1d1d; margin: 0; font-size: 1.05rem; line-height: 1.5; }
+        
+        .liability-box { background: var(--white); border: 2px dashed #94a3b8; padding: 25px; margin-top: 40px; border-radius: 4px; }
+        .liability-box h4 { color: var(--navy); margin-bottom: 10px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; }
+        .liability-box p { color: var(--slate); margin: 0; font-size: 1rem; }
         
         @media (max-width: 900px) {
             .menu-toggle { display: flex; }
@@ -185,11 +194,10 @@
     <div class="container">
         <div class="spoke-header">
             <h1>Service Design Review (SDR)</h1>
-            <p>Forensic pre-freeze hardware auditing. We dismantle your prototype to identify margin-destroying field failures before you commit to tooling.</p>
+            <p>Identify the 'Service Gap' before you freeze tooling. We conduct forensic physical teardowns to find routing failures and hidden margin-killers before mass production.</p>
         </div>
     </div>
         
-    <!-- FULL BLEED EMBEDDED SLIDE DECK -->
     <div class="full-bleed-deck">
         <iframe src="schema_sdr_pitch_deck.html" allow="fullscreen" allowfullscreen title="Service Pitch Deck" scrolling="no"></iframe>
     </div>
@@ -199,39 +207,46 @@
             <div class="sow-grid">
                 
                 <div class="sow-content">
-                    <h2>Scope of Work & Deliverables</h2>
-                    <p>The Service Design Review (SDR) is a highly forensic, physical engineering audit executed prior to your final design freeze. The objective is to intercept unmitigated physical risks, routing failures, and access bottlenecks that will cause your Mean Time To Repair (MTTR) to spike in the field.</p>
+                    <div class="sheridan-box">
+                        <h4>The Ugly Truth</h4>
+                        <p>Skipping an SDR guarantees high warranty burn. If you freeze a hardware design without validating service access, your R&D engineers will spend the next two years acting as field technicians because third-party vendors won't be able to fix it.</p>
+                    </div>
+
+                    <h2>Exact Deliverables & Methodology</h2>
+                    <p>The Service Design Review (SDR) is a highly forensic, physical engineering audit executed prior to your final design freeze to intercept Mean Time To Repair (MTTR) bottlenecks.</p>
                     
                     <h3>Phase 1: Forensic Teardown</h3>
-                    <p>Schema Technical will execute a complete mechanical disassembly of one (1) physical, production-equivalent device. We map the accessibility and physical friction associated with reaching your top 5 highest-risk Field Replaceable Units (FRUs).</p>
+                    <p>We execute a complete mechanical disassembly of one (1) physical, production-equivalent device, mapping the physical friction of reaching your top 5 highest-risk Field Replaceable Units (FRUs).</p>
 
-                    <h3>Phase 2: Formal Audit Report (REP-SDR-001)</h3>
-                    <p>We deliver a strict, regulatory-grade engineering dossier detailing:</p>
+                    <h3>Phase 2: The "Red Flag" Report (REP-SDR-001)</h3>
+                    <p>You receive a strict, regulatory-grade engineering dossier detailing:</p>
                     <ul>
-                        <li><strong>Downtime Metrics:</strong> Calculating the exact MTTR for specific components based on fastener count and loom obstruction.</li>
-                        <li><strong>Red Flag Interventions:</strong> Immediate, actionable CAD revisions required prior to tooling (e.g., trapped cables, blinded captive nuts, missing IP seals).</li>
-                        <li><strong>Special Tooling Demands:</strong> Identifying areas where proprietary jigs are required due to poor sub-assembly alignment.</li>
+                        <li><strong>Downtime Metrics:</strong> Exact MTTR calculations based on fastener count and loom obstruction.</li>
+                        <li><strong>Mandatory Interventions:</strong> Actionable CAD revisions required prior to tooling (e.g., trapped cables, blinded captive nuts).</li>
+                        <li><strong>Special Tooling Demands:</strong> Identification of proprietary jigs required for sub-assembly alignment.</li>
                     </ul>
 
-                    <h3>Phase 3: Executive Debrief</h3>
-                    <p>A comprehensive video conference with your R&D and Quality leadership to present the physical evidence and agree on the required Engineering Change Orders (ECOs) before mass production begins.</p>
+                    <h3>Phase 3: Executive ECO Debrief</h3>
+                    <p>A comprehensive video conference with your R&D leadership to present physical evidence and agree on Engineering Change Orders (ECOs) before commercial scale-up.</p>
                     
-                    <h3 style="color: #b91c1c;">Liability Clause (Blind Auditing)</h3>
-                    <p>Schema Technical does not conduct SDRs purely from CAD files. We require physical access to a prototype. Assessing cable flex, real-world tolerance stacking, and human ergonomics requires a physical bench audit to guarantee accuracy.</p>
+                    <div class="liability-box">
+                        <h4>Who This Service is NOT For</h4>
+                        <p><strong>Digital-only SaMDs or Blind Audits.</strong> Schema Technical operates strictly within physical hardware liability. We do not conduct SDRs purely from CAD files. Assessing cable flex, tolerance stacking, and ergonomics requires physical bench access. If you cannot provide a physical prototype, we cannot audit it.</p>
+                    </div>
                 </div>
 
                 <div class="sow-pricing">
                     <h3>Transparent Commercials</h3>
-                    <p style="font-size: 0.9rem; margin-bottom: 20px;">SDR fees are strictly bounded by the mechanical complexity of the target hardware to protect project velocity.</p>
+                    <p style="font-size: 0.9rem; margin-bottom: 20px;">SDR fees are strictly bounded by mechanical complexity to protect project velocity.</p>
                     
                     <div class="tier-block">
                         <h4>Tier 1: Standard <span>From £2,500</span></h4>
-                        <p><strong>Max 3 Days.</strong> &lt; 50 serviceable parts. Passive cooling, single enclosure access. No active fluidics or complex optics.</p>
+                        <p><strong>Max 3 Days.</strong> &lt; 50 serviceable parts. Passive cooling, single enclosure access. No active fluidics.</p>
                     </div>
 
                     <div class="tier-block">
                         <h4>Tier 2: Advanced <span>From £3,500</span></h4>
-                        <p><strong>Max 5 Days.</strong> 50 - 200 serviceable parts. Moving electromechanical assemblies, multi-PCBA architecture, basic fluidics.</p>
+                        <p><strong>Max 5 Days.</strong> 50 - 200 serviceable parts. Moving electromechanical assemblies, basic fluidics.</p>
                     </div>
 
                     <div class="tier-block">
