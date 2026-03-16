@@ -909,7 +909,7 @@
                 ${pathwayHtml}
             `;
             
-            let currentReportText = `DIAGNOSTIC REPORT\n\n${reportText}\n\nPATHWAY:\n${pathwayHtml.replace(/<[^>]*>?/gm, '').trim()}`;
+            let currentReportText = `<strong>DIAGNOSTIC REPORT</strong><br><br>${reportText}<br><br>${pathwayHtml}`;
             document.querySelector('form[name="assessment_report"] textarea[name="report_data"]').value = currentReportText;
 
             if (isMature) {
