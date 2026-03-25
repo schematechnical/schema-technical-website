@@ -33,7 +33,7 @@
         "MedTech Service Architecture",
         "ISO 13485",
         "ISO 14971 Risk Management",
-        "MDR Post-Market Surveillance",
+        "MDR & IVDR Post-Market Surveillance",
         "Service Design Review (SDR)",
         "Service Network Architecture (SNA)",
         "Field Root-Cause Analysis (FRA)"
@@ -607,9 +607,9 @@
                         <div class="form-group">
                             <label>Device Classification</label>
                             <select name="classification">
-                                <option value="Class I">Class I (Low Risk)</option>
-                                <option value="Class IIa/b">Class IIa/b (Medium Risk)</option>
-                                <option value="Class III">Class III (High Risk/PMA)</option>
+                                <option value="MDR Class I / IVDR Class A">MDR Class I / IVDR Class A (Low Risk)</option>
+                                <option value="MDR Class IIa/IIb / IVDR Class B">MDR Class IIa/IIb / IVDR Class B (Medium Risk)</option>
+                                <option value="MDR Class III / IVDR Class C/D">MDR Class III / IVDR Class C/D (High Risk)</option>
                                 <option value="Unknown">Not sure yet</option>
                             </select>
                         </div>
@@ -704,19 +704,54 @@
                         </label>
                     </div>
 
-                    <p class="config-question" style="font-size: 1.25rem; color: var(--navy); font-weight: 600; margin-bottom: 15px;">4. Under EU MDR/IVDR, what is the regulatory classification?</p>
+                    <p class="config-question" style="font-size: 1.25rem; color: var(--navy); font-weight: 600; margin-bottom: 15px;">4. Which regulatory framework applies to your device?</p>
                     <div class="config-options-grid">
                         <label class="config-option">
-                            <input type="radio" name="q4" value="A">
-                            <span class="config-option-content">Class I / Class IIa.</span>
+                            <input type="radio" name="q4" value="MDR">
+                            <span class="config-option-content">MDR (Medical Device Regulation).</span>
                         </label>
                         <label class="config-option">
-                            <input type="radio" name="q4" value="B">
-                            <span class="config-option-content">Class IIb / Class III.</span>
+                            <input type="radio" name="q4" value="IVDR">
+                            <span class="config-option-content">IVDR (In Vitro Diagnostic Regulation).</span>
                         </label>
                     </div>
 
-                    <p class="config-question" style="font-size: 1.25rem; color: var(--navy); font-weight: 600; margin-bottom: 15px;">5. How many Field Replaceable Units (FRUs) are defined in your architecture?</p>
+                    <div class="config-actions">
+                        <button class="btn-white" style="margin-left: 0;" onclick="showConfigStep(1)">Back</button>
+                        <button class="btn" onclick="processStep2()">Continue Analysis</button>
+                    </div>
+                </div>
+
+                <div class="config-step" id="step-3">
+                    <div id="mdr-class-block" style="display: none;">
+                        <p class="config-question" style="font-size: 1.25rem; color: var(--navy); font-weight: 600; margin-bottom: 15px;">5. What is your MDR risk classification?</p>
+                        <div class="config-options-grid">
+                            <label class="config-option">
+                                <input type="radio" name="q_class_mdr" value="A">
+                                <span class="config-option-content">Class I / Class IIa.</span>
+                            </label>
+                            <label class="config-option">
+                                <input type="radio" name="q_class_mdr" value="B">
+                                <span class="config-option-content">Class IIb / Class III.</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="ivdr-class-block" style="display: none;">
+                        <p class="config-question" style="font-size: 1.25rem; color: var(--navy); font-weight: 600; margin-bottom: 15px;">5. What is your IVDR risk classification?</p>
+                        <div class="config-options-grid">
+                            <label class="config-option">
+                                <input type="radio" name="q_class_ivdr" value="A">
+                                <span class="config-option-content">Class A / Class B.</span>
+                            </label>
+                            <label class="config-option">
+                                <input type="radio" name="q_class_ivdr" value="B">
+                                <span class="config-option-content">Class C / Class D.</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <p class="config-question" style="font-size: 1.25rem; color: var(--navy); font-weight: 600; margin-bottom: 15px;">6. How many Field Replaceable Units (FRUs) are defined in your architecture?</p>
                     <div class="config-options-grid">
                         <label class="config-option">
                             <input type="radio" name="q5" value="A">
@@ -732,7 +767,7 @@
                         </label>
                     </div>
 
-                    <p class="config-question" style="font-size: 1.25rem; color: var(--navy); font-weight: 600; margin-bottom: 15px;">6. What is the baseline status of your field service documentation?</p>
+                    <p class="config-question" style="font-size: 1.25rem; color: var(--navy); font-weight: 600; margin-bottom: 15px;">7. What is the baseline status of your field service documentation?</p>
                     <div class="config-options-grid">
                         <label class="config-option">
                             <input type="radio" name="q6" value="A">
@@ -748,7 +783,7 @@
                         </label>
                     </div>
 
-                    <p class="config-question" style="font-size: 1.25rem; color: var(--navy); font-weight: 600; margin-bottom: 15px;">7. Who is bearing the physical liability for field repairs?</p>
+                    <p class="config-question" style="font-size: 1.25rem; color: var(--navy); font-weight: 600; margin-bottom: 15px;">8. Who is bearing the physical liability for field repairs?</p>
                     <div class="config-options-grid">
                         <label class="config-option">
                             <input type="radio" name="q7" value="A">
@@ -769,7 +804,7 @@
                     </div>
 
                     <div class="config-actions">
-                        <button class="btn-white" style="margin-left: 0;" onclick="showConfigStep(1)">Back</button>
+                        <button class="btn-white" style="margin-left: 0;" onclick="showConfigStep(2)">Back</button>
                         <button class="btn" onclick="generateDiagnosticResult()">Generate Report</button>
                     </div>
                 </div>
@@ -780,7 +815,7 @@
                         <label style="font-size: 1.1rem; color: var(--navy); margin-bottom: 10px;">Email this report & book consultation:</label>
                         <input type="email" id="assessment-email" placeholder="Enter work email..." required style="margin-bottom: 15px;">
                         <button class="btn" style="width: 100%;" onclick="submitAssessmentAndBook()">Book Call & Send Report</button>
-                        <button class="btn-white" style="width: 100%; margin: 10px 0 0 0;" onclick="showConfigStep(2)">Recalculate</button>
+                        <button class="btn-white" style="width: 100%; margin: 10px 0 0 0;" onclick="showConfigStep(3)">Recalculate</button>
                         <p id="assessment-status" style="color: #059669; font-weight: 600; text-align: center; margin-top: 10px; display: none;">Report captured. Redirecting to booking portal...</p>
                     </div>
                 </div>
@@ -845,7 +880,8 @@
             document.getElementById('step-' + (stepNumber === 'result' ? 'result' : stepNumber)).classList.add('active');
             const subtitle = document.getElementById('config-subtitle');
             if (stepNumber === 1) subtitle.innerText = "Phase 1: Operational Scope";
-            else if (stepNumber === 2) subtitle.innerText = "Phase 2: System Complexity & Gap Analysis";
+            else if (stepNumber === 2) subtitle.innerText = "Phase 2: Regulatory Framework";
+            else if (stepNumber === 3) subtitle.innerText = "Phase 3: System Complexity & Gap Analysis";
             else subtitle.innerText = "Execution Report Generated";
         }
 
@@ -867,13 +903,39 @@
             } else showConfigStep(2);
         }
 
+        function processStep2() {
+            const q3 = document.querySelector('input[name="q3"]:checked');
+            const q4 = document.querySelector('input[name="q4"]:checked');
+            if (!q3 || !q4) return alert("Please select an option for both questions.");
+
+            // Hide both blocks initially
+            document.getElementById('mdr-class-block').style.display = 'none';
+            document.getElementById('ivdr-class-block').style.display = 'none';
+
+            // Display the relevant block based on the framework selected
+            if (q4.value === 'MDR') {
+                document.getElementById('mdr-class-block').style.display = 'block';
+            } else {
+                document.getElementById('ivdr-class-block').style.display = 'block';
+            }
+
+            showConfigStep(3);
+        }
+
         function generateDiagnosticResult() {
             const q3 = document.querySelector('input[name="q3"]:checked');
             const q4 = document.querySelector('input[name="q4"]:checked');
+            
+            // Dynamically check the correct risk classification input
+            const q_class = q4 && q4.value === 'MDR' ? 
+                document.querySelector('input[name="q_class_mdr"]:checked') : 
+                document.querySelector('input[name="q_class_ivdr"]:checked');
+                
             const q5 = document.querySelector('input[name="q5"]:checked');
             const q6 = document.querySelector('input[name="q6"]:checked');
             const q7 = document.querySelector('input[name="q7"]:checked');
-            if (!q3 || !q4 || !q5 || !q6 || !q7) return alert("Please complete all diagnostic parameters.");
+            
+            if (!q3 || !q4 || !q_class || !q5 || !q6 || !q7) return alert("Please complete all diagnostic parameters.");
 
             let isMature = false, statusBadge, reportText, pathwayHtml;
 
@@ -909,7 +971,7 @@
                 ${pathwayHtml}
             `;
             
-            let currentReportText = `<strong>DIAGNOSTIC REPORT</strong><br><br>${reportText}<br><br>${pathwayHtml}`;
+            let currentReportText = `DIAGNOSTIC REPORT\n\n${reportText}\n\nPATHWAY:\n${pathwayHtml.replace(/<[^>]*>?/gm, '').trim()}`;
             document.querySelector('form[name="assessment_report"] textarea[name="report_data"]').value = currentReportText;
 
             if (isMature) {
