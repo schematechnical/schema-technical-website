@@ -824,7 +824,9 @@
         </div>
     </div>
 
-    <form name="assessment_report" netlify netlify-honeypot="bot-field" hidden>
+    <form name="assessment_report" data-netlify="true" netlify-honeypot="bot-field" hidden>
+        <input type="hidden" name="form-name" value="assessment_report" />
+        <input type="text" name="bot-field" />
         <input type="text" name="email" />
         <textarea name="report_data"></textarea>
     </form>
