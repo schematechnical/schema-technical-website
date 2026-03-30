@@ -1,6 +1,6 @@
 ---
 title: "Design Freeze Checklist: The Serviceability Questions Your R&D Team
-  Forgot to Ask"
+  Forgot to Ask "
 date: 2026-03-30T13:09:00.000+01:00
 thumbnail: /images/blog/gr4.jpg
 ---
