@@ -94,3 +94,9 @@ Can all maintenance tasks be completed with standard field service tooling? Are 
 Does validated, visual work instruction documentation exist for every maintenance task? Is it written for a competent engineer who has never seen this device before, or does it assume knowledge that only your R&D team holds?
 
 None of these questions require a serviceability specialist to ask them. But in practice, they are rarely asked systematically, and almost never asked early enough. The consequence is a device that performs brilliantly in clinical evaluation and becomes an operational liability at commercial scale.
+
+If your device is approaching design freeze and these questions have not been formally addressed, that is the moment to act. Not after the first field return. Not after the first warranty claim. Now, while changes are still possible and the cost of addressing them is measured in engineering hours rather than margin erosion.
+
+At Schema Technical, the Service Design Review exists specifically for this stage of development. A structured, forensic audit of your hardware before the design locks, identifying the maintenance risks that are invisible on a CAD model but unavoidable in the field.
+
+If you would like to understand where your device sits before freeze, get in touch directly at dan@schematechnical.co.uk
