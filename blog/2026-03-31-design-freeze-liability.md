@@ -26,3 +26,21 @@ A mission-critical system, routinely absent from front-line aircraft, not becaus
 Nobody designed Zone 19 to be a liability. But that is exactly what it became. The pipework failure was not the problem. The access was not the problem. The crate was not the problem. It was the combination, and nobody had modelled what that combination would cost once the aircraft was in operational service.
 
 I saw this pattern more than once during my time in the RAF. Designs that made complete sense on paper, but had never been examined from a maintenance perspective. The result was always the same: workarounds became policy, and limitations became normal.
+
+**A Hole Two Millimetres Too Small**
+
+Years later, working in field service on complex life science capital equipment, I encountered a different aircraft. Different stakes, different environment, but a remarkably familiar story.
+
+The single cell isolation device. Precision engineering, genuinely impressive clinical capability. One of its core components is a machined aluminium block, the base for a linear actuator that drives a flat plate through a controlled vertical movement.
+
+The actuator wire runs from the unit and connects directly to a PCBA. To allow the cable to pass through the aluminium block, the design team had machined an arch-shaped cutout into the base.
+
+The cutout was too small.
+
+Not by much. But enough that when the actuator needed replacing, the connector on the end of the cable could not pass through the hole. You could not remove the actuator without first removing the aluminium block. You could not remove the aluminium block without disassembling the entire base structure to reach the fixing screws on its underside. A straightforward component swap became a full structural disassembly, a significant labour cost, and a device that was out of service for far longer than necessary.
+
+The fix would have been a single line change in the CNC programme. A marginally larger radius on the cutout. It would have made no difference whatsoever to the structural integrity or stability of the block.
+
+The person who designed that cutout was almost certainly not thinking about field replacement. They were thinking about the actuator, the cable routing, and the structural requirements of the block. All entirely reasonable things to think about. But nobody in that design process asked the question: what happens when this part needs to come out in the field?
+
+That question was never asked. So it was never answered.
