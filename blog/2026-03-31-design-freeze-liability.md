@@ -44,3 +44,53 @@ The fix would have been a single line change in the CNC programme. A marginally 
 The person who designed that cutout was almost certainly not thinking about field replacement. They were thinking about the actuator, the cable routing, and the structural requirements of the block. All entirely reasonable things to think about. But nobody in that design process asked the question: what happens when this part needs to come out in the field?
 
 That question was never asked. So it was never answered.
+
+**Why This Keeps Happening**
+
+These two examples are separated by industry, by decade, and by context. One is a combat aircraft. The other is a laboratory instrument. But the failure mode is identical.
+
+In both cases, the design was technically sound. In both cases, the component performed its intended function. In both cases, the problem only became visible once the device left the controlled environment it was built in and entered the reality of operational use.
+
+This is not a story about bad engineers. The engineers who designed Zone 19 and the Cell Isolation device base structure were not incompetent. They were focused on performance, on function, on getting the design to the point where it worked. That focus is exactly what you want from an R&D team.
+
+The problem is structural, not individual. In most hardware development programmes, serviceability is either addressed too late, or not addressed at all. It is not part of the design conversation. It surfaces for the first time when a field engineer opens a panel and realises what they are actually dealing with.
+
+By that point, the bill of materials is locked. The tooling is cut. The validation is complete. Any change carries a cost that the business is rarely willing to absorb. So the field engineer adapts. The workaround becomes the process. The limitation becomes the norm.
+
+And somewhere in the background, margins erode.
+
+**The Questions That Should Be Asked Before Design Freeze**
+
+The good news is that serviceability problems are almost always preventable. Not through expensive redesigns or late-stage interventions, but through asking the right questions at the right point in the development process, before the design is locked.
+
+These are the questions that should be part of every design review for any hardware that will require maintenance in the field.
+
+**Access**
+
+Can a field engineer physically reach every component that is likely to need replacement? Is the access route clear of other systems that will require removal first? If the answer is no, what is the maintenance burden of that access path?
+
+**Connector and cable clearance**
+
+Can every connector, cable assembly, and harness be removed and refitted without disassembling surrounding structures? Have clearance requirements been modelled with the connector fitted, not just the cable?
+
+**Removal sequence**
+
+What is the complete removal sequence for every Field Replaceable Unit? How many steps does it involve? How many other components need to be disturbed? Has anyone timed it?
+
+**Functional test impact**
+
+Which components, when removed, trigger functional tests or recalibration requirements on reinstatement? What is the realistic time and failure rate associated with those tests? Has that cost been factored into the service model?
+
+**No Fault Found risk**
+
+Which components are most likely to generate No Fault Found returns? Are those components easy to remove and refit, or does the removal process itself introduce risk of damage or misalignment?
+
+**Tooling and access equipment**
+
+Can all maintenance tasks be completed with standard field service tooling? Are there tasks that require proprietary jigs, fixtures, or calibration equipment that a third-party engineer would not have access to?
+
+**Documentation readiness**
+
+Does validated, visual work instruction documentation exist for every maintenance task? Is it written for a competent engineer who has never seen this device before, or does it assume knowledge that only your R&D team holds?
+
+None of these questions require a serviceability specialist to ask them. But in practice, they are rarely asked systematically, and almost never asked early enough. The consequence is a device that performs brilliantly in clinical evaluation and becomes an operational liability at commercial scale.
