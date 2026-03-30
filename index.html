@@ -75,6 +75,12 @@
 
         .cta-group {
             display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .cta-buttons {
+            display: flex;
             justify-content: center;
             gap: 15px;
             flex-wrap: wrap;
@@ -115,6 +121,24 @@
         .btn-white:hover {
             background-color: #e2e8f0;
             transform: translateY(-2px);
+        }
+
+        /* Diagnostic Pulse Indicator */
+        .pulse-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background-color: #4ade80; 
+            border-radius: 50%;
+            margin-right: 12px;
+            box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7);
+            animation: pulse-green 2s infinite;
+        }
+
+        @keyframes pulse-green {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(74, 222, 128, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
         }
 
         /* --- UNIFIED HEADER & NAV STYLES --- */
@@ -247,8 +271,49 @@
         .expand-btn { background: none; border: none; color: var(--blue); font-weight: 600; cursor: pointer; text-align: left; padding: 0; margin-top: auto; display: inline-flex; align-items: center; }
         .expand-btn:hover { text-decoration: underline; }
         .expand-btn::after { content: "+"; margin-left: 8px; font-size: 1.2rem; line-height: 1; }
+        .expand-btn.open::after { content: "−"; }
         .full-service-btn { margin-top: 20px; text-align: center; width: 100%; background: #f1f5f9; color: var(--navy); border: 1px solid #cbd5e1; }
         .full-service-btn:hover { background: var(--blue); color: var(--white); border-color: var(--blue); }
+
+        /* Diagnostic Full-Width Banner */
+        .diagnostic-banner {
+            background-color: var(--navy);
+            padding: 80px 0;
+            text-align: center;
+        }
+        .diagnostic-banner h2 {
+            font-size: 2.5rem;
+            color: var(--white);
+            margin-bottom: 30px;
+            line-height: 1.2;
+        }
+        .diagnostic-banner .btn-accent {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            padding: 0 40px;
+            height: 60px;
+            background-color: var(--blue);
+            color: var(--white);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        .diagnostic-banner .btn-accent:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.6);
+            background-color: #3b82f6;
+        }
+        .diagnostic-banner p {
+            margin-top: 20px;
+            font-size: 1.1rem;
+            color: #94a3b8;
+        }
 
         /* Pricing Section */
         .pricing { padding: 100px 0; background: var(--white); }
@@ -323,6 +388,8 @@
             .hero { padding: 80px 0; }
             .logo img { height: 60px; } 
             .modal-content { padding: 30px 20px; }
+            .diagnostic-banner h2 { font-size: 2rem; }
+            .diagnostic-banner .btn-accent { font-size: 1.1rem; padding: 0 25px; width: 100%; }
         }
     </style>
 </head>
@@ -365,8 +432,9 @@
             <h1>Scale your MedTech Hardware<br>without the R&D distraction.</h1>
             <p>We conduct forensic design audits, write your ISO 13485 service manuals, and build your third-party repair networks. Protect your hardware margins and keep your R&D team focused on innovation.</p>
             <div class="cta-group">
-                <button class="btn" onclick="openConfigModal()">Assess Service Readiness</button>
-                <a href="https://outlook.office.com/book/SchemaTechnicalLtd@schematechnical.co.uk/" target="_blank" class="btn-white">Book Technical Consult</a>
+                <div class="cta-buttons">
+                    <a href="https://outlook.office.com/book/SchemaTechnicalLtd@schematechnical.co.uk/" target="_blank" class="btn" style="height: 55px; font-size: 1.1rem; padding: 0 30px;">Book Technical Consult</a>
+                </div>
             </div>
         </div>
     </section>
@@ -394,6 +462,17 @@
                     <p style="color: var(--slate); font-size: 1rem;">High "No Fault Found" returns and inefficient repair loops erode your hardware margins during commercial scale-up.</p>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- NEW FULL-WIDTH DIAGNOSTIC CTA BANNER -->
+    <section class="diagnostic-banner" id="diagnostic">
+        <div class="container">
+            <h2>Is Your Device Ready for the Field? Find Out in 2 Minutes</h2>
+            <button class="btn-accent" onclick="openConfigModal()">
+                <span class="pulse-dot"></span> Start the Free Assessment
+            </button>
+            <p>No obligation. No sign-up. Just a clear picture of where your gaps are.</p>
         </div>
     </section>
 
@@ -490,9 +569,9 @@
             <h2>Bridge the Gap Between Lab & Field.</h2>
             <div class="about-content">
                 <p><strong>Founded by Dan Howes (ex-Bio-Rad, Thermo Fisher, RAF), Schema Technical brings the rigour of aerospace logistics to MedTech.</strong></p>
-                <p>Having led the support architecture for complex systems like the <strong>Bio-Rad Genesis</strong>, we know exactly what happens when R&D prototypes hit the real world. A brilliant clinical device will fail commercially if the service infrastructure isn't built to match the engineering quality.</p>
+                <p>Having built the EMEA support architecture for the <strong>Bio-Rad Genesis</strong> — from service documentation and depot training to field engineer certification and customer support frameworks — we know exactly what happens when R&D prototypes hit the real world. A brilliant clinical device will fail commercially if the service infrastructure isn't built to match the engineering quality.</p>
                 <p>Embedded within the Cambridge, Norwich, and London MedTech hubs, we provide fractional service architecture to scaling device manufacturers nationwide and internationally.</p>
-                <p>We are not generalist management consultants. We are <strong>Service Architects</strong>. We operate across the entire hardware lifecycle: conducting forensic pre-freeze design audits to remove repair bottlenecks, building ISO 13485 compliant field infrastructures, and performing physical root cause analysis on post-market failures. We ensure your service operations are as robust as your clinical data, allowing your R&D engineers to focus on the next product while we protect your margins in the field.</p>
+                <p>We are not generalist management consultants. We are <strong>Service Architects</strong>. We operate across the entire hardware lifecycle: conducting forensic pre-freeze design audits to remove repair bottlenecks, building ISO 13485 aligned field infrastructures, and performing physical root cause analysis on post-market failures. We ensure your service operations are as robust as your clinical data, allowing your R&D engineers to focus on the next product while we protect your margins in the field.</p>
                 <div style="text-align: center; margin-top: 40px;">
                     <a href="https://www.linkedin.com/in/danhowes1/" target="_blank" class="btn">View LinkedIn Profile</a>
                 </div>
@@ -505,7 +584,7 @@
             <div class="section-title">
                 <h2>Transparent Commercials</h2>
                 <div class="divider"></div>
-                <p class="section-subtitle">We scope by mechanical complexity, not open-ended day rates. Fixed fees ensure ISO 13485 compliance is thoroughly funded without scope bleed.</p>
+                <p class="section-subtitle">We scope by mechanical complexity, not open-ended day rates. Fixed fees ensure your ISO 13485 aligned documentation is thoroughly funded without scope bleed.</p>
             </div>
 
             <div class="pricing-grid">
@@ -848,15 +927,17 @@
         }
 
         // Expanding Cards Logic for Services
-        function toggleDetails(btn, defaultText = "Read More") {
+        function toggleDetails(btn, defaultText = "View Deliverables") {
             const details = btn.nextElementSibling;
             if (details.style.maxHeight) {
                 details.style.maxHeight = null;
                 details.classList.remove('open');
+                btn.classList.remove('open');
                 btn.innerHTML = defaultText; 
             } else {
                 details.classList.add('open');
                 details.style.maxHeight = details.scrollHeight + "px";
+                btn.classList.add('open');
                 btn.innerHTML = "Close"; 
             }
         }
@@ -866,6 +947,15 @@
             if (e) e.stopPropagation();
             document.getElementById(modalId).classList.remove('active');
             document.body.style.overflow = '';
+            
+            // Clear URL hash if the diagnostic modal is closed
+            if (modalId === 'config-modal') {
+                const url = new URL(window.location);
+                if (url.hash === '#diagnostic') {
+                    url.hash = '';
+                    window.history.replaceState({}, document.title, url.toString() || window.location.pathname);
+                }
+            }
         }
 
         function openConfigModal() {
@@ -875,7 +965,21 @@
             showConfigStep(1);
             document.getElementById('config-modal').classList.add('active');
             document.body.style.overflow = 'hidden';
+            
+            // Push hash to URL for direct linking
+            if(window.location.hash !== '#diagnostic') {
+                window.history.pushState(null, null, '#diagnostic');
+            }
         }
+
+        // Event Listener for Direct Link Routing
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.location.hash === '#diagnostic') {
+                setTimeout(() => {
+                    openConfigModal();
+                }, 400); 
+            }
+        });
 
         function showConfigStep(stepNumber) {
             document.querySelectorAll('.config-step').forEach(el => el.classList.remove('active'));
@@ -898,7 +1002,7 @@
                         <h3 style="color: var(--navy); margin-bottom: 10px; font-size: 1.4rem;">Hardware Liability Pre-Requisite</h3>
                         <p style="color: var(--slate); margin-bottom: 15px; font-size: 1.05rem; line-height: 1.6;">Schema Technical operates strictly within physical hardware liability. We recommend re-engaging once Seed funding is secured, or seeking a SaMD consultancy if you operate digital-only.</p>
                     </div>
-                    <button class="btn-white" style="margin-left: 0;" onclick="closeModal(null, 'config-modal')">Close Window</button>
+                    <button class=\"btn-white\" style=\"margin-left: 0;\" onclick=\"closeModal(null, 'config-modal')\">Close Window</button>
                 `;
                 document.getElementById('email-capture-block').style.display = 'none';
                 showConfigStep('result');
@@ -910,11 +1014,9 @@
             const q4 = document.querySelector('input[name="q4"]:checked');
             if (!q3 || !q4) return alert("Please select an option for both questions.");
 
-            // Hide both blocks initially
             document.getElementById('mdr-class-block').style.display = 'none';
             document.getElementById('ivdr-class-block').style.display = 'none';
 
-            // Display the relevant block based on the framework selected
             if (q4.value === 'MDR') {
                 document.getElementById('mdr-class-block').style.display = 'block';
             } else {
@@ -928,7 +1030,6 @@
             const q3 = document.querySelector('input[name="q3"]:checked');
             const q4 = document.querySelector('input[name="q4"]:checked');
             
-            // Dynamically check the correct risk classification input
             const q_class = q4 && q4.value === 'MDR' ? 
                 document.querySelector('input[name="q_class_mdr"]:checked') : 
                 document.querySelector('input[name="q_class_ivdr"]:checked');
