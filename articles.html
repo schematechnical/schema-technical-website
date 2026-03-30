@@ -6,7 +6,10 @@
     <title>Schema Technical | Engineering Articles</title>
     <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Validated Markdown and YAML Parsers -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
 
     <style>
         /* Shared root CSS */
@@ -14,11 +17,12 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
         body { background-color: var(--light); color: var(--navy); line-height: 1.6; }
         .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+        .reading-container { max-width: 800px; margin: 0 auto; padding: 0 20px; }
 
         .btn { display: inline-flex; align-items: center; justify-content: center; height: 50px; padding: 0 24px; border-radius: 4px; font-weight: 600; text-decoration: none; background: var(--blue); color: var(--white); border: 1px solid var(--blue); cursor: pointer; transition: 0.3s; }
         .btn:hover { background: var(--navy); border-color: var(--navy); }
 
-        /* --- UNIFIED HEADER & NAV STYLES --- */
+        /* --- HEADER & NAV STYLES --- */
         header { background: var(--white); padding: 15px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 1000; }
         nav { display: flex; justify-content: space-between; align-items: center; position: relative;}
         .logo img { height: 80px; display: block; }
@@ -29,7 +33,6 @@
         .dropdown { position: relative; display: inline-block; }
         .dropdown-content { display: none; position: absolute; background-color: var(--white); min-width: 260px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1); z-index: 2000; border-radius: 4px; top: 100%; left: 25px; border: 1px solid #e2e8f0; }
         .dropdown-content a { color: var(--slate); padding: 12px 16px; text-decoration: none; display: block; margin-left: 0; border-bottom: 1px solid #f1f5f9; font-size: 0.9rem; }
-        .dropdown-content a:last-child { border-bottom: none; }
         .dropdown-content a:hover { background-color: #f8fafc; color: var(--blue); }
 
         @media (min-width: 901px) {
@@ -39,63 +42,54 @@
 
         .menu-toggle { display: none; flex-direction: column; cursor: pointer; padding: 5px; }
         .menu-toggle span { height: 3px; width: 25px; background: var(--navy); margin-bottom: 5px; border-radius: 2px; transition: all 0.3s ease; }
-        .menu-toggle span:last-child { margin-bottom: 0; }
 
         .spoke-header { padding: 80px 0; text-align: center; background: var(--navy); color: var(--white); margin-bottom: 60px; }
         .spoke-header h1 { font-size: 3rem; margin-bottom: 15px; }
         .spoke-header p { color: #cbd5e1; font-size: 1.2rem; max-width: 700px; margin: 0 auto; }
 
-        /* Article Grid */
-        .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; margin-bottom: 80px;}
-        .service-card { background: var(--white); padding: 40px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-top: 4px solid var(--blue); display: flex; flex-direction: column; }
-        .service-card-img { width: 100%; height: 220px; object-fit: cover; border-radius: 4px; margin-bottom: 20px; }
-        .service-tag { display: inline-block; background: #e0f2fe; color: #0369a1; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; margin-bottom: 20px; letter-spacing: 0.5px;}
-        .service-card h3 { font-size: 1.5rem; margin-bottom: 15px; }
-        .service-card p { color: var(--slate); margin-bottom: 20px; }
-        
-        .read-btn { background: none; border: none; color: var(--blue); font-weight: 600; cursor: pointer; text-align: left; padding: 0; margin-top: auto; display: inline-flex; align-items: center; font-size: 1rem; }
-        .read-btn:hover { text-decoration: underline; }
+        /* --- NEWSLETTER FEED STYLES --- */
+        .newsletter-feed { display: flex; flex-direction: column; gap: 40px; margin-bottom: 80px; }
+        .newsletter-item { display: flex; gap: 30px; background: var(--white); padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.03); border-left: 4px solid var(--blue); transition: transform 0.2s ease; cursor: pointer; text-align: left; border-top: none; border-right: none; border-bottom: none; width: 100%; align-items: flex-start;}
+        .newsletter-item:hover { transform: translateX(5px); box-shadow: 0 4px 8px rgba(0,0,0,0.06); }
+        .newsletter-img { width: 220px; height: 160px; object-fit: cover; border-radius: 4px; flex-shrink: 0; }
+        .newsletter-content { flex-grow: 1; display: flex; flex-direction: column; }
+        .service-tag { display: inline-block; background: #e0f2fe; color: #0369a1; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; margin-bottom: 15px; letter-spacing: 0.5px; align-self: flex-start; }
+        .newsletter-content h3 { font-size: 1.6rem; margin-bottom: 10px; color: var(--navy); line-height: 1.3; }
+        .newsletter-content p { color: var(--slate); font-size: 1.05rem; margin-bottom: 15px; }
+        .read-btn { background: none; border: none; color: var(--blue); font-weight: 600; cursor: pointer; text-align: left; padding: 0; margin-top: auto; display: inline-flex; align-items: center; font-size: 1rem; align-self: flex-start;}
         .read-btn::after { content: "→"; margin-left: 8px; font-size: 1.2rem; transition: transform 0.2s; }
-        .read-btn:hover::after { transform: translateX(5px); }
+        .newsletter-item:hover .read-btn::after { transform: translateX(5px); }
 
-        /* Modal Styles */
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.85); z-index: 2000; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.3s; padding: 20px; }
-        .modal-overlay.active { opacity: 1; pointer-events: auto; }
-        .modal-content { background: var(--white); width: 100%; max-width: 850px; max-height: 90vh; border-radius: 8px; overflow-y: auto; position: relative; padding: 50px; }
-        .modal-close { position: absolute; top: 20px; right: 20px; background: #f1f5f9; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 1.5rem; cursor: pointer; }
-        .modal-header { margin-bottom: 30px; border-bottom: 1px solid #e2e8f0; padding-bottom: 20px;}
-        .modal-header h2 { font-size: 2.2rem; color: var(--navy); margin-top: 15px;}
-        .modal-hero-img { width: 100%; max-height: 400px; object-fit: cover; border-radius: 6px; margin-top: 25px; }
+        /* --- FULL ARTICLE VIEW STYLES --- */
+        #full-article-view { display: none; padding-bottom: 80px; }
+        .article-header { margin-bottom: 40px; border-bottom: 1px solid #e2e8f0; padding-bottom: 30px; }
+        .article-header h1 { font-size: 2.5rem; color: var(--navy); margin: 20px 0; line-height: 1.2; }
+        .article-hero-img { width: 100%; max-height: 450px; object-fit: cover; border-radius: 6px; margin-top: 25px; }
         
-        .article-content { font-size: 1.1rem; color: var(--slate); line-height: 1.8; }
-        .article-content h2, .article-content h3 { color: var(--navy); margin: 30px 0 15px; line-height: 1.3; }
-        .article-content p { margin-bottom: 20px; }
-        .article-content ul { margin-left: 20px; margin-bottom: 20px; }
-        .article-content blockquote { border-left: 4px solid var(--blue); padding: 15px 20px; font-style: italic; background: #f8fafc; margin-bottom: 20px; }
-        .article-content img { max-width: 100%; height: auto; border-radius: 6px; margin: 25px 0; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .article-body { font-size: 1.15rem; color: var(--slate); line-height: 1.8; }
+        .article-body h2, .article-body h3 { color: var(--navy); margin: 40px 0 20px; line-height: 1.3; }
+        .article-body p { margin-bottom: 25px; }
+        .article-body ul { margin-left: 20px; margin-bottom: 25px; }
+        .article-body li { margin-bottom: 10px; }
+        .article-body blockquote { border-left: 4px solid var(--blue); padding: 15px 20px; font-style: italic; background: #f8fafc; margin-bottom: 25px; color: var(--navy); }
+        .article-body img { max-width: 100%; height: auto; border-radius: 6px; margin: 30px 0; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
 
-        /* Sheridan Transparency CSS */
-        .sheridan-box { background: #fee2e2; border-left: 4px solid #b91c1c; padding: 20px; margin-bottom: 30px; border-radius: 0 4px 4px 0; text-align: left; }
-        .sheridan-box h4 { color: #b91c1c; margin-bottom: 5px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; }
-        .sheridan-box p { color: #7f1d1d; margin: 0; font-size: 1.05rem; line-height: 1.5; }
+        .back-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; margin-top: 40px; }
 
         @media (max-width: 900px) {
             .menu-toggle { display: flex; }
             .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: var(--white); padding: 20px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); align-items: flex-start; border-top: 1px solid #e2e8f0; }
             .nav-links.active { display: flex; }
             .nav-links > a, .nav-links .btn { margin: 10px 0; font-size: 1.1rem; width: 100%; }
-            .nav-links .btn { text-align: center; }
-            
             .dropdown { margin-left: 0; width: 100%; margin: 10px 0; }
             .dropdown .dropbtn { font-size: 1.1rem; padding: 0; width: 100%; text-align: left; justify-content: space-between; margin-left: 0;}
             .dropdown-content { position: static; box-shadow: none; border: none; border-left: 2px solid var(--blue); padding-left: 10px; display: none; margin-top: 10px; min-width: 100%; }
             .dropdown.active .dropdown-content { display: block; }
-            .dropdown-content a { margin: 5px 0; padding: 5px 0; font-size: 1rem; border: none; width: auto;}
-
-            .services-grid { grid-template-columns: 1fr; }
-            .logo img { height: 60px; } 
-            .modal-content { padding: 30px 20px; }
+            
+            .newsletter-item { flex-direction: column; }
+            .newsletter-img { width: 100%; height: 200px; }
             .spoke-header h1 { font-size: 2.2rem; }
+            .article-header h1 { font-size: 2rem; }
         }
     </style>
 </head>
@@ -132,37 +126,43 @@
         </div>
     </header>
 
-    <div class="spoke-header">
-        <div class="container">
-            <h1>Unfiltered Engineering Analysis</h1>
-            <p>High-density breakdowns of ISO 13485 field execution, Design for Service (DfS) failures, and physical root cause analysis.</p>
-        </div>
-    </div>
-
-    <div class="container">
-        
-        <div class="sheridan-box" style="margin-bottom: 40px;">
-            <h4>Our Editorial Standard</h4>
-            <p>You will not find SEO-driven "thought leadership" here. These articles are technical briefings detailing exact failure modes, regulatory gaps, and margin-protection strategies we encounter in the field.</p>
+    <!-- Index View -->
+    <div id="index-view">
+        <div class="spoke-header">
+            <div class="container">
+                <h1>Unfiltered Engineering Analysis</h1>
+                <p>High-density breakdowns of ISO 13485 field execution, Design for Service (DfS) failures, and physical root cause analysis.</p>
+            </div>
         </div>
 
-        <div class="services-grid" id="blog-container">
-            <div class="service-card" style="grid-column: 1 / -1; text-align: center;">
-                <p>Loading technical insights from repository...</p>
+        <div class="reading-container">
+            <div class="newsletter-feed" id="blog-container">
+                <div class="newsletter-item" style="justify-content: center; cursor: default; border-left: none;">
+                    <p style="color: var(--slate); font-weight: 500;">Loading technical repository...</p>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="modal-overlay" id="article-modal" onclick="closeModal(event)">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <button class="modal-close" onclick="closeModal(event)">&times;</button>
-            <div class="modal-header">
-                <span class="service-tag" id="modal-date"></span>
-                <button class="btn" style="float: right; height: 35px; font-size: 0.85rem;" onclick="copyArticleLink(this)">Copy Link</button>
-                <h2 id="modal-title"></h2>
-                <div id="modal-image-container"></div>
+    <!-- Full Article View -->
+    <div id="full-article-view">
+        <div class="reading-container">
+            <div class="back-nav">
+                <button class="btn" style="background: var(--slate); border-color: var(--slate); height: 40px; font-size: 0.9rem;" onclick="showIndexView()">← Back to Feed</button>
+                <button class="btn" style="height: 40px; font-size: 0.9rem; background: var(--white); color: var(--slate); border-color: #cbd5e1;" onclick="copyArticleLink(this)">Copy Link</button>
             </div>
-            <div class="article-content" id="modal-body"></div>
+            
+            <div class="article-header">
+                <span class="service-tag" id="article-date"></span>
+                <h1 id="article-title"></h1>
+                <div id="article-image-container"></div>
+            </div>
+            
+            <div class="article-body" id="article-content-target"></div>
+
+            <div style="margin-top: 60px; padding-top: 30px; border-top: 1px solid #e2e8f0; text-align: center;">
+                <button class="btn" style="background: var(--slate); border-color: var(--slate);" onclick="showIndexView()">← Return to Article Feed</button>
+            </div>
         </div>
     </div>
 
@@ -178,9 +178,7 @@
             if(dropdown) dropdown.classList.remove('active');
         }
         function toggleDropdown(e) {
-            if (window.innerWidth <= 900) {
-                e.currentTarget.classList.toggle('active');
-            }
+            if (window.innerWidth <= 900) { e.currentTarget.classList.toggle('active'); }
         }
 
         let allArticlesData = [];
@@ -197,101 +195,136 @@
                 const mdFiles = files.filter(file => file.name.endsWith('.md'));
                 
                 if (mdFiles.length === 0) {
-                    blogContainer.innerHTML = '<div class="service-card" style="grid-column: 1 / -1; text-align: center;"><p>No articles published yet.</p></div>';
+                    blogContainer.innerHTML = '<div class="newsletter-item" style="justify-content: center; cursor: default; border-left: none;"><p>No articles published yet.</p></div>';
                     return;
                 }
 
-                blogContainer.innerHTML = ''; 
-
-                for (const file of mdFiles) {
+                // Process all files concurrently
+                const fetchPromises = mdFiles.map(async file => {
                     const contentResponse = await fetch(file.download_url);
                     const mdContent = await contentResponse.text();
 
                     let title = file.name.replace('.md', '').replace(/-/g, ' ');
-                    let date = 'Technical Article';
+                    let dateStr = 'Technical Article';
+                    let parsedDate = new Date(0); 
                     let description = '';
                     let image = '';
                     let body = mdContent;
 
-                    const match = mdContent.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+                    // Hardened extraction using js-yaml to prevent truncation
+                    const match = mdContent.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/);
+                    
                     if (match) {
-                        const frontmatter = match[1];
+                        const frontmatterStr = match[1];
                         body = match[2]; 
-                        const titleMatch = frontmatter.match(/title:\s*["']?(.*?)["']?$/m);
-                        const dateMatch = frontmatter.match(/date:\s*["']?(.*?)["']?$/m);
-                        const descMatch = frontmatter.match(/description:\s*["']?(.*?)["']?$/m);
-                        const imgMatch = frontmatter.match(/image:\s*["']?(.*?)["']?$/m);
-                        const thumbMatch = frontmatter.match(/thumbnail:\s*["']?(.*?)["']?$/m);
                         
-                        if (titleMatch) title = titleMatch[1];
-                        if (dateMatch) date = new Date(dateMatch[1]).toLocaleDateString('en-GB');
-                        if (descMatch) description = descMatch[1];
-                        if (imgMatch) image = imgMatch[1];
-                        else if (thumbMatch) image = thumbMatch[1];
+                        try {
+                            const doc = jsyaml.load(frontmatterStr);
+                            if (doc) {
+                                if (doc.title) title = String(doc.title);
+                                if (doc.date) {
+                                    parsedDate = new Date(doc.date);
+                                    if (!isNaN(parsedDate)) {
+                                        dateStr = parsedDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+                                    }
+                                }
+                                if (doc.description) description = String(doc.description);
+                                if (doc.image) image = String(doc.image);
+                                else if (doc.thumbnail) image = String(doc.thumbnail);
+                            }
+                        } catch (e) {
+                            console.warn('YAML parsing failed for slug, falling back to basic data:', file.name);
+                        }
                     }
 
                     if (!description) {
                         description = body.replace(/[#*`_\[\]]/g, '').split('\n').filter(line => line.trim().length > 0)[0] || 'Read full article...';
-                        if (description.length > 150) description = description.substring(0, 150) + '...';
+                        if (description.length > 180) description = description.substring(0, 180) + '...';
                     }
 
                     const htmlBody = window.marked ? marked.parse(body) : `<pre>${body}</pre>`;
                     const slug = file.name.replace('.md', '');
                     
-                    allArticlesData.push({ title, date, description, image, htmlBody, slug });
+                    return { title, dateStr, parsedDate, description, image, htmlBody, slug };
+                });
 
-                    const imageHtml = image ? `<img src="${image}" alt="${title}" class="service-card-img">` : '';
-                    const globalIndex = allArticlesData.length - 1;
+                const unsortedArticles = await Promise.all(fetchPromises);
+                
+                // Sort chronologically (newest first)
+                allArticlesData = unsortedArticles.sort((a, b) => b.parsedDate - a.parsedDate);
 
+                blogContainer.innerHTML = ''; 
+                
+                allArticlesData.forEach((article, index) => {
+                    const imageHtml = article.image ? `<img src="${article.image}" alt="${article.title}" class="newsletter-img">` : '';
+                    
                     blogContainer.innerHTML += `
-                        <div class="service-card">
+                        <button class="newsletter-item" onclick="showArticleView(${index})">
                             ${imageHtml}
-                            <span class="service-tag">${date}</span>
-                            <h3>${title}</h3>
-                            <p>${description}</p>
-                            <button class="read-btn" onclick="openArticleModal(${globalIndex})">Read Article</button>
-                        </div>
+                            <div class="newsletter-content">
+                                <span class="service-tag">${article.dateStr}</span>
+                                <h3>${article.title}</h3>
+                                <p>${article.description}</p>
+                                <span class="read-btn">Read Briefing</span>
+                            </div>
+                        </button>
                     `;
-                }
+                });
 
                 // Check URL for specific article
                 const urlParams = new URLSearchParams(window.location.search);
                 const articleParam = urlParams.get('article');
                 if (articleParam) {
                     const targetIndex = allArticlesData.findIndex(a => a.slug === articleParam);
-                    if (targetIndex !== -1) openArticleModal(targetIndex);
+                    if (targetIndex !== -1) showArticleView(targetIndex);
                 }
 
             } catch (error) {
-                blogContainer.innerHTML = '<div class="service-card" style="grid-column: 1 / -1; text-align: center;"><p>Currently unable to load engineering articles. Please check back later.</p></div>';
+                blogContainer.innerHTML = '<div class="newsletter-item" style="justify-content: center; cursor: default; border-left: none;"><p>Currently unable to load engineering articles. Please check back later.</p></div>';
             }
         }
 
         document.addEventListener('DOMContentLoaded', loadAllGitHubBlogPosts);
 
-        function openArticleModal(index) {
+        function showArticleView(index) {
             const article = allArticlesData[index];
-            document.getElementById('modal-date').innerText = article.date;
-            document.getElementById('modal-title').innerText = article.title;
-            document.getElementById('modal-body').innerHTML = article.htmlBody;
+            document.getElementById('article-date').innerText = article.dateStr;
+            document.getElementById('article-title').innerText = article.title;
+            document.getElementById('article-content-target').innerHTML = article.htmlBody;
             
-            const imgContainer = document.getElementById('modal-image-container');
-            imgContainer.innerHTML = article.image ? `<img src="${article.image}" class="modal-hero-img">` : '';
+            const imgContainer = document.getElementById('article-image-container');
+            imgContainer.innerHTML = article.image ? `<img src="${article.image}" class="article-hero-img">` : '';
 
+            // Update URL
             const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?article=' + article.slug;
             window.history.pushState({path: newUrl}, '', newUrl);
             
-            document.getElementById('article-modal').classList.add('active');
-            document.body.style.overflow = 'hidden';
+            // Toggle Display States
+            document.getElementById('index-view').style.display = 'none';
+            document.getElementById('full-article-view').style.display = 'block';
+            window.scrollTo(0, 0);
         }
 
-        function closeModal(e) {
-            if (e) e.stopPropagation();
-            document.getElementById('article-modal').classList.remove('active');
-            document.body.style.overflow = '';
+        function showIndexView() {
+            document.getElementById('full-article-view').style.display = 'none';
+            document.getElementById('index-view').style.display = 'block';
+            
+            // Clean URL
             const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
             window.history.pushState({path: cleanUrl}, '', cleanUrl);
+            window.scrollTo(0, 0);
         }
+
+        window.addEventListener('popstate', function(event) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const articleParam = urlParams.get('article');
+            if (articleParam) {
+                const targetIndex = allArticlesData.findIndex(a => a.slug === articleParam);
+                if (targetIndex !== -1) showArticleView(targetIndex);
+            } else {
+                showIndexView();
+            }
+        });
 
         function copyArticleLink(btn) {
             const url = window.location.href;
@@ -302,11 +335,10 @@
             document.execCommand('copy');
             document.body.removeChild(textArea);
             
+            const originalText = btn.innerText;
             btn.innerText = 'Copied!';
-            setTimeout(() => btn.innerText = 'Copy Link', 2000);
+            setTimeout(() => btn.innerText = originalText, 2000);
         }
-
-        document.addEventListener('keydown', e => { if (e.key === "Escape") closeModal(); });
     </script>
 </body>
 </html>
