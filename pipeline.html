@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Schema Technical Pipeline Rolodex</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --bg-primary: #0C0F14;
+    --bg-secondary: #141820;
+    --bg-card: #1A1F2B;
+    --bg-card-hover: #1F2535;
+    --bg-input: #141820;
+    --border: #2A3040;
+    --border-light: #353D50;
+    --text-primary: #E8ECF2;
+    --text-secondary: #8A93A6;
+    --text-muted: #5A6376;
+    --accent: #3B82F6;
+    --accent-dim: #2563EB;
+    --accent-glow: rgba(59, 130, 246, 0.15);
+    --identified: #6B7280;
+    --contacted: #F59E0B;
+    --engaged: #3B82F6;
+    --qualified: #8B5CF6;
+    --proposal: #EC4899;
+    --closed: #10B981;
+    --priority-high: #EF4444;
+    --priority-medium: #F59E0B;
+    --priority-low: #6B7280;
+    --danger: #EF4444;
+    --radius: 6px;
+    --radius-lg: 10px;
+    --shadow: 0 2px 8px rgba(0,0,0,0.3);
+    --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .header {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-left { display: flex; align-items: center; gap: 16px; }
+  .logo {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+  }
+  .logo span { color: var(--accent); }
+  .header-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .header-right { display: flex; align-items: center; gap: 12px; }
+  .header-stat {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-muted);
+    padding: 4px 10px;
+    background: var(--bg-primary);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+  }
+  .header-stat strong { color: var(--text-secondary); }
+
+  .tab-bar {
+    display: flex;
+    gap: 0;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+  }
+  .tab {
+    padding: 12px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .tab:hover { color: var(--text-secondary); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .toolbar {
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .search-box {
+    flex: 1;
+    min-width: 200px;
+    max-width: 360px;
+    position: relative;
+  }
+  .search-box input {
+    width: 100%;
+    padding: 8px 12px 8px 36px;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .search-box input:focus { border-color: var(--accent); }
+  .search-box input::placeholder { color: var(--text-muted); }
+  .search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 14px;
+  }
+
+  .filter-btn {
+    padding: 8px 14px;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text-secondary);
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .filter-btn:hover { border-color: var(--border-light); color: var(--text-primary); }
+  .filter-btn.active { border-color: var(--accent); color: var(--accent); background: var(--accent-glow); }
+
+  .btn-primary {
+    padding: 8px 16px;
+    background: var(--accent);
+    border: none;
+    border-radius: var(--radius);
+    color: #fff;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+    margin-left: auto;
+  }
+  .btn-primary:hover { background: var(--accent-dim); }
+
+  .pipeline-view {
+    padding: 16px 24px;
+    overflow-x: auto;
+  }
+  .pipeline-columns {
+    display: flex;
+    gap: 12px;
+    min-width: 1080px;
+  }
+  .pipeline-col {
+    flex: 1;
+    min-width: 170px;
+  }
+  .pipeline-col-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    border-radius: var(--radius);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+  }
+  .pipeline-col-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .pipeline-col-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-secondary);
+  }
+  .pipeline-col-count {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-left: auto;
+  }
+
+  .pipeline-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+    border-left: 3px solid transparent;
+  }
+  .pipeline-card:hover { background: var(--bg-card-hover); border-color: var(--border-light); }
+  .pipeline-card.priority-high { border-left-color: var(--priority-high); }
+  .pipeline-card.priority-medium { border-left-color: var(--priority-medium); }
+  .pipeline-card.priority-low { border-left-color: var(--priority-low); }
+
+  .pipeline-card-company {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+  .pipeline-card-contact {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+  }
+  .pipeline-card-service {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--accent);
+    background: var(--accent-glow);
+    padding: 2px 6px;
+    border-radius: 3px;
+    display: inline-block;
+    margin-right: 4px;
+    margin-bottom: 4px;
+  }
+  .pipeline-card-date {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 6px;
+  }
+
+  .rolodex-view { padding: 16px 24px; }
+  .rolodex-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 12px;
+  }
+
+  .contact-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .contact-card:hover { background: var(--bg-card-hover); transform: translateY(-1px); box-shadow: var(--shadow); }
+  .contact-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+  .contact-card-company {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+  .contact-card-status {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .status-identified { background: rgba(107,114,128,0.2); color: #9CA3AF; }
+  .status-contacted { background: rgba(245,158,11,0.15); color: #FBBF24; }
+  .status-engaged { background: rgba(59,130,246,0.15); color: #60A5FA; }
+  .status-qualified { background: rgba(139,92,246,0.15); color: #A78BFA; }
+  .status-proposal { background: rgba(236,72,153,0.15); color: #F472B6; }
+  .status-closed { background: rgba(16,185,129,0.15); color: #34D399; }
+
+  .contact-card-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 2px;
+  }
+  .contact-card-role {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+  .contact-card-details {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 4px 12px;
+    font-size: 11px;
+  }
+  .contact-card-label {
+    color: var(--text-muted);
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+  }
+  .contact-card-value { color: var(--text-secondary); }
+  .contact-card-services { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 4px; }
+
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 200;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 16px;
+    overflow-y: auto;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    width: 100%;
+    max-width: 560px;
+    padding: 24px;
+    position: relative;
+    animation: modalIn 0.15s ease-out;
+  }
+  @keyframes modalIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .modal-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--text-primary);
+  }
+  .modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 20px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 4px;
+  }
+  .modal-close:hover { color: var(--text-primary); }
+
+  .form-group { margin-bottom: 14px; }
+  .form-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin-bottom: 5px;
+  }
+  .form-input, .form-select, .form-textarea {
+    width: 100%;
+    padding: 8px 12px;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--accent); }
+  .form-select { appearance: none; cursor: pointer; }
+  .form-textarea { resize: vertical; min-height: 60px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+  .btn-danger {
+    padding: 8px 14px;
+    background: transparent;
+    border: 1px solid var(--danger);
+    border-radius: var(--radius);
+    color: var(--danger);
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .btn-danger:hover { background: rgba(239,68,68,0.1); }
+  .btn-secondary {
+    padding: 8px 14px;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text-secondary);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .btn-secondary:hover { border-color: var(--border-light); }
+
+  .export-bar {
+    padding: 12px 24px;
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 90;
+  }
+  .export-info {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+  }
+  .export-actions { display: flex; gap: 8px; }
+
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+  }
+  .empty-state-icon { font-size: 40px; margin-bottom: 12px; opacity: 0.3; }
+  .empty-state-text { font-size: 14px; margin-bottom: 4px; }
+  .empty-state-sub { font-size: 12px; }
+
+  @media (max-width: 640px) {
+    .header { padding: 12px 16px; flex-wrap: wrap; gap: 8px; }
+    .header-title { font-size: 15px; }
+    .tab-bar { padding: 0 16px; }
+    .tab { padding: 10px 14px; font-size: 12px; }
+    .toolbar { padding: 12px 16px; }
+    .pipeline-view { padding: 12px 16px; }
+    .rolodex-view { padding: 12px 16px; }
+    .rolodex-grid { grid-template-columns: 1fr; }
+    .modal { padding: 20px 16px; }
+    .form-row { grid-template-columns: 1fr; }
+    .export-bar { padding: 10px 16px; }
+    .header-stat { display: none; }
+  }
+
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--border-light); }
+
+  body { padding-bottom: 56px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo">Schema<span>.</span>Technical</div>
+    <div class="header-title">Pipeline Rolodex</div>
+  </div>
+  <div class="header-right">
+    <div class="header-stat" id="stat-total">Total: <strong>0</strong></div>
+    <div class="header-stat" id="stat-active">Active: <strong>0</strong></div>
+  </div>
+</div>
+
+<div class="tab-bar">
+  <div class="tab active" data-view="pipeline">Pipeline</div>
+  <div class="tab" data-view="rolodex">Rolodex</div>
+</div>
+
+<div class="toolbar">
+  <div class="search-box">
+    <span class="search-icon">&#x1F50D;</span>
+    <input type="text" id="searchInput" placeholder="Search companies, contacts, services...">
+  </div>
+  <button class="filter-btn" data-filter="all" onclick="setFilter('all')">All</button>
+  <button class="filter-btn" data-filter="high" onclick="setFilter('high')">High Priority</button>
+  <button class="filter-btn" data-filter="medium" onclick="setFilter('medium')">Medium</button>
+  <button class="filter-btn" data-filter="low" onclick="setFilter('low')">Low</button>
+  <button class="btn-primary" onclick="openModal()">+ Add Contact</button>
+</div>
+
+<div class="pipeline-view" id="pipelineView">
+  <div class="pipeline-columns" id="pipelineColumns"></div>
+</div>
+
+<div class="rolodex-view" id="rolodexView" style="display:none;">
+  <div class="rolodex-grid" id="rolodexGrid"></div>
+</div>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <div class="modal-title" id="modalTitle">Add Contact</div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Company Name *</label>
+        <input class="form-input" id="fCompany" placeholder="e.g. Haptiv8">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Contact Name</label>
+        <input class="form-input" id="fName" placeholder="e.g. Jane Smith">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Role / Title</label>
+        <input class="form-input" id="fRole" placeholder="e.g. VP Engineering">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Source</label>
+        <input class="form-input" id="fSource" placeholder="e.g. ANDtr Event, Sales Nav">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Pipeline Status</label>
+        <select class="form-select" id="fStatus">
+          <option value="Identified">Identified</option>
+          <option value="Contacted">Contacted</option>
+          <option value="Engaged">Engaged</option>
+          <option value="Qualified">Qualified</option>
+          <option value="Proposal Sent">Proposal Sent</option>
+          <option value="Closed">Closed</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Priority</label>
+        <select class="form-select" id="fPriority">
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Regulatory Stage</label>
+        <input class="form-input" id="fRegStage" placeholder="e.g. Pre-MDR, Post-market">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Likely Service Need</label>
+        <select class="form-select" id="fService" multiple size="4" style="min-height:80px;">
+          <option value="SDR">SDR (Design Review)</option>
+          <option value="TA">TA (Technical Authoring)</option>
+          <option value="SNA">SNA (Service Network)</option>
+          <option value="FRA">FRA (Failure Analysis)</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Last Contact Date</label>
+        <input class="form-input" type="date" id="fLastContact">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Next Action</label>
+        <input class="form-input" id="fNextAction" placeholder="e.g. Send follow up message">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Notes</label>
+      <textarea class="form-textarea" id="fNotes" placeholder="Any additional context, intelligence, or flags..."></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label" style="display:flex;align-items:center;gap:8px;">
+        <input type="checkbox" id="fHwCheck" checked> Passes physical hardware liability check
+      </label>
+    </div>
+
+    <div class="form-actions">
+      <button class="btn-danger" id="btnDelete" style="display:none;" onclick="deleteContact()">Delete</button>
+      <div style="display:flex;gap:8px;margin-left:auto;">
+        <button class="btn-secondary" onclick="closeModal()">Cancel</button>
+        <button class="btn-primary" onclick="saveContact()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="export-bar">
+  <div class="export-info" id="lastSaved">Data saved remotely</div>
+  <div class="export-actions">
+    <button class="btn-secondary" onclick="exportCSV()">Export CSV</button>
+    <button class="btn-secondary" onclick="exportJSON()">Export JSON</button>
+    <button class="btn-secondary" onclick="importJSON()">Import JSON</button>
+  </div>
+</div>
+
+<input type="file" id="importFile" accept=".json" style="display:none;">
+
+<script>
+const API_URL = 'https://script.google.com/macros/s/AKfycbygMgQtZPLS7OaUS7szQVqESPsZNTEAS24xeDutPXAZIxmsYYtv3uUaKtiPjzlHFzM9lA/exec?token=Schema_Pipeline_2026_Secure!';
+const STATUSES = ['Identified','Contacted','Engaged','Qualified','Proposal Sent','Closed'];
+const STATUS_COLORS = {
+  'Identified':'var(--identified)','Contacted':'var(--contacted)','Engaged':'var(--engaged)',
+  'Qualified':'var(--qualified)','Proposal Sent':'var(--proposal)','Closed':'var(--closed)'
+};
+const STATUS_CLASSES = {
+  'Identified':'status-identified','Contacted':'status-contacted','Engaged':'status-engaged',
+  'Qualified':'status-qualified','Proposal Sent':'status-proposal','Closed':'status-closed'
+};
+
+let contacts = [];
+let editingId = null;
+let currentView = 'pipeline';
+let currentFilter = 'all';
+let searchTerm = '';
+
+function generateId() { return Date.now().toString(36) + Math.random().toString(36).substr(2,5); }
+
+async function loadData() {
+  document.getElementById('lastSaved').textContent = 'Connecting to database...';
+  try {
+    const response = await fetch(API_URL);
+    if (!response.ok) throw new Error('Network response was not ok');
+    contacts = await response.json();
+    if (!Array.isArray(contacts) || contacts.length === 0) {
+       contacts = [];
+    }
+    render();
+    updateLastSaved();
+  } catch(e) {
+    document.getElementById('lastSaved').textContent = 'Database connection failed';
+    contacts = [];
+    render();
+  }
+}
+
+async function saveData() {
+  document.getElementById('lastSaved').textContent = 'Synchronising...';
+  try {
+    await fetch(API_URL, {
+      method: 'POST',
+      body: JSON.stringify(contacts),
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8',
+      }
+    });
+    updateLastSaved();
+  } catch(e) {
+    document.getElementById('lastSaved').textContent = 'Database sync failed';
+  }
+}
+
+function updateLastSaved() {
+  const now = new Date();
+  document.getElementById('lastSaved').textContent = 'Last synchronised: ' + now.toLocaleString('en-GB');
+}
+
+function getFilteredContacts() {
+  let filtered = [...contacts];
+  if (currentFilter !== 'all') {
+    filtered = filtered.filter(c => c.priority === currentFilter);
+  }
+  if (searchTerm) {
+    const term = searchTerm.toLowerCase();
+    filtered = filtered.filter(c =>
+      (c.company||'').toLowerCase().includes(term) ||
+      (c.name||'').toLowerCase().includes(term) ||
+      (c.role||'').toLowerCase().includes(term) ||
+      (c.source||'').toLowerCase().includes(term) ||
+      (c.notes||'').toLowerCase().includes(term) ||
+      (c.services||[]).join(' ').toLowerCase().includes(term)
+    );
+  }
+  return filtered;
+}
+
+function setFilter(f) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.filter === f);
+  });
+  render();
+}
+
+function render() {
+  const filtered = getFilteredContacts();
+  updateStats();
+
+  if (currentView === 'pipeline') renderPipeline(filtered);
+  else renderRolodex(filtered);
+}
+
+function updateStats() {
+  const total = contacts.length;
+  const active = contacts.filter(c => c.status !== 'Closed').length;
+  document.getElementById('stat-total').innerHTML = 'Total: <strong>' + total + '</strong>';
+  document.getElementById('stat-active').innerHTML = 'Active: <strong>' + active + '</strong>';
+}
+
+function renderPipeline(filtered) {
+  const container = document.getElementById('pipelineColumns');
+  container.innerHTML = '';
+
+  STATUSES.forEach(status => {
+    const col = document.createElement('div');
+    col.className = 'pipeline-col';
+
+    const colContacts = filtered.filter(c => c.status === status);
+    col.innerHTML = `
+      <div class="pipeline-col-header">
+        <div class="pipeline-col-dot" style="background:${STATUS_COLORS[status]}"></div>
+        <div class="pipeline-col-label">${status}</div>
+        <div class="pipeline-col-count">${colContacts.length}</div>
+      </div>
+    `;
+
+    if (colContacts.length === 0) {
+      const empty = document.createElement('div');
+      empty.style.cssText = 'padding:20px 12px;text-align:center;font-size:11px;color:var(--text-muted);';
+      empty.textContent = 'No contacts';
+      col.appendChild(empty);
+    } else {
+      colContacts.forEach(c => {
+        const card = document.createElement('div');
+        card.className = 'pipeline-card priority-' + (c.priority||'low');
+        card.onclick = () => openModal(c.id);
+        card.innerHTML = `
+          <div class="pipeline-card-company">${esc(c.company)}</div>
+          ${c.name ? '<div class="pipeline-card-contact">' + esc(c.name) + (c.role ? ' · ' + esc(c.role) : '') + '</div>' : ''}
+          <div>${(c.services||[]).map(s => '<span class="pipeline-card-service">' + s + '</span>').join('')}</div>
+          ${c.nextAction ? '<div class="pipeline-card-date">' + esc(c.nextAction) + '</div>' : ''}
+        `;
+        col.appendChild(card);
+      });
+    }
+    container.appendChild(col);
+  });
+}
+
+function renderRolodex(filtered) {
+  const grid = document.getElementById('rolodexGrid');
+  grid.innerHTML = '';
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon">&#9744;</div><div class="empty-state-text">No contacts match your filters</div><div class="empty-state-sub">Try adjusting your search or filter</div></div>';
+    return;
+  }
+
+  filtered.sort((a,b) => (a.company||'').localeCompare(b.company||''));
+
+  filtered.forEach(c => {
+    const card = document.createElement('div');
+    card.className = 'contact-card';
+    card.onclick = () => openModal(c.id);
+    const statusClass = STATUS_CLASSES[c.status] || 'status-identified';
+    card.innerHTML = `
+      <div class="contact-card-top">
+        <div class="contact-card-company">${esc(c.company)}</div>
+        <div class="contact-card-status ${statusClass}">${c.status}</div>
+      </div>
+      ${c.name ? '<div class="contact-card-name">' + esc(c.name) + '</div>' : ''}
+      ${c.role ? '<div class="contact-card-role">' + esc(c.role) + '</div>' : ''}
+      <div class="contact-card-details">
+        ${detailRow('Source', c.source)}
+        ${detailRow('Reg Stage', c.regStage)}
+        ${detailRow('Priority', capitalize(c.priority))}
+        ${detailRow('Last Contact', c.lastContact ? formatDate(c.lastContact) : 'None')}
+        ${detailRow('Next Action', c.nextAction)}
+        ${!c.hwCheck ? '<span class="contact-card-label" style="color:var(--danger);">HW CHECK</span><span class="contact-card-value" style="color:var(--danger);">FAILED</span>' : ''}
+      </div>
+      <div class="contact-card-services">
+        ${(c.services||[]).map(s => '<span class="pipeline-card-service">' + s + '</span>').join('')}
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function detailRow(label, value) {
+  if (!value) return '';
+  return `<span class="contact-card-label">${label}</span><span class="contact-card-value">${esc(value)}</span>`;
+}
+
+function esc(s) { if (!s) return ''; const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+function capitalize(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : ''; }
+function formatDate(d) { try { return new Date(d).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}); } catch(e) { return d; } }
+
+function openModal(id) {
+  editingId = id || null;
+  const modal = document.getElementById('modalOverlay');
+  document.getElementById('modalTitle').textContent = id ? 'Edit Contact' : 'Add Contact';
+  document.getElementById('btnDelete').style.display = id ? 'block' : 'none';
+
+  if (id) {
+    const c = contacts.find(x => x.id === id);
+    if (!c) return;
+    document.getElementById('fCompany').value = c.company || '';
+    document.getElementById('fName').value = c.name || '';
+    document.getElementById('fRole').value = c.role || '';
+    document.getElementById('fSource').value = c.source || '';
+    document.getElementById('fStatus').value = c.status || 'Identified';
+    document.getElementById('fPriority').value = c.priority || 'medium';
+    document.getElementById('fRegStage').value = c.regStage || '';
+    document.getElementById('fLastContact').value = c.lastContact || '';
+    document.getElementById('fNextAction').value = c.nextAction || '';
+    document.getElementById('fNotes').value = c.notes || '';
+    document.getElementById('fHwCheck').checked = c.hwCheck !== false;
+    const sel = document.getElementById('fService');
+    Array.from(sel.options).forEach(o => { o.selected = (c.services||[]).includes(o.value); });
+  } else {
+    ['fCompany','fName','fRole','fSource','fRegStage','fLastContact','fNextAction','fNotes'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('fStatus').value = 'Identified';
+    document.getElementById('fPriority').value = 'medium';
+    document.getElementById('fHwCheck').checked = true;
+    Array.from(document.getElementById('fService').options).forEach(o => o.selected = false);
+  }
+  modal.classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  editingId = null;
+}
+
+function saveContact() {
+  const company = document.getElementById('fCompany').value.trim();
+  if (!company) { alert('Company name is required.'); return; }
+
+  const services = Array.from(document.getElementById('fService').selectedOptions).map(o => o.value);
+
+  const data = {
+    company,
+    name: document.getElementById('fName').value.trim(),
+    role: document.getElementById('fRole').value.trim(),
+    source: document.getElementById('fSource').value.trim(),
+    status: document.getElementById('fStatus').value,
+    priority: document.getElementById('fPriority').value,
+    regStage: document.getElementById('fRegStage').value.trim(),
+    services,
+    lastContact: document.getElementById('fLastContact').value,
+    nextAction: document.getElementById('fNextAction').value.trim(),
+    notes: document.getElementById('fNotes').value.trim(),
+    hwCheck: document.getElementById('fHwCheck').checked,
+  };
+
+  if (editingId) {
+    const idx = contacts.findIndex(c => c.id === editingId);
+    if (idx >= 0) { contacts[idx] = { ...contacts[idx], ...data }; }
+  } else {
+    data.id = generateId();
+    data.created = new Date().toISOString();
+    contacts.push(data);
+  }
+
+  saveData();
+  closeModal();
+  render();
+}
+
+function deleteContact() {
+  if (!editingId) return;
+  if (!confirm('Delete this contact? This cannot be undone.')) return;
+  contacts = contacts.filter(c => c.id !== editingId);
+  saveData();
+  closeModal();
+  render();
+}
+
+function exportCSV() {
+  const headers = ['Company','Contact','Role','Source','Status','Priority','Reg Stage','Services','Last Contact','Next Action','Notes','HW Check'];
+  const rows = contacts.map(c => [
+    c.company, c.name, c.role, c.source, c.status, c.priority, c.regStage,
+    (c.services||[]).join('; '), c.lastContact, c.nextAction, c.notes, c.hwCheck ? 'Yes' : 'No'
+  ]);
+  const csv = [headers, ...rows].map(r => r.map(v => '"' + (v||'').replace(/"/g,'""') + '"').join(',')).join('\n');
+  download(csv, 'schema_pipeline_' + dateStamp() + '.csv', 'text/csv');
+}
+
+function exportJSON() {
+  download(JSON.stringify(contacts, null, 2), 'schema_pipeline_' + dateStamp() + '.json', 'application/json');
+}
+
+function importJSON() {
+  document.getElementById('importFile').click();
+}
+
+document.getElementById('importFile').addEventListener('change', function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if (Array.isArray(data)) {
+        if (confirm('Import ' + data.length + ' contacts? This will merge with existing data.')) {
+          const existingIds = new Set(contacts.map(c => c.id));
+          data.forEach(c => {
+            if (!existingIds.has(c.id)) { contacts.push(c); }
+            else {
+              const idx = contacts.findIndex(x => x.id === c.id);
+              if (idx >= 0) contacts[idx] = c;
+            }
+          });
+          saveData();
+          render();
+          alert('Imported successfully.');
+        }
+      }
+    } catch(err) { alert('Invalid JSON file.'); }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+});
+
+function download(content, filename, type) {
+  const blob = new Blob([content], { type });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function dateStamp() {
+  const d = new Date();
+  return d.getFullYear() + ('0'+(d.getMonth()+1)).slice(-2) + ('0'+d.getDate()).slice(-2);
+}
+
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', function() {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    this.classList.add('active');
+    currentView = this.dataset.view;
+    document.getElementById('pipelineView').style.display = currentView === 'pipeline' ? 'block' : 'none';
+    document.getElementById('rolodexView').style.display = currentView === 'rolodex' ? 'block' : 'none';
+    render();
+  });
+});
+
+document.getElementById('searchInput').addEventListener('input', function() {
+  searchTerm = this.value;
+  render();
+});
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeModal();
+});
+document.getElementById('modalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+loadData();
+setFilter('all');
+render();
+</script>
+
+</body>
+</html>
