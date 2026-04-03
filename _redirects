@@ -1,3 +1,0 @@
-/pipeline       /pipeline_secure.html   200!  Role=admin
-/pipeline       /admin/                 302!
-/pipeline.html  /admin/                 302!
