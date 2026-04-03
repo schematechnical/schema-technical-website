@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Schema Technical Pipeline Rolodex</title>
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
@@ -445,13 +446,15 @@
     left: 0;
     right: 0;
     z-index: 90;
+    flex-wrap: wrap;
+    gap: 12px;
   }
   .export-info {
     font-size: 11px;
     color: var(--text-muted);
     font-family: var(--font-mono);
   }
-  .export-actions { display: flex; gap: 8px; }
+  .export-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 
   .empty-state {
     text-align: center;
@@ -482,10 +485,10 @@
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
   ::-webkit-scrollbar-thumb:hover { background: var(--border-light); }
 
-  body { padding-bottom: 56px; }
+  body { padding-bottom: 80px; }
 </style>
 </head>
-<body>
+<body style="display: none;" id="appBody">
 
 <div class="header">
   <div class="header-left">
@@ -617,6 +620,8 @@
 <div class="export-bar">
   <div class="export-info" id="lastSaved">Data saved remotely</div>
   <div class="export-actions">
+    <button class="btn-secondary" onclick="loadData()">Refresh Data</button>
+    <button class="btn-secondary" onclick="saveData()">Force Sync</button>
     <button class="btn-secondary" onclick="exportCSV()">Export CSV</button>
     <button class="btn-secondary" onclick="exportJSON()">Export JSON</button>
     <button class="btn-secondary" onclick="importJSON()">Import JSON</button>
@@ -676,6 +681,7 @@ async function saveData() {
     updateLastSaved();
   } catch(e) {
     document.getElementById('lastSaved').textContent = 'Database sync failed';
+    throw e;
   }
 }
 
@@ -851,7 +857,7 @@ function closeModal() {
   editingId = null;
 }
 
-function saveContact() {
+async function saveContact() {
   const company = document.getElementById('fCompany').value.trim();
   if (!company) { alert('Company name is required.'); return; }
 
@@ -881,18 +887,18 @@ function saveContact() {
     contacts.push(data);
   }
 
-  saveData();
   closeModal();
   render();
+  await saveData();
 }
 
-function deleteContact() {
+async function deleteContact() {
   if (!editingId) return;
   if (!confirm('Delete this contact? This cannot be undone.')) return;
   contacts = contacts.filter(c => c.id !== editingId);
-  saveData();
   closeModal();
   render();
+  await saveData();
 }
 
 function exportCSV() {
@@ -917,11 +923,12 @@ document.getElementById('importFile').addEventListener('change', function(e) {
   const file = e.target.files[0];
   if (!file) return;
   const reader = new FileReader();
-  reader.onload = function(ev) {
+  reader.onload = async function(ev) {
     try {
       const data = JSON.parse(ev.target.result);
       if (Array.isArray(data)) {
         if (confirm('Import ' + data.length + ' contacts? This will merge with existing data.')) {
+          document.getElementById('lastSaved').textContent = 'Merging data and uploading to database...';
           const existingIds = new Set(contacts.map(c => c.id));
           data.forEach(c => {
             if (!existingIds.has(c.id)) { contacts.push(c); }
@@ -930,9 +937,15 @@ document.getElementById('importFile').addEventListener('change', function(e) {
               if (idx >= 0) contacts[idx] = c;
             }
           });
-          saveData();
+          
           render();
-          alert('Imported successfully.');
+          
+          try {
+            await saveData();
+            alert('Import and remote database sync complete.');
+          } catch(syncErr) {
+            alert('Data imported locally, but background server synchronisation failed. Please try clicking Force Sync.');
+          }
         }
       }
     } catch(err) { alert('Invalid JSON file.'); }
@@ -979,9 +992,23 @@ document.getElementById('modalOverlay').addEventListener('click', function(e) {
   if (e.target === this) closeModal();
 });
 
-loadData();
-setFilter('all');
-render();
+document.addEventListener('DOMContentLoaded', function() {
+  if (window.netlifyIdentity) {
+    window.netlifyIdentity.on('init', user => {
+      if (!user) {
+        window.location.replace('/admin/');
+      } else {
+        document.getElementById('appBody').style.display = 'block';
+        loadData();
+        setFilter('all');
+        render();
+      }
+    });
+    window.netlifyIdentity.init();
+  } else {
+    window.location.replace('/admin/');
+  }
+});
 </script>
 
 </body>
