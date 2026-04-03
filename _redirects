@@ -1,1 +1,2 @@
-/pipeline.html 200! Role=admin
+/pipeline.html  /pipeline.html  200!  Role=admin
+/pipeline.html  /admin/         302!
