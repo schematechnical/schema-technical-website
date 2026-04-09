@@ -1022,6 +1022,15 @@ document.getElementById('modalOverlay').addEventListener('click', function(e) {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
+  const isLocal = window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  if (isLocal) {
+    document.getElementById('appBody').style.display = 'block';
+    document.getElementById('lastSaved').textContent = 'LOCAL PREVIEW MODE — no database connection';
+    contacts = [];
+    render();
+    setFilter('all');
+    return;
+  }
   if (window.netlifyIdentity) {
     window.netlifyIdentity.on('init', user => {
       if (!user) {
