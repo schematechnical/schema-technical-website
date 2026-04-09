@@ -28,6 +28,7 @@
     --qualified: #8B5CF6;
     --proposal: #EC4899;
     --closed: #10B981;
+    --dead: #EF4444;
     --priority-high: #EF4444;
     --priority-medium: #F59E0B;
     --priority-low: #6B7280;
@@ -300,6 +301,7 @@
   .status-qualified { background: rgba(139,92,246,0.15); color: #A78BFA; }
   .status-proposal { background: rgba(236,72,153,0.15); color: #F472B6; }
   .status-closed { background: rgba(16,185,129,0.15); color: #34D399; }
+  .status-dead { background: rgba(239,68,68,0.15); color: #F87171; }
 
   .contact-card-name {
     font-size: 13px;
@@ -613,10 +615,17 @@
       <label class="form-label">Company Intelligence</label>
       <textarea class="form-textarea" id="fNotes" placeholder="Background context, market intelligence, or flags..." style="min-height:50px;color:var(--text-secondary);"></textarea>
     </div>
-    <div class="form-group">
-      <label class="form-label" style="display:flex;align-items:center;gap:8px;">
-        <input type="checkbox" id="fHwCheck" checked> Passes physical hardware liability check
-      </label>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label" style="display:flex;align-items:center;gap:8px;">
+          <input type="checkbox" id="fHwCheck" checked> Passes physical hardware liability check
+        </label>
+      </div>
+      <div class="form-group">
+        <label class="form-label" style="display:flex;align-items:center;gap:8px;color:var(--dead);">
+          <input type="checkbox" id="fDead"> Dead contact (no response)
+        </label>
+      </div>
     </div>
 
     <div class="form-actions">
@@ -644,14 +653,14 @@
 
 <script>
 const API_URL = 'https://script.google.com/macros/s/AKfycbygMgQtZPLS7OaUS7szQVqESPsZNTEAS24xeDutPXAZIxmsYYtv3uUaKtiPjzlHFzM9lA/exec?token=Schema_Pipeline_2026_Secure!';
-const STATUSES = ['Identified','Contacted','Engaged','Qualified','Proposal Sent','Closed'];
+const STATUSES = ['Identified','Contacted','Engaged','Qualified','Proposal Sent','Closed','Dead'];
 const STATUS_COLORS = {
   'Identified':'var(--identified)','Contacted':'var(--contacted)','Engaged':'var(--engaged)',
-  'Qualified':'var(--qualified)','Proposal Sent':'var(--proposal)','Closed':'var(--closed)'
+  'Qualified':'var(--qualified)','Proposal Sent':'var(--proposal)','Closed':'var(--closed)','Dead':'var(--dead)'
 };
 const STATUS_CLASSES = {
   'Identified':'status-identified','Contacted':'status-contacted','Engaged':'status-engaged',
-  'Qualified':'status-qualified','Proposal Sent':'status-proposal','Closed':'status-closed'
+  'Qualified':'status-qualified','Proposal Sent':'status-proposal','Closed':'status-closed','Dead':'status-dead'
 };
 
 let contacts = [];
@@ -751,9 +760,10 @@ function render() {
 
 function updateStats() {
   const total = contacts.length;
-  const active = contacts.filter(c => c.status !== 'Closed').length;
+  const active = contacts.filter(c => c.status !== 'Closed' && c.dead !== true).length;
+  const dead = contacts.filter(c => c.dead === true).length;
   document.getElementById('stat-total').innerHTML = 'Total: <strong>' + total + '</strong>';
-  document.getElementById('stat-active').innerHTML = 'Active: <strong>' + active + '</strong>';
+  document.getElementById('stat-active').innerHTML = 'Active: <strong>' + active + '</strong>' + (dead > 0 ? ' &middot; Dead: <strong>' + dead + '</strong>' : '');
 }
 
 function renderPipeline(filtered) {
@@ -764,7 +774,9 @@ function renderPipeline(filtered) {
     const col = document.createElement('div');
     col.className = 'pipeline-col';
 
-    const colContacts = filtered.filter(c => c.status === status);
+    const colContacts = status === 'Dead'
+      ? filtered.filter(c => c.dead === true)
+      : filtered.filter(c => c.status === status && c.dead !== true);
     col.innerHTML = `
       <div class="pipeline-col-header">
         <div class="pipeline-col-dot" style="background:${STATUS_COLORS[status]}"></div>
@@ -783,9 +795,10 @@ function renderPipeline(filtered) {
         const card = document.createElement('div');
         card.className = 'pipeline-card priority-' + (c.priority||'low');
         card.onclick = () => openModal(c.id);
+        const deadTag = c.dead ? '<span style="font-family:var(--font-mono);font-size:10px;color:var(--dead);background:rgba(239,68,68,0.15);padding:2px 6px;border-radius:3px;margin-left:6px;">was ' + esc(c.status) + '</span>' : '';
         card.innerHTML = `
-          <div class="pipeline-card-company">${esc(c.company)}</div>
-          ${c.name ? '<div class="pipeline-card-contact">' + esc(c.name) + (c.role ? ' · ' + esc(c.role) : '') + '</div>' : ''}
+          <div class="pipeline-card-company">${esc(c.company)}${deadTag}</div>
+          ${c.name ? '<div class="pipeline-card-contact">' + esc(c.name) + (c.role ? ' &middot; ' + esc(c.role) : '') + '</div>' : ''}
           <div>${(c.services||[]).map(s => '<span class="pipeline-card-service">' + s + '</span>').join('')}</div>
           ${c.nextAction ? '<div class="pipeline-card-date">' + esc(c.nextAction) + '</div>' : ''}
         `;
@@ -811,11 +824,12 @@ function renderRolodex(filtered) {
     const card = document.createElement('div');
     card.className = 'contact-card';
     card.onclick = () => openModal(c.id);
-    const statusClass = STATUS_CLASSES[c.status] || 'status-identified';
+    const statusClass = c.dead ? 'status-dead' : (STATUS_CLASSES[c.status] || 'status-identified');
+    const statusLabel = c.dead ? 'Dead (' + c.status + ')' : c.status;
     card.innerHTML = `
       <div class="contact-card-top">
         <div class="contact-card-company">${esc(c.company)}</div>
-        <div class="contact-card-status ${statusClass}">${c.status}</div>
+        <div class="contact-card-status ${statusClass}">${statusLabel}</div>
       </div>
       ${c.name ? '<div class="contact-card-name">' + esc(c.name) + '</div>' : ''}
       ${c.role ? '<div class="contact-card-role">' + esc(c.role) + '</div>' : ''}
@@ -867,6 +881,7 @@ function openModal(id) {
     document.getElementById('fNotes').value = c.notes || '';
     document.getElementById('fContactLog').value = c.contactLog || '';
     document.getElementById('fHwCheck').checked = c.hwCheck !== false;
+    document.getElementById('fDead').checked = c.dead === true;
     const sel = document.getElementById('fService');
     Array.from(sel.options).forEach(o => { o.selected = (c.services||[]).includes(o.value); });
   } else {
@@ -874,6 +889,7 @@ function openModal(id) {
     document.getElementById('fStatus').value = 'Identified';
     document.getElementById('fPriority').value = 'medium';
     document.getElementById('fHwCheck').checked = true;
+    document.getElementById('fDead').checked = false;
     Array.from(document.getElementById('fService').options).forEach(o => o.selected = false);
   }
   modal.classList.add('open');
@@ -905,6 +921,7 @@ async function saveContact() {
     notes: document.getElementById('fNotes').value.trim(),
     contactLog: document.getElementById('fContactLog').value.trim(),
     hwCheck: document.getElementById('fHwCheck').checked,
+    dead: document.getElementById('fDead').checked,
   };
 
   if (editingId) {
@@ -931,10 +948,10 @@ async function deleteContact() {
 }
 
 function exportCSV() {
-  const headers = ['Company','Contact','Role','Source','Status','Priority','Reg Stage','Services','Last Contact','Follow Up','Next Action','Notes','Contact Log','HW Check'];
+  const headers = ['Company','Contact','Role','Source','Status','Priority','Reg Stage','Services','Last Contact','Follow Up','Next Action','Notes','Contact Log','HW Check','Dead'];
   const rows = contacts.map(c => [
     c.company, c.name, c.role, c.source, c.status, c.priority, c.regStage,
-    (c.services||[]).join('; '), c.lastContact, c.followUpDate, c.nextAction, c.notes, c.contactLog, c.hwCheck ? 'Yes' : 'No'
+    (c.services||[]).join('; '), c.lastContact, c.followUpDate, c.nextAction, c.notes, c.contactLog, c.hwCheck ? 'Yes' : 'No', c.dead ? 'Yes' : 'No'
   ]);
   const csv = [headers, ...rows].map(r => r.map(v => '"' + (v||'').replace(/"/g,'""') + '"').join(',')).join('\n');
   download(csv, 'schema_pipeline_' + dateStamp() + '.csv', 'text/csv');
@@ -1022,15 +1039,6 @@ document.getElementById('modalOverlay').addEventListener('click', function(e) {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-  const isLocal = window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-  if (isLocal) {
-    document.getElementById('appBody').style.display = 'block';
-    document.getElementById('lastSaved').textContent = 'LOCAL PREVIEW MODE — no database connection';
-    contacts = [];
-    render();
-    setFilter('all');
-    return;
-  }
   if (window.netlifyIdentity) {
     window.netlifyIdentity.on('init', user => {
       if (!user) {
