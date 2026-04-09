@@ -190,12 +190,19 @@
     flex: 1;
     min-width: 170px;
     border-radius: var(--radius);
-    transition: background 0.2s, border 0.2s;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+  }
+  .pipeline-col.collapsed {
+    flex: 0;
+    min-width: 44px;
   }
   .pipeline-col.drag-over {
     background: rgba(59, 130, 246, 0.05);
     border: 1px dashed var(--accent);
   }
+  
   .pipeline-col-header {
     display: flex;
     align-items: center;
@@ -205,6 +212,13 @@
     border-radius: var(--radius);
     background: var(--bg-secondary);
     border: 1px solid var(--border);
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s;
+  }
+  .pipeline-col-header:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--border-light);
   }
   .pipeline-col-dot {
     width: 8px;
@@ -224,6 +238,22 @@
     font-size: 11px;
     color: var(--text-muted);
     margin-left: auto;
+  }
+
+  .pipeline-col.collapsed .pipeline-col-header {
+    flex-direction: column;
+    padding: 16px 8px;
+    height: 100%;
+    margin-bottom: 0;
+  }
+  .pipeline-col.collapsed .pipeline-col-label {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    margin: 12px 0;
+  }
+  .pipeline-col.collapsed .pipeline-col-count {
+    margin-left: 0;
+    margin-top: auto;
   }
 
   .pipeline-card {
@@ -517,6 +547,142 @@
   ::-webkit-scrollbar-thumb:hover { background: var(--border-light); }
 
   body { padding-bottom: 80px; }
+
+  .analytics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .analytics-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    text-align: center;
+  }
+  .analytics-card-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .analytics-card-value {
+    font-family: var(--font-mono);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+  .analytics-card-unit {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-left: 2px;
+  }
+  .analytics-card-sub {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+  }
+  .analytics-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .analytics-bar-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-secondary);
+    min-width: 110px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .analytics-bar-track {
+    flex: 1;
+    height: 24px;
+    background: var(--bg-input);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    position: relative;
+  }
+  .analytics-bar-fill {
+    height: 100%;
+    border-radius: var(--radius);
+    transition: width 0.3s;
+    display: flex;
+    align-items: center;
+    padding-left: 8px;
+  }
+  .analytics-bar-value {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: #fff;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .analytics-section-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .analytics-section { margin-bottom: 32px; }
+  .analytics-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  .analytics-table th {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    text-align: left;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .analytics-table td {
+    padding: 8px 12px;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border);
+  }
+  .analytics-table tr:hover td { background: var(--bg-card-hover); }
+
+  .btn-outreach {
+    padding: 8px 14px;
+    background: transparent;
+    border: 1px solid var(--accent);
+    border-radius: var(--radius);
+    color: var(--accent);
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-outreach:hover { background: var(--accent-glow); }
+
+  .sync-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .sync-ok { background: var(--closed); }
+  .sync-pending { background: var(--contacted); }
+  .sync-failed { background: var(--danger); }
 </style>
 </head>
 <body style="display: none;" id="appBody">
@@ -535,6 +701,7 @@
 <div class="tab-bar">
   <div class="tab active" data-view="pipeline">Pipeline</div>
   <div class="tab" data-view="rolodex">Rolodex</div>
+  <div class="tab" data-view="analytics">Analytics</div>
 </div>
 
 <div class="toolbar">
@@ -561,6 +728,10 @@
 
 <div class="rolodex-view" id="rolodexView" style="display:none;">
   <div class="rolodex-grid" id="rolodexGrid"></div>
+</div>
+
+<div class="rolodex-view" id="analyticsView" style="display:none;">
+  <div id="analyticsContent"></div>
 </div>
 
 <div class="modal-overlay" id="modalOverlay">
@@ -665,6 +836,7 @@
 
     <div class="form-actions">
       <button class="btn-danger" id="btnDelete" style="display:none;" onclick="deleteContact()">Delete</button>
+      <button class="btn-outreach" id="btnOutreach" style="display:none;" onclick="copyOutreach()">Copy Outreach</button>
       <div style="display:flex;gap:8px;margin-left:auto;">
         <button class="btn-secondary" onclick="closeModal()">Cancel</button>
         <button class="btn-primary" onclick="saveContact()">Save</button>
@@ -703,6 +875,16 @@ let editingId = null;
 let currentView = 'pipeline';
 let currentFilter = 'all';
 let searchTerm = '';
+let collapsedColumns = new Set(['Dead']); // Initializes the Dead column in a collapsed state
+
+function toggleColumn(status) {
+  if (collapsedColumns.has(status)) {
+    collapsedColumns.delete(status);
+  } else {
+    collapsedColumns.add(status);
+  }
+  render();
+}
 
 function generateId() { return Date.now().toString(36) + Math.random().toString(36).substr(2,5); }
 
@@ -750,7 +932,7 @@ function dragEnd(e) {
 function dragEnter(e) {
   e.preventDefault();
   const col = e.target.closest('.pipeline-col');
-  if (col) col.classList.add('drag-over');
+  if (col && !col.classList.contains('collapsed')) col.classList.add('drag-over');
 }
 
 function dragLeave(e) {
@@ -801,8 +983,36 @@ async function dropTarget(e, targetCol) {
   }
 }
 
+const CACHE_KEY = 'schema_pipeline_cache';
+const CACHE_DIRTY_KEY = 'schema_pipeline_dirty';
+
+function cacheLocally() {
+  try {
+    localStorage.setItem(CACHE_KEY, JSON.stringify(contacts));
+  } catch(e) {}
+}
+
+function loadFromCache() {
+  try {
+    const cached = localStorage.getItem(CACHE_KEY);
+    if (cached) return JSON.parse(cached);
+  } catch(e) {}
+  return null;
+}
+
+function markDirty(isDirty) {
+  try {
+    if (isDirty) localStorage.setItem(CACHE_DIRTY_KEY, '1');
+    else localStorage.removeItem(CACHE_DIRTY_KEY);
+  } catch(e) {}
+}
+
+function isDirty() {
+  try { return localStorage.getItem(CACHE_DIRTY_KEY) === '1'; } catch(e) { return false; }
+}
+
 async function loadData() {
-  document.getElementById('lastSaved').textContent = 'Connecting to database...';
+  document.getElementById('lastSaved').innerHTML = '<span class="sync-status-dot sync-pending"></span>Connecting to database...';
   try {
     const response = await fetch(API_URL);
     if (!response.ok) throw new Error('Network response was not ok');
@@ -810,17 +1020,26 @@ async function loadData() {
     if (!Array.isArray(contacts) || contacts.length === 0) {
        contacts = [];
     }
+    cacheLocally();
+    markDirty(false);
     render();
-    updateLastSaved();
+    updateLastSaved('ok');
   } catch(e) {
-    document.getElementById('lastSaved').textContent = 'Database connection failed';
-    contacts = [];
+    const cached = loadFromCache();
+    if (cached && cached.length > 0) {
+      contacts = cached;
+      document.getElementById('lastSaved').innerHTML = '<span class="sync-status-dot sync-pending"></span>Loaded from local cache (offline)';
+    } else {
+      document.getElementById('lastSaved').innerHTML = '<span class="sync-status-dot sync-failed"></span>Database connection failed';
+      contacts = [];
+    }
     render();
   }
 }
 
 async function saveData() {
-  document.getElementById('lastSaved').textContent = 'Synchronising...';
+  cacheLocally();
+  document.getElementById('lastSaved').innerHTML = '<span class="sync-status-dot sync-pending"></span>Synchronising...';
   try {
     await fetch(API_URL, {
       method: 'POST',
@@ -829,16 +1048,34 @@ async function saveData() {
         'Content-Type': 'text/plain;charset=utf-8',
       }
     });
-    updateLastSaved();
+    markDirty(false);
+    updateLastSaved('ok');
   } catch(e) {
-    document.getElementById('lastSaved').textContent = 'Database sync failed';
-    throw e;
+    markDirty(true);
+    document.getElementById('lastSaved').innerHTML = '<span class="sync-status-dot sync-failed"></span>Sync failed. Data cached locally.';
   }
 }
 
-function updateLastSaved() {
+async function retrySyncIfDirty() {
+  if (!isDirty()) return;
+  const cached = loadFromCache();
+  if (!cached) return;
+  contacts = cached;
+  try {
+    await fetch(API_URL, {
+      method: 'POST',
+      body: JSON.stringify(contacts),
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+    });
+    markDirty(false);
+    updateLastSaved('ok');
+  } catch(e) {}
+}
+
+function updateLastSaved(status) {
   const now = new Date();
-  document.getElementById('lastSaved').textContent = 'Last synchronised: ' + now.toLocaleString('en-GB');
+  const dot = status === 'ok' ? 'sync-ok' : 'sync-pending';
+  document.getElementById('lastSaved').innerHTML = '<span class="sync-status-dot ' + dot + '"></span>Last synchronised: ' + now.toLocaleString('en-GB');
 }
 
 function getFilteredContacts() {
@@ -878,7 +1115,8 @@ function render() {
   updateStats();
 
   if (currentView === 'pipeline') renderPipeline(filtered);
-  else renderRolodex(filtered);
+  else if (currentView === 'rolodex') renderRolodex(filtered);
+  else if (currentView === 'analytics') renderAnalytics();
 }
 
 function updateStats() {
@@ -894,58 +1132,64 @@ function renderPipeline(filtered) {
   container.innerHTML = '';
 
   STATUSES.forEach(status => {
-    const col = document.createElement('div');
-    col.className = 'pipeline-col';
-    col.setAttribute('ondragover', 'allowDrop(event)');
-    col.setAttribute('ondragenter', 'dragEnter(event)');
-    col.setAttribute('ondragleave', 'dragLeave(event)');
-    col.setAttribute('ondrop', 'dropTarget(event, "' + status + '")');
-
+    const isCollapsed = collapsedColumns.has(status);
     const colContacts = status === 'Dead'
       ? filtered.filter(c => c.dead === true)
       : filtered.filter(c => c.status === status && c.dead !== true);
+
+    const col = document.createElement('div');
+    col.className = 'pipeline-col' + (isCollapsed ? ' collapsed' : '');
+    
+    if (!isCollapsed) {
+      col.setAttribute('ondragover', 'allowDrop(event)');
+      col.setAttribute('ondragenter', 'dragEnter(event)');
+      col.setAttribute('ondragleave', 'dragLeave(event)');
+      col.setAttribute('ondrop', 'dropTarget(event, "' + status + '")');
+    }
       
     col.innerHTML = `
-      <div class="pipeline-col-header">
+      <div class="pipeline-col-header" onclick="toggleColumn('${status}')" title="${isCollapsed ? 'Click to expand' : 'Click to collapse'}">
         <div class="pipeline-col-dot" style="background:${STATUS_COLORS[status]}"></div>
         <div class="pipeline-col-label">${status}</div>
         <div class="pipeline-col-count">${colContacts.length}</div>
       </div>
     `;
 
-    if (colContacts.length === 0) {
-      const empty = document.createElement('div');
-      empty.style.cssText = 'padding:20px 12px;text-align:center;font-size:11px;color:var(--text-muted);pointer-events:none;';
-      empty.textContent = 'Drop here';
-      col.appendChild(empty);
-    } else {
-      colContacts.forEach(c => {
-        const card = document.createElement('div');
-        card.className = 'pipeline-card priority-' + (c.priority||'low');
-        card.setAttribute('draggable', 'true');
-        card.setAttribute('ondragstart', 'dragStart(event, "' + c.id + '")');
-        card.setAttribute('ondragend', 'dragEnd(event)');
-        card.onclick = () => openModal(c.id);
-        
-        const deadTag = c.dead ? '<span style="font-family:var(--font-mono);font-size:10px;color:var(--dead);background:rgba(239,68,68,0.15);padding:2px 6px;border-radius:3px;margin-left:6px;">was ' + esc(c.status) + '</span>' : '';
-        const overdueTag = (c.status !== 'Closed' && !c.dead && isOverdue(c.followUpDate)) ? '<span class="tag-overdue">OVERDUE</span>' : '';
-        
-        let velocityHtml = '';
-        if (c.created) {
-          const totalAge = getAge(c.created);
-          const stageAge = getAge(c.statusDate || c.created);
-          velocityHtml = `<div class="pipeline-card-velocity">Stage: ${stageAge} &middot; Total: ${totalAge}</div>`;
-        }
+    if (!isCollapsed) {
+      if (colContacts.length === 0) {
+        const empty = document.createElement('div');
+        empty.style.cssText = 'padding:20px 12px;text-align:center;font-size:11px;color:var(--text-muted);pointer-events:none;';
+        empty.textContent = 'Drop here';
+        col.appendChild(empty);
+      } else {
+        colContacts.forEach(c => {
+          const card = document.createElement('div');
+          card.className = 'pipeline-card priority-' + (c.priority||'low');
+          card.setAttribute('draggable', 'true');
+          card.setAttribute('ondragstart', 'dragStart(event, "' + c.id + '")');
+          card.setAttribute('ondragend', 'dragEnd(event)');
+          card.onclick = () => openModal(c.id);
+          
+          const deadTag = c.dead ? '<span style="font-family:var(--font-mono);font-size:10px;color:var(--dead);background:rgba(239,68,68,0.15);padding:2px 6px;border-radius:3px;margin-left:6px;">was ' + esc(c.status) + '</span>' : '';
+          const overdueTag = (c.status !== 'Closed' && !c.dead && isOverdue(c.followUpDate)) ? '<span class="tag-overdue">OVERDUE</span>' : '';
+          
+          let velocityHtml = '';
+          if (c.created) {
+            const totalAge = getAge(c.created);
+            const stageAge = getAge(c.statusDate || c.created);
+            velocityHtml = `<div class="pipeline-card-velocity">Stage: ${stageAge} &middot; Total: ${totalAge}</div>`;
+          }
 
-        card.innerHTML = `
-          <div class="pipeline-card-company">${esc(c.company)}${deadTag}${overdueTag}</div>
-          ${c.name ? '<div class="pipeline-card-contact">' + esc(c.name) + (c.role ? ' &middot; ' + esc(c.role) : '') + '</div>' : ''}
-          <div>${(c.services||[]).map(s => '<span class="pipeline-card-service">' + s + '</span>').join('')}</div>
-          ${c.nextAction ? '<div class="pipeline-card-date">' + esc(c.nextAction) + '</div>' : ''}
-          ${velocityHtml}
-        `;
-        col.appendChild(card);
-      });
+          card.innerHTML = `
+            <div class="pipeline-card-company">${esc(c.company)}${deadTag}${overdueTag}</div>
+            ${c.name ? '<div class="pipeline-card-contact">' + esc(c.name) + (c.role ? ' &middot; ' + esc(c.role) : '') + '</div>' : ''}
+            <div>${(c.services||[]).map(s => '<span class="pipeline-card-service">' + s + '</span>').join('')}</div>
+            ${c.nextAction ? '<div class="pipeline-card-date">' + esc(c.nextAction) + '</div>' : ''}
+            ${velocityHtml}
+          `;
+          col.appendChild(card);
+        });
+      }
     }
     container.appendChild(col);
   });
@@ -995,6 +1239,136 @@ function renderRolodex(filtered) {
   });
 }
 
+function copyOutreach() {
+  const name = document.getElementById('fName').value.trim();
+  const company = document.getElementById('fCompany').value.trim();
+  const role = document.getElementById('fRole').value.trim();
+  const services = Array.from(document.getElementById('fService').selectedOptions).map(o => o.text);
+
+  const SERVICE_HOOKS = {
+    'SDR (Design Review)': 'pre-production serviceability review',
+    'TA (Technical Authoring)': 'ISO 13485 service documentation',
+    'SNA (Service Network)': 'third party service network architecture',
+    'FRA (Failure Analysis)': 'field failure root cause analysis'
+  };
+
+  let serviceStr = '';
+  if (services.length > 0) {
+    const hooks = services.map(s => SERVICE_HOOKS[s] || s);
+    if (hooks.length === 1) serviceStr = hooks[0];
+    else serviceStr = hooks.slice(0, -1).join(', ') + ' and ' + hooks[hooks.length - 1];
+  }
+
+  let text = 'Hi' + (name ? ' ' + name.split(' ')[0] : '') + ',\n\n';
+  text += 'I am a serviceability engineer working with scaling MedTech hardware companies';
+  if (serviceStr) text += ', specialising in ' + serviceStr;
+  text += '.\n\n';
+  if (company) text += 'I have been following ' + company + '\'s progress';
+  if (role) text += ' and given your role as ' + role + ', I thought it worth reaching out directly';
+  text += '.\n\n';
+  text += 'Would a short call be useful?\n\n';
+  text += 'Dan Howes\nSchema Technical';
+
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('btnOutreach');
+    const orig = btn.textContent;
+    btn.textContent = 'Copied';
+    btn.style.borderColor = 'var(--closed)';
+    btn.style.color = 'var(--closed)';
+    setTimeout(() => { btn.textContent = orig; btn.style.borderColor = ''; btn.style.color = ''; }, 1500);
+  }).catch(() => { alert('Clipboard access denied. Copy manually.'); });
+}
+
+function renderAnalytics() {
+  const container = document.getElementById('analyticsContent');
+  const active = contacts.filter(c => c.status !== 'Closed' && c.dead !== true);
+  const closed = contacts.filter(c => c.status === 'Closed' && c.dead !== true);
+  const dead = contacts.filter(c => c.dead === true);
+
+  const PIPELINE_STATUSES = ['Identified','Contacted','Engaged','Qualified','Proposal Sent'];
+
+  function avgDaysInStage(status) {
+    const inStage = active.filter(c => c.status === status && c.statusDate);
+    if (inStage.length === 0) return null;
+    const now = new Date();
+    const total = inStage.reduce((sum, c) => {
+      const d = new Date(c.statusDate);
+      return sum + Math.max(0, Math.floor((now - d) / (1000*60*60*24)));
+    }, 0);
+    return Math.round(total / inStage.length);
+  }
+
+  function avgDaysToClose() {
+    const withDates = closed.filter(c => c.created);
+    if (withDates.length === 0) return null;
+    const total = withDates.reduce((sum, c) => {
+      const created = new Date(c.created);
+      const closedDate = c.statusDate ? new Date(c.statusDate) : new Date();
+      return sum + Math.max(0, Math.floor((closedDate - created) / (1000*60*60*24)));
+    }, 0);
+    return Math.round(total / withDates.length);
+  }
+
+  const stageData = PIPELINE_STATUSES.map(s => ({
+    status: s,
+    count: active.filter(c => c.status === s).length,
+    avgDays: avgDaysInStage(s)
+  }));
+
+  const maxAvg = Math.max(...stageData.map(s => s.avgDays || 0), 1);
+  const closeDays = avgDaysToClose();
+
+  const serviceBreakdown = {};
+  ['SDR','TA','SNA','FRA'].forEach(svc => {
+    serviceBreakdown[svc] = {
+      active: active.filter(c => (c.services||[]).includes(svc)).length,
+      closed: closed.filter(c => (c.services||[]).includes(svc)).length,
+      dead: dead.filter(c => (c.services||[]).includes(svc)).length
+    };
+  });
+
+  const overdueCount = active.filter(c => isOverdue(c.followUpDate)).length;
+
+  let html = '';
+
+  html += '<div class="analytics-section">';
+  html += '<div class="analytics-section-title">Pipeline Summary</div>';
+  html += '<div class="analytics-grid">';
+  html += '<div class="analytics-card"><div class="analytics-card-label">Active</div><div class="analytics-card-value">' + active.length + '</div></div>';
+  html += '<div class="analytics-card"><div class="analytics-card-label">Closed</div><div class="analytics-card-value">' + closed.length + '</div></div>';
+  html += '<div class="analytics-card"><div class="analytics-card-label">Dead</div><div class="analytics-card-value" style="color:var(--dead);">' + dead.length + '</div></div>';
+  html += '<div class="analytics-card"><div class="analytics-card-label">Overdue</div><div class="analytics-card-value" style="color:' + (overdueCount > 0 ? 'var(--danger)' : 'var(--text-primary)') + ';">' + overdueCount + '</div></div>';
+  if (closeDays !== null) {
+    html += '<div class="analytics-card"><div class="analytics-card-label">Avg. Close</div><div class="analytics-card-value">' + closeDays + '<span class="analytics-card-unit">d</span></div></div>';
+  }
+  html += '</div></div>';
+
+  html += '<div class="analytics-section">';
+  html += '<div class="analytics-section-title">Stage Bottleneck Analysis</div>';
+  stageData.forEach(s => {
+    const pct = s.avgDays !== null ? Math.round((s.avgDays / maxAvg) * 100) : 0;
+    const colour = STATUS_COLORS[s.status] || 'var(--accent)';
+    const label = s.avgDays !== null ? s.avgDays + 'd avg (' + s.count + ' contacts)' : 'No data';
+    html += '<div class="analytics-bar-row">';
+    html += '<div class="analytics-bar-label">' + s.status + '</div>';
+    html += '<div class="analytics-bar-track"><div class="analytics-bar-fill" style="width:' + Math.max(pct, 8) + '%;background:' + colour + ';"><span class="analytics-bar-value">' + label + '</span></div></div>';
+    html += '</div>';
+  });
+  html += '</div>';
+
+  html += '<div class="analytics-section">';
+  html += '<div class="analytics-section-title">Service Line Breakdown</div>';
+  html += '<table class="analytics-table"><thead><tr><th>Service</th><th>Active</th><th>Closed</th><th>Dead</th><th>Total</th></tr></thead><tbody>';
+  ['SDR','TA','SNA','FRA'].forEach(svc => {
+    const d = serviceBreakdown[svc];
+    const total = d.active + d.closed + d.dead;
+    html += '<tr><td style="font-weight:600;color:var(--text-primary);">' + svc + '</td><td>' + d.active + '</td><td>' + d.closed + '</td><td>' + d.dead + '</td><td style="font-weight:600;">' + total + '</td></tr>';
+  });
+  html += '</tbody></table></div>';
+
+  container.innerHTML = html;
+}
+
 function detailRow(label, value) {
   if (!value) return '';
   return `<span class="contact-card-label">${label}</span><span class="contact-card-value">${esc(value)}</span>`;
@@ -1009,6 +1383,7 @@ function openModal(id) {
   const modal = document.getElementById('modalOverlay');
   document.getElementById('modalTitle').textContent = id ? 'Edit Contact' : 'Add Contact';
   document.getElementById('btnDelete').style.display = id ? 'block' : 'none';
+  document.getElementById('btnOutreach').style.display = id ? 'inline-block' : 'none';
 
   if (id) {
     const c = contacts.find(x => x.id === id);
@@ -1049,7 +1424,6 @@ async function saveContact() {
   const company = document.getElementById('fCompany').value.trim();
   if (!company) { alert('Company name is required.'); return; }
 
-  // Check for duplicates
   const isDuplicate = contacts.some(c => c.company.toLowerCase() === company.toLowerCase() && c.id !== editingId);
   if (isDuplicate) {
     if (!confirm('A contact for "' + company + '" already exists in the pipeline. Are you sure you want to create a duplicate entry?')) {
@@ -1086,14 +1460,12 @@ async function saveContact() {
       const wasDead = oldContact.dead;
       const oldStatus = oldContact.status;
       
-      // Handle Reactivation Log
       if (wasDead === true && isDeadChecked === false) {
         const dateStr = new Date().toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'});
         const reactivationEntry = '[' + dateStr + '] [Reactivated]';
         contactLogStr = contactLogStr ? reactivationEntry + '\n' + contactLogStr : reactivationEntry;
       }
 
-      // Handle Velocity Timer Reset
       if ((oldStatus !== newStatus && !isDeadChecked) || (wasDead !== isDeadChecked)) {
         data.statusDate = new Date().toISOString();
       } else {
@@ -1202,6 +1574,7 @@ document.querySelectorAll('.tab').forEach(tab => {
     currentView = this.dataset.view;
     document.getElementById('pipelineView').style.display = currentView === 'pipeline' ? 'block' : 'none';
     document.getElementById('rolodexView').style.display = currentView === 'rolodex' ? 'block' : 'none';
+    document.getElementById('analyticsView').style.display = currentView === 'analytics' ? 'block' : 'none';
     render();
   });
 });
@@ -1228,6 +1601,7 @@ document.addEventListener('DOMContentLoaded', function() {
         loadData();
         setFilter('all');
         render();
+        setInterval(retrySyncIfDirty, 30000);
       }
     });
     window.netlifyIdentity.init();
