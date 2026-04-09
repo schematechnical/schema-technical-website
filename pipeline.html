@@ -593,9 +593,13 @@
         <input class="form-input" type="date" id="fLastContact">
       </div>
       <div class="form-group">
-        <label class="form-label">Next Action</label>
-        <input class="form-input" id="fNextAction" placeholder="e.g. Send follow up message">
+        <label class="form-label">Follow Up Date</label>
+        <input class="form-input" type="date" id="fFollowUpDate">
       </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Next Action</label>
+      <input class="form-input" id="fNextAction" placeholder="e.g. Send targeted message">
     </div>
     <div class="form-group">
       <label class="form-label">Notes</label>
@@ -800,6 +804,7 @@ function renderRolodex(filtered) {
         ${detailRow('Reg Stage', c.regStage)}
         ${detailRow('Priority', capitalize(c.priority))}
         ${detailRow('Last Contact', c.lastContact ? formatDate(c.lastContact) : 'None')}
+        ${detailRow('Follow Up', c.followUpDate ? formatDate(c.followUpDate) : 'None')}
         ${detailRow('Next Action', c.nextAction)}
         ${!c.hwCheck ? '<span class="contact-card-label" style="color:var(--danger);">HW CHECK</span><span class="contact-card-value" style="color:var(--danger);">FAILED</span>' : ''}
       </div>
@@ -837,13 +842,14 @@ function openModal(id) {
     document.getElementById('fPriority').value = c.priority || 'medium';
     document.getElementById('fRegStage').value = c.regStage || '';
     document.getElementById('fLastContact').value = c.lastContact || '';
+    document.getElementById('fFollowUpDate').value = c.followUpDate || '';
     document.getElementById('fNextAction').value = c.nextAction || '';
     document.getElementById('fNotes').value = c.notes || '';
     document.getElementById('fHwCheck').checked = c.hwCheck !== false;
     const sel = document.getElementById('fService');
     Array.from(sel.options).forEach(o => { o.selected = (c.services||[]).includes(o.value); });
   } else {
-    ['fCompany','fName','fRole','fSource','fRegStage','fLastContact','fNextAction','fNotes'].forEach(id => document.getElementById(id).value = '');
+    ['fCompany','fName','fRole','fSource','fRegStage','fLastContact','fFollowUpDate','fNextAction','fNotes'].forEach(id => document.getElementById(id).value = '');
     document.getElementById('fStatus').value = 'Identified';
     document.getElementById('fPriority').value = 'medium';
     document.getElementById('fHwCheck').checked = true;
@@ -873,6 +879,7 @@ async function saveContact() {
     regStage: document.getElementById('fRegStage').value.trim(),
     services,
     lastContact: document.getElementById('fLastContact').value,
+    followUpDate: document.getElementById('fFollowUpDate').value,
     nextAction: document.getElementById('fNextAction').value.trim(),
     notes: document.getElementById('fNotes').value.trim(),
     hwCheck: document.getElementById('fHwCheck').checked,
@@ -902,10 +909,10 @@ async function deleteContact() {
 }
 
 function exportCSV() {
-  const headers = ['Company','Contact','Role','Source','Status','Priority','Reg Stage','Services','Last Contact','Next Action','Notes','HW Check'];
+  const headers = ['Company','Contact','Role','Source','Status','Priority','Reg Stage','Services','Last Contact','Follow Up','Next Action','Notes','HW Check'];
   const rows = contacts.map(c => [
     c.company, c.name, c.role, c.source, c.status, c.priority, c.regStage,
-    (c.services||[]).join('; '), c.lastContact, c.nextAction, c.notes, c.hwCheck ? 'Yes' : 'No'
+    (c.services||[]).join('; '), c.lastContact, c.followUpDate, c.nextAction, c.notes, c.hwCheck ? 'Yes' : 'No'
   ]);
   const csv = [headers, ...rows].map(r => r.map(v => '"' + (v||'').replace(/"/g,'""') + '"').join(',')).join('\n');
   download(csv, 'schema_pipeline_' + dateStamp() + '.csv', 'text/csv');
