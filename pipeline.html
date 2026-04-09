@@ -160,6 +160,8 @@
   .filter-btn:hover { border-color: var(--border-light); color: var(--text-primary); }
   .filter-btn.active { border-color: var(--accent); color: var(--accent); background: var(--accent-glow); }
 
+  .divider { width: 1px; height: 24px; background: var(--border); margin: 0 4px; }
+
   .btn-primary {
     padding: 8px 16px;
     background: var(--accent);
@@ -187,6 +189,12 @@
   .pipeline-col {
     flex: 1;
     min-width: 170px;
+    border-radius: var(--radius);
+    transition: background 0.2s, border 0.2s;
+  }
+  .pipeline-col.drag-over {
+    background: rgba(59, 130, 246, 0.05);
+    border: 1px dashed var(--accent);
   }
   .pipeline-col-header {
     display: flex;
@@ -224,10 +232,11 @@
     border-radius: var(--radius);
     padding: 12px;
     margin-bottom: 8px;
-    cursor: pointer;
+    cursor: grab;
     transition: all 0.15s;
     border-left: 3px solid transparent;
   }
+  .pipeline-card:active { cursor: grabbing; }
   .pipeline-card:hover { background: var(--bg-card-hover); border-color: var(--border-light); }
   .pipeline-card.priority-high { border-left-color: var(--priority-high); }
   .pipeline-card.priority-medium { border-left-color: var(--priority-medium); }
@@ -260,6 +269,26 @@
     font-size: 10px;
     color: var(--text-muted);
     margin-top: 6px;
+  }
+  .pipeline-card-velocity {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px solid var(--border);
+  }
+
+  .tag-overdue {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--danger);
+    background: rgba(239,68,68,0.15);
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-left: 6px;
+    font-weight: 600;
+    vertical-align: middle;
   }
 
   .rolodex-view { padding: 16px 24px; }
@@ -514,9 +543,15 @@
     <input type="text" id="searchInput" placeholder="Search companies, contacts, services...">
   </div>
   <button class="filter-btn" data-filter="all" onclick="setFilter('all')">All</button>
+  <div class="divider"></div>
   <button class="filter-btn" data-filter="high" onclick="setFilter('high')">High Priority</button>
   <button class="filter-btn" data-filter="medium" onclick="setFilter('medium')">Medium</button>
   <button class="filter-btn" data-filter="low" onclick="setFilter('low')">Low</button>
+  <div class="divider"></div>
+  <button class="filter-btn" data-filter="SDR" onclick="setFilter('SDR')">SDR</button>
+  <button class="filter-btn" data-filter="TA" onclick="setFilter('TA')">TA</button>
+  <button class="filter-btn" data-filter="SNA" onclick="setFilter('SNA')">SNA</button>
+  <button class="filter-btn" data-filter="FRA" onclick="setFilter('FRA')">FRA</button>
   <button class="btn-primary" onclick="openModal()">+ Add Contact</button>
 </div>
 
@@ -671,6 +706,26 @@ let searchTerm = '';
 
 function generateId() { return Date.now().toString(36) + Math.random().toString(36).substr(2,5); }
 
+function isOverdue(dateStr) {
+  if (!dateStr) return false;
+  const d = new Date(dateStr);
+  d.setHours(0,0,0,0);
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  return d.getTime() < today.getTime();
+}
+
+function getAge(dateStr) {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  d.setHours(0,0,0,0);
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const diffTime = today.getTime() - d.getTime();
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  return Math.max(0, diffDays) + 'd';
+}
+
 function appendContactLog() {
   const input = document.getElementById('fContactLogEntry');
   const textarea = document.getElementById('fContactLog');
@@ -680,6 +735,70 @@ function appendContactLog() {
   const newEntry = '[' + date + '] ' + entry;
   textarea.value = textarea.value ? newEntry + '\n' + textarea.value : newEntry;
   input.value = '';
+}
+
+function dragStart(e, id) {
+  e.dataTransfer.setData('text/plain', id);
+  setTimeout(() => e.target.style.opacity = '0.5', 0);
+}
+
+function dragEnd(e) {
+  e.target.style.opacity = '1';
+  document.querySelectorAll('.pipeline-col').forEach(c => c.classList.remove('drag-over'));
+}
+
+function dragEnter(e) {
+  e.preventDefault();
+  const col = e.target.closest('.pipeline-col');
+  if (col) col.classList.add('drag-over');
+}
+
+function dragLeave(e) {
+  const col = e.target.closest('.pipeline-col');
+  if (col) col.classList.remove('drag-over');
+}
+
+function allowDrop(e) {
+  e.preventDefault();
+}
+
+async function dropTarget(e, targetCol) {
+  e.preventDefault();
+  const col = e.target.closest('.pipeline-col');
+  if (col) col.classList.remove('drag-over');
+  
+  const id = e.dataTransfer.getData('text/plain');
+  if (!id) return;
+
+  const idx = contacts.findIndex(c => c.id === id);
+  if (idx === -1) return;
+
+  let changed = false;
+  const contact = contacts[idx];
+  const oldStatusLabel = contact.dead ? 'Dead' : contact.status;
+
+  if (targetCol === 'Dead') {
+    if (!contact.dead) {
+      contact.dead = true;
+      changed = true;
+    }
+  } else {
+    if (contact.status !== targetCol || contact.dead) {
+      contact.status = targetCol;
+      contact.dead = false;
+      changed = true;
+    }
+  }
+
+  if (changed) {
+    contact.statusDate = new Date().toISOString();
+    const dateStr = new Date().toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'});
+    const logEntry = '[' + dateStr + '] System: Moved from ' + oldStatusLabel + ' to ' + targetCol;
+    contact.contactLog = contact.contactLog ? logEntry + '\n' + contact.contactLog : logEntry;
+
+    render();
+    await saveData();
+  }
 }
 
 async function loadData() {
@@ -725,7 +844,11 @@ function updateLastSaved() {
 function getFilteredContacts() {
   let filtered = [...contacts];
   if (currentFilter !== 'all') {
-    filtered = filtered.filter(c => c.priority === currentFilter);
+    if (['high', 'medium', 'low'].includes(currentFilter)) {
+      filtered = filtered.filter(c => c.priority === currentFilter);
+    } else if (['SDR', 'TA', 'SNA', 'FRA'].includes(currentFilter)) {
+      filtered = filtered.filter(c => (c.services||[]).includes(currentFilter));
+    }
   }
   if (searchTerm) {
     const term = searchTerm.toLowerCase();
@@ -773,10 +896,15 @@ function renderPipeline(filtered) {
   STATUSES.forEach(status => {
     const col = document.createElement('div');
     col.className = 'pipeline-col';
+    col.setAttribute('ondragover', 'allowDrop(event)');
+    col.setAttribute('ondragenter', 'dragEnter(event)');
+    col.setAttribute('ondragleave', 'dragLeave(event)');
+    col.setAttribute('ondrop', 'dropTarget(event, "' + status + '")');
 
     const colContacts = status === 'Dead'
       ? filtered.filter(c => c.dead === true)
       : filtered.filter(c => c.status === status && c.dead !== true);
+      
     col.innerHTML = `
       <div class="pipeline-col-header">
         <div class="pipeline-col-dot" style="background:${STATUS_COLORS[status]}"></div>
@@ -787,20 +915,34 @@ function renderPipeline(filtered) {
 
     if (colContacts.length === 0) {
       const empty = document.createElement('div');
-      empty.style.cssText = 'padding:20px 12px;text-align:center;font-size:11px;color:var(--text-muted);';
-      empty.textContent = 'No contacts';
+      empty.style.cssText = 'padding:20px 12px;text-align:center;font-size:11px;color:var(--text-muted);pointer-events:none;';
+      empty.textContent = 'Drop here';
       col.appendChild(empty);
     } else {
       colContacts.forEach(c => {
         const card = document.createElement('div');
         card.className = 'pipeline-card priority-' + (c.priority||'low');
+        card.setAttribute('draggable', 'true');
+        card.setAttribute('ondragstart', 'dragStart(event, "' + c.id + '")');
+        card.setAttribute('ondragend', 'dragEnd(event)');
         card.onclick = () => openModal(c.id);
+        
         const deadTag = c.dead ? '<span style="font-family:var(--font-mono);font-size:10px;color:var(--dead);background:rgba(239,68,68,0.15);padding:2px 6px;border-radius:3px;margin-left:6px;">was ' + esc(c.status) + '</span>' : '';
+        const overdueTag = (c.status !== 'Closed' && !c.dead && isOverdue(c.followUpDate)) ? '<span class="tag-overdue">OVERDUE</span>' : '';
+        
+        let velocityHtml = '';
+        if (c.created) {
+          const totalAge = getAge(c.created);
+          const stageAge = getAge(c.statusDate || c.created);
+          velocityHtml = `<div class="pipeline-card-velocity">Stage: ${stageAge} &middot; Total: ${totalAge}</div>`;
+        }
+
         card.innerHTML = `
-          <div class="pipeline-card-company">${esc(c.company)}${deadTag}</div>
+          <div class="pipeline-card-company">${esc(c.company)}${deadTag}${overdueTag}</div>
           ${c.name ? '<div class="pipeline-card-contact">' + esc(c.name) + (c.role ? ' &middot; ' + esc(c.role) : '') + '</div>' : ''}
           <div>${(c.services||[]).map(s => '<span class="pipeline-card-service">' + s + '</span>').join('')}</div>
           ${c.nextAction ? '<div class="pipeline-card-date">' + esc(c.nextAction) + '</div>' : ''}
+          ${velocityHtml}
         `;
         col.appendChild(card);
       });
@@ -826,9 +968,11 @@ function renderRolodex(filtered) {
     card.onclick = () => openModal(c.id);
     const statusClass = c.dead ? 'status-dead' : (STATUS_CLASSES[c.status] || 'status-identified');
     const statusLabel = c.dead ? 'Dead (' + c.status + ')' : c.status;
+    const overdueTag = (c.status !== 'Closed' && !c.dead && isOverdue(c.followUpDate)) ? '<span class="tag-overdue">OVERDUE</span>' : '';
+    
     card.innerHTML = `
       <div class="contact-card-top">
-        <div class="contact-card-company">${esc(c.company)}</div>
+        <div class="contact-card-company">${esc(c.company)}${overdueTag}</div>
         <div class="contact-card-status ${statusClass}">${statusLabel}</div>
       </div>
       ${c.name ? '<div class="contact-card-name">' + esc(c.name) + '</div>' : ''}
@@ -837,6 +981,7 @@ function renderRolodex(filtered) {
         ${detailRow('Source', c.source)}
         ${detailRow('Reg Stage', c.regStage)}
         ${detailRow('Priority', capitalize(c.priority))}
+        ${detailRow('Velocity', c.created ? 'Stage: ' + getAge(c.statusDate || c.created) + ' / Total: ' + getAge(c.created) : '')}
         ${detailRow('Last Contact', c.lastContact ? formatDate(c.lastContact) : 'None')}
         ${detailRow('Follow Up', c.followUpDate ? formatDate(c.followUpDate) : 'None')}
         ${detailRow('Next Action', c.nextAction)}
@@ -904,14 +1049,25 @@ async function saveContact() {
   const company = document.getElementById('fCompany').value.trim();
   if (!company) { alert('Company name is required.'); return; }
 
+  // Check for duplicates
+  const isDuplicate = contacts.some(c => c.company.toLowerCase() === company.toLowerCase() && c.id !== editingId);
+  if (isDuplicate) {
+    if (!confirm('A contact for "' + company + '" already exists in the pipeline. Are you sure you want to create a duplicate entry?')) {
+      return;
+    }
+  }
+
   const services = Array.from(document.getElementById('fService').selectedOptions).map(o => o.value);
+  const isDeadChecked = document.getElementById('fDead').checked;
+  const newStatus = document.getElementById('fStatus').value;
+  let contactLogStr = document.getElementById('fContactLog').value.trim();
 
   const data = {
     company,
     name: document.getElementById('fName').value.trim(),
     role: document.getElementById('fRole').value.trim(),
     source: document.getElementById('fSource').value.trim(),
-    status: document.getElementById('fStatus').value,
+    status: newStatus,
     priority: document.getElementById('fPriority').value,
     regStage: document.getElementById('fRegStage').value.trim(),
     services,
@@ -919,17 +1075,40 @@ async function saveContact() {
     followUpDate: document.getElementById('fFollowUpDate').value,
     nextAction: document.getElementById('fNextAction').value.trim(),
     notes: document.getElementById('fNotes').value.trim(),
-    contactLog: document.getElementById('fContactLog').value.trim(),
     hwCheck: document.getElementById('fHwCheck').checked,
-    dead: document.getElementById('fDead').checked,
+    dead: isDeadChecked,
   };
 
   if (editingId) {
     const idx = contacts.findIndex(c => c.id === editingId);
-    if (idx >= 0) { contacts[idx] = { ...contacts[idx], ...data }; }
+    if (idx >= 0) { 
+      const oldContact = contacts[idx];
+      const wasDead = oldContact.dead;
+      const oldStatus = oldContact.status;
+      
+      // Handle Reactivation Log
+      if (wasDead === true && isDeadChecked === false) {
+        const dateStr = new Date().toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'});
+        const reactivationEntry = '[' + dateStr + '] [Reactivated]';
+        contactLogStr = contactLogStr ? reactivationEntry + '\n' + contactLogStr : reactivationEntry;
+      }
+
+      // Handle Velocity Timer Reset
+      if ((oldStatus !== newStatus && !isDeadChecked) || (wasDead !== isDeadChecked)) {
+        data.statusDate = new Date().toISOString();
+      } else {
+        data.statusDate = oldContact.statusDate;
+      }
+
+      data.contactLog = contactLogStr;
+      contacts[idx] = { ...contacts[idx], ...data }; 
+    }
   } else {
+    data.contactLog = contactLogStr;
     data.id = generateId();
-    data.created = new Date().toISOString();
+    const nowISO = new Date().toISOString();
+    data.created = nowISO;
+    data.statusDate = nowISO;
     contacts.push(data);
   }
 
@@ -948,10 +1127,10 @@ async function deleteContact() {
 }
 
 function exportCSV() {
-  const headers = ['Company','Contact','Role','Source','Status','Priority','Reg Stage','Services','Last Contact','Follow Up','Next Action','Notes','Contact Log','HW Check','Dead'];
+  const headers = ['Company','Contact','Role','Source','Status','Priority','Reg Stage','Services','Last Contact','Follow Up','Next Action','Notes','Contact Log','HW Check','Dead','Created','Status Date'];
   const rows = contacts.map(c => [
     c.company, c.name, c.role, c.source, c.status, c.priority, c.regStage,
-    (c.services||[]).join('; '), c.lastContact, c.followUpDate, c.nextAction, c.notes, c.contactLog, c.hwCheck ? 'Yes' : 'No', c.dead ? 'Yes' : 'No'
+    (c.services||[]).join('; '), c.lastContact, c.followUpDate, c.nextAction, c.notes, c.contactLog, c.hwCheck ? 'Yes' : 'No', c.dead ? 'Yes' : 'No', c.created || '', c.statusDate || ''
   ]);
   const csv = [headers, ...rows].map(r => r.map(v => '"' + (v||'').replace(/"/g,'""') + '"').join(',')).join('\n');
   download(csv, 'schema_pipeline_' + dateStamp() + '.csv', 'text/csv');
@@ -977,6 +1156,7 @@ document.getElementById('importFile').addEventListener('change', function(e) {
           document.getElementById('lastSaved').textContent = 'Merging data and uploading to database...';
           const existingIds = new Set(contacts.map(c => c.id));
           data.forEach(c => {
+            if (!c.statusDate) c.statusDate = c.created || new Date().toISOString();
             if (!existingIds.has(c.id)) { contacts.push(c); }
             else {
               const idx = contacts.findIndex(x => x.id === c.id);
