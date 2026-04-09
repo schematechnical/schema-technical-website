@@ -602,8 +602,16 @@
       <input class="form-input" id="fNextAction" placeholder="e.g. Send targeted message">
     </div>
     <div class="form-group">
-      <label class="form-label">Notes</label>
-      <textarea class="form-textarea" id="fNotes" placeholder="Any additional context, intelligence, or flags..."></textarea>
+      <label class="form-label" style="color:var(--accent);">Contact Log</label>
+      <div style="display:flex;gap:8px;margin-bottom:6px;">
+        <input class="form-input" id="fContactLogEntry" placeholder="New log entry..." style="flex:1;">
+        <button class="btn-secondary" onclick="appendContactLog()" style="white-space:nowrap;">Add Entry</button>
+      </div>
+      <textarea class="form-textarea" id="fContactLog" style="min-height:120px;font-family:var(--font-mono);font-size:12px;" placeholder="Chronological contact log (most recent first)..."></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Company Intelligence</label>
+      <textarea class="form-textarea" id="fNotes" placeholder="Background context, market intelligence, or flags..." style="min-height:50px;color:var(--text-secondary);"></textarea>
     </div>
     <div class="form-group">
       <label class="form-label" style="display:flex;align-items:center;gap:8px;">
@@ -653,6 +661,17 @@ let currentFilter = 'all';
 let searchTerm = '';
 
 function generateId() { return Date.now().toString(36) + Math.random().toString(36).substr(2,5); }
+
+function appendContactLog() {
+  const input = document.getElementById('fContactLogEntry');
+  const textarea = document.getElementById('fContactLog');
+  const entry = input.value.trim();
+  if (!entry) return;
+  const date = new Date().toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'});
+  const newEntry = '[' + date + '] ' + entry;
+  textarea.value = textarea.value ? newEntry + '\n' + textarea.value : newEntry;
+  input.value = '';
+}
 
 async function loadData() {
   document.getElementById('lastSaved').textContent = 'Connecting to database...';
@@ -707,6 +726,7 @@ function getFilteredContacts() {
       (c.role||'').toLowerCase().includes(term) ||
       (c.source||'').toLowerCase().includes(term) ||
       (c.notes||'').toLowerCase().includes(term) ||
+      (c.contactLog||'').toLowerCase().includes(term) ||
       (c.services||[]).join(' ').toLowerCase().includes(term)
     );
   }
@@ -845,11 +865,12 @@ function openModal(id) {
     document.getElementById('fFollowUpDate').value = c.followUpDate || '';
     document.getElementById('fNextAction').value = c.nextAction || '';
     document.getElementById('fNotes').value = c.notes || '';
+    document.getElementById('fContactLog').value = c.contactLog || '';
     document.getElementById('fHwCheck').checked = c.hwCheck !== false;
     const sel = document.getElementById('fService');
     Array.from(sel.options).forEach(o => { o.selected = (c.services||[]).includes(o.value); });
   } else {
-    ['fCompany','fName','fRole','fSource','fRegStage','fLastContact','fFollowUpDate','fNextAction','fNotes'].forEach(id => document.getElementById(id).value = '');
+    ['fCompany','fName','fRole','fSource','fRegStage','fLastContact','fFollowUpDate','fNextAction','fNotes','fContactLog','fContactLogEntry'].forEach(id => document.getElementById(id).value = '');
     document.getElementById('fStatus').value = 'Identified';
     document.getElementById('fPriority').value = 'medium';
     document.getElementById('fHwCheck').checked = true;
@@ -882,6 +903,7 @@ async function saveContact() {
     followUpDate: document.getElementById('fFollowUpDate').value,
     nextAction: document.getElementById('fNextAction').value.trim(),
     notes: document.getElementById('fNotes').value.trim(),
+    contactLog: document.getElementById('fContactLog').value.trim(),
     hwCheck: document.getElementById('fHwCheck').checked,
   };
 
@@ -909,10 +931,10 @@ async function deleteContact() {
 }
 
 function exportCSV() {
-  const headers = ['Company','Contact','Role','Source','Status','Priority','Reg Stage','Services','Last Contact','Follow Up','Next Action','Notes','HW Check'];
+  const headers = ['Company','Contact','Role','Source','Status','Priority','Reg Stage','Services','Last Contact','Follow Up','Next Action','Notes','Contact Log','HW Check'];
   const rows = contacts.map(c => [
     c.company, c.name, c.role, c.source, c.status, c.priority, c.regStage,
-    (c.services||[]).join('; '), c.lastContact, c.followUpDate, c.nextAction, c.notes, c.hwCheck ? 'Yes' : 'No'
+    (c.services||[]).join('; '), c.lastContact, c.followUpDate, c.nextAction, c.notes, c.contactLog, c.hwCheck ? 'Yes' : 'No'
   ]);
   const csv = [headers, ...rows].map(r => r.map(v => '"' + (v||'').replace(/"/g,'""') + '"').join(',')).join('\n');
   download(csv, 'schema_pipeline_' + dateStamp() + '.csv', 'text/csv');
