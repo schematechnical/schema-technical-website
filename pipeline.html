@@ -29,6 +29,7 @@
     --proposal: #EC4899;
     --closed: #10B981;
     --dead: #EF4444;
+    --hold: #F59E0B;
     --priority-high: #EF4444;
     --priority-medium: #F59E0B;
     --priority-low: #6B7280;
@@ -361,6 +362,7 @@
   .status-proposal { background: rgba(236,72,153,0.15); color: #F472B6; }
   .status-closed { background: rgba(16,185,129,0.15); color: #34D399; }
   .status-dead { background: rgba(239,68,68,0.15); color: #F87171; }
+  .status-hold { background: rgba(245,158,11,0.15); color: #FBBF24; }
 
   .contact-card-name {
     font-size: 13px;
@@ -821,15 +823,20 @@
       <label class="form-label">Company Intelligence</label>
       <textarea class="form-textarea" id="fNotes" placeholder="Background context, market intelligence, or flags..." style="min-height:50px;color:var(--text-secondary);"></textarea>
     </div>
-    <div class="form-row">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
       <div class="form-group">
         <label class="form-label" style="display:flex;align-items:center;gap:8px;">
-          <input type="checkbox" id="fHwCheck" checked> Passes physical hardware liability check
+          <input type="checkbox" id="fHwCheck" checked> HW liability check
+        </label>
+      </div>
+      <div class="form-group">
+        <label class="form-label" style="display:flex;align-items:center;gap:8px;color:var(--hold);">
+          <input type="checkbox" id="fHold"> Network hold
         </label>
       </div>
       <div class="form-group">
         <label class="form-label" style="display:flex;align-items:center;gap:8px;color:var(--dead);">
-          <input type="checkbox" id="fDead"> Dead contact (no response)
+          <input type="checkbox" id="fDead"> Dead (no response)
         </label>
       </div>
     </div>
@@ -860,14 +867,14 @@
 
 <script>
 const API_URL = 'https://script.google.com/macros/s/AKfycbygMgQtZPLS7OaUS7szQVqESPsZNTEAS24xeDutPXAZIxmsYYtv3uUaKtiPjzlHFzM9lA/exec?token=Schema_Pipeline_2026_Secure!';
-const STATUSES = ['Identified','Contacted','Engaged','Qualified','Proposal Sent','Closed','Dead'];
+const STATUSES = ['Identified','Contacted','Engaged','Qualified','Proposal Sent','Closed','Hold','Dead'];
 const STATUS_COLORS = {
   'Identified':'var(--identified)','Contacted':'var(--contacted)','Engaged':'var(--engaged)',
-  'Qualified':'var(--qualified)','Proposal Sent':'var(--proposal)','Closed':'var(--closed)','Dead':'var(--dead)'
+  'Qualified':'var(--qualified)','Proposal Sent':'var(--proposal)','Closed':'var(--closed)','Hold':'var(--hold)','Dead':'var(--dead)'
 };
 const STATUS_CLASSES = {
   'Identified':'status-identified','Contacted':'status-contacted','Engaged':'status-engaged',
-  'Qualified':'status-qualified','Proposal Sent':'status-proposal','Closed':'status-closed','Dead':'status-dead'
+  'Qualified':'status-qualified','Proposal Sent':'status-proposal','Closed':'status-closed','Hold':'status-hold','Dead':'status-dead'
 };
 
 let contacts = [];
@@ -875,7 +882,7 @@ let editingId = null;
 let currentView = 'pipeline';
 let currentFilter = 'all';
 let searchTerm = '';
-let collapsedColumns = new Set(['Dead']); // Initializes the Dead column in a collapsed state
+let collapsedColumns = new Set(['Hold','Dead']); // Initializes the Dead column in a collapsed state
 
 function toggleColumn(status) {
   if (collapsedColumns.has(status)) {
@@ -957,17 +964,25 @@ async function dropTarget(e, targetCol) {
 
   let changed = false;
   const contact = contacts[idx];
-  const oldStatusLabel = contact.dead ? 'Dead' : contact.status;
+  const oldStatusLabel = contact.dead ? 'Dead' : (contact.hold ? 'Hold' : contact.status);
 
   if (targetCol === 'Dead') {
     if (!contact.dead) {
       contact.dead = true;
+      contact.hold = false;
+      changed = true;
+    }
+  } else if (targetCol === 'Hold') {
+    if (!contact.hold) {
+      contact.hold = true;
+      contact.dead = false;
       changed = true;
     }
   } else {
-    if (contact.status !== targetCol || contact.dead) {
+    if (contact.status !== targetCol || contact.dead || contact.hold) {
       contact.status = targetCol;
       contact.dead = false;
+      contact.hold = false;
       changed = true;
     }
   }
@@ -1121,10 +1136,14 @@ function render() {
 
 function updateStats() {
   const total = contacts.length;
-  const active = contacts.filter(c => c.status !== 'Closed' && c.dead !== true).length;
+  const active = contacts.filter(c => c.status !== 'Closed' && c.dead !== true && c.hold !== true).length;
   const dead = contacts.filter(c => c.dead === true).length;
+  const hold = contacts.filter(c => c.hold === true).length;
   document.getElementById('stat-total').innerHTML = 'Total: <strong>' + total + '</strong>';
-  document.getElementById('stat-active').innerHTML = 'Active: <strong>' + active + '</strong>' + (dead > 0 ? ' &middot; Dead: <strong>' + dead + '</strong>' : '');
+  let activeStr = 'Active: <strong>' + active + '</strong>';
+  if (hold > 0) activeStr += ' &middot; Hold: <strong>' + hold + '</strong>';
+  if (dead > 0) activeStr += ' &middot; Dead: <strong>' + dead + '</strong>';
+  document.getElementById('stat-active').innerHTML = activeStr;
 }
 
 function renderPipeline(filtered) {
@@ -1135,7 +1154,9 @@ function renderPipeline(filtered) {
     const isCollapsed = collapsedColumns.has(status);
     const colContacts = status === 'Dead'
       ? filtered.filter(c => c.dead === true)
-      : filtered.filter(c => c.status === status && c.dead !== true);
+      : status === 'Hold'
+      ? filtered.filter(c => c.hold === true && c.dead !== true)
+      : filtered.filter(c => c.status === status && c.dead !== true && c.hold !== true);
 
     const col = document.createElement('div');
     col.className = 'pipeline-col' + (isCollapsed ? ' collapsed' : '');
@@ -1171,7 +1192,8 @@ function renderPipeline(filtered) {
           card.onclick = () => openModal(c.id);
           
           const deadTag = c.dead ? '<span style="font-family:var(--font-mono);font-size:10px;color:var(--dead);background:rgba(239,68,68,0.15);padding:2px 6px;border-radius:3px;margin-left:6px;">was ' + esc(c.status) + '</span>' : '';
-          const overdueTag = (c.status !== 'Closed' && !c.dead && isOverdue(c.followUpDate)) ? '<span class="tag-overdue">OVERDUE</span>' : '';
+          const holdTag = c.hold ? '<span style="font-family:var(--font-mono);font-size:10px;color:var(--hold);background:rgba(245,158,11,0.15);padding:2px 6px;border-radius:3px;margin-left:6px;">was ' + esc(c.status) + '</span>' : '';
+          const overdueTag = (c.status !== 'Closed' && !c.dead && !c.hold && isOverdue(c.followUpDate)) ? '<span class="tag-overdue">OVERDUE</span>' : '';
           
           let velocityHtml = '';
           if (c.created) {
@@ -1181,7 +1203,7 @@ function renderPipeline(filtered) {
           }
 
           card.innerHTML = `
-            <div class="pipeline-card-company">${esc(c.company)}${deadTag}${overdueTag}</div>
+            <div class="pipeline-card-company">${esc(c.company)}${deadTag}${holdTag}${overdueTag}</div>
             ${c.name ? '<div class="pipeline-card-contact">' + esc(c.name) + (c.role ? ' &middot; ' + esc(c.role) : '') + '</div>' : ''}
             <div>${(c.services||[]).map(s => '<span class="pipeline-card-service">' + s + '</span>').join('')}</div>
             ${c.nextAction ? '<div class="pipeline-card-date">' + esc(c.nextAction) + '</div>' : ''}
@@ -1210,9 +1232,9 @@ function renderRolodex(filtered) {
     const card = document.createElement('div');
     card.className = 'contact-card';
     card.onclick = () => openModal(c.id);
-    const statusClass = c.dead ? 'status-dead' : (STATUS_CLASSES[c.status] || 'status-identified');
-    const statusLabel = c.dead ? 'Dead (' + c.status + ')' : c.status;
-    const overdueTag = (c.status !== 'Closed' && !c.dead && isOverdue(c.followUpDate)) ? '<span class="tag-overdue">OVERDUE</span>' : '';
+    const statusClass = c.dead ? 'status-dead' : (c.hold ? 'status-hold' : (STATUS_CLASSES[c.status] || 'status-identified'));
+    const statusLabel = c.dead ? 'Dead (' + c.status + ')' : (c.hold ? 'Hold (' + c.status + ')' : c.status);
+    const overdueTag = (c.status !== 'Closed' && !c.dead && !c.hold && isOverdue(c.followUpDate)) ? '<span class="tag-overdue">OVERDUE</span>' : '';
     
     card.innerHTML = `
       <div class="contact-card-top">
@@ -1281,9 +1303,10 @@ function copyOutreach() {
 
 function renderAnalytics() {
   const container = document.getElementById('analyticsContent');
-  const active = contacts.filter(c => c.status !== 'Closed' && c.dead !== true);
-  const closed = contacts.filter(c => c.status === 'Closed' && c.dead !== true);
+  const active = contacts.filter(c => c.status !== 'Closed' && c.dead !== true && c.hold !== true);
+  const closed = contacts.filter(c => c.status === 'Closed' && c.dead !== true && c.hold !== true);
   const dead = contacts.filter(c => c.dead === true);
+  const hold = contacts.filter(c => c.hold === true && c.dead !== true);
 
   const PIPELINE_STATUSES = ['Identified','Contacted','Engaged','Qualified','Proposal Sent'];
 
@@ -1323,6 +1346,7 @@ function renderAnalytics() {
     serviceBreakdown[svc] = {
       active: active.filter(c => (c.services||[]).includes(svc)).length,
       closed: closed.filter(c => (c.services||[]).includes(svc)).length,
+      hold: hold.filter(c => (c.services||[]).includes(svc)).length,
       dead: dead.filter(c => (c.services||[]).includes(svc)).length
     };
   });
@@ -1336,6 +1360,7 @@ function renderAnalytics() {
   html += '<div class="analytics-grid">';
   html += '<div class="analytics-card"><div class="analytics-card-label">Active</div><div class="analytics-card-value">' + active.length + '</div></div>';
   html += '<div class="analytics-card"><div class="analytics-card-label">Closed</div><div class="analytics-card-value">' + closed.length + '</div></div>';
+  html += '<div class="analytics-card"><div class="analytics-card-label">Hold</div><div class="analytics-card-value" style="color:var(--hold);">' + hold.length + '</div></div>';
   html += '<div class="analytics-card"><div class="analytics-card-label">Dead</div><div class="analytics-card-value" style="color:var(--dead);">' + dead.length + '</div></div>';
   html += '<div class="analytics-card"><div class="analytics-card-label">Overdue</div><div class="analytics-card-value" style="color:' + (overdueCount > 0 ? 'var(--danger)' : 'var(--text-primary)') + ';">' + overdueCount + '</div></div>';
   if (closeDays !== null) {
@@ -1358,11 +1383,11 @@ function renderAnalytics() {
 
   html += '<div class="analytics-section">';
   html += '<div class="analytics-section-title">Service Line Breakdown</div>';
-  html += '<table class="analytics-table"><thead><tr><th>Service</th><th>Active</th><th>Closed</th><th>Dead</th><th>Total</th></tr></thead><tbody>';
+  html += '<table class="analytics-table"><thead><tr><th>Service</th><th>Active</th><th>Closed</th><th>Hold</th><th>Dead</th><th>Total</th></tr></thead><tbody>';
   ['SDR','TA','SNA','FRA'].forEach(svc => {
     const d = serviceBreakdown[svc];
-    const total = d.active + d.closed + d.dead;
-    html += '<tr><td style="font-weight:600;color:var(--text-primary);">' + svc + '</td><td>' + d.active + '</td><td>' + d.closed + '</td><td>' + d.dead + '</td><td style="font-weight:600;">' + total + '</td></tr>';
+    const total = d.active + d.closed + d.hold + d.dead;
+    html += '<tr><td style="font-weight:600;color:var(--text-primary);">' + svc + '</td><td>' + d.active + '</td><td>' + d.closed + '</td><td>' + d.hold + '</td><td>' + d.dead + '</td><td style="font-weight:600;">' + total + '</td></tr>';
   });
   html += '</tbody></table></div>';
 
@@ -1401,6 +1426,7 @@ function openModal(id) {
     document.getElementById('fNotes').value = c.notes || '';
     document.getElementById('fContactLog').value = c.contactLog || '';
     document.getElementById('fHwCheck').checked = c.hwCheck !== false;
+    document.getElementById('fHold').checked = c.hold === true;
     document.getElementById('fDead').checked = c.dead === true;
     const sel = document.getElementById('fService');
     Array.from(sel.options).forEach(o => { o.selected = (c.services||[]).includes(o.value); });
@@ -1409,6 +1435,7 @@ function openModal(id) {
     document.getElementById('fStatus').value = 'Identified';
     document.getElementById('fPriority').value = 'medium';
     document.getElementById('fHwCheck').checked = true;
+    document.getElementById('fHold').checked = false;
     document.getElementById('fDead').checked = false;
     Array.from(document.getElementById('fService').options).forEach(o => o.selected = false);
   }
@@ -1433,6 +1460,7 @@ async function saveContact() {
 
   const services = Array.from(document.getElementById('fService').selectedOptions).map(o => o.value);
   const isDeadChecked = document.getElementById('fDead').checked;
+  const isHoldChecked = document.getElementById('fHold').checked;
   const newStatus = document.getElementById('fStatus').value;
   let contactLogStr = document.getElementById('fContactLog').value.trim();
 
@@ -1450,6 +1478,7 @@ async function saveContact() {
     nextAction: document.getElementById('fNextAction').value.trim(),
     notes: document.getElementById('fNotes').value.trim(),
     hwCheck: document.getElementById('fHwCheck').checked,
+    hold: isHoldChecked && !isDeadChecked,
     dead: isDeadChecked,
   };
 
@@ -1458,15 +1487,22 @@ async function saveContact() {
     if (idx >= 0) { 
       const oldContact = contacts[idx];
       const wasDead = oldContact.dead;
+      const wasHold = oldContact.hold;
       const oldStatus = oldContact.status;
       
       if (wasDead === true && isDeadChecked === false) {
         const dateStr = new Date().toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'});
-        const reactivationEntry = '[' + dateStr + '] [Reactivated]';
+        const reactivationEntry = '[' + dateStr + '] [Reactivated from Dead]';
         contactLogStr = contactLogStr ? reactivationEntry + '\n' + contactLogStr : reactivationEntry;
       }
 
-      if ((oldStatus !== newStatus && !isDeadChecked) || (wasDead !== isDeadChecked)) {
+      if (wasHold === true && !isHoldChecked) {
+        const dateStr = new Date().toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'});
+        const reactivationEntry = '[' + dateStr + '] [Released from Hold]';
+        contactLogStr = contactLogStr ? reactivationEntry + '\n' + contactLogStr : reactivationEntry;
+      }
+
+      if ((oldStatus !== newStatus && !isDeadChecked && !isHoldChecked) || (wasDead !== isDeadChecked) || (wasHold !== (isHoldChecked && !isDeadChecked))) {
         data.statusDate = new Date().toISOString();
       } else {
         data.statusDate = oldContact.statusDate;
@@ -1499,10 +1535,10 @@ async function deleteContact() {
 }
 
 function exportCSV() {
-  const headers = ['Company','Contact','Role','Source','Status','Priority','Reg Stage','Services','Last Contact','Follow Up','Next Action','Notes','Contact Log','HW Check','Dead','Created','Status Date'];
+  const headers = ['Company','Contact','Role','Source','Status','Priority','Reg Stage','Services','Last Contact','Follow Up','Next Action','Notes','Contact Log','HW Check','Hold','Dead','Created','Status Date'];
   const rows = contacts.map(c => [
     c.company, c.name, c.role, c.source, c.status, c.priority, c.regStage,
-    (c.services||[]).join('; '), c.lastContact, c.followUpDate, c.nextAction, c.notes, c.contactLog, c.hwCheck ? 'Yes' : 'No', c.dead ? 'Yes' : 'No', c.created || '', c.statusDate || ''
+    (c.services||[]).join('; '), c.lastContact, c.followUpDate, c.nextAction, c.notes, c.contactLog, c.hwCheck ? 'Yes' : 'No', c.hold ? 'Yes' : 'No', c.dead ? 'Yes' : 'No', c.created || '', c.statusDate || ''
   ]);
   const csv = [headers, ...rows].map(r => r.map(v => '"' + (v||'').replace(/"/g,'""') + '"').join(',')).join('\n');
   download(csv, 'schema_pipeline_' + dateStamp() + '.csv', 'text/csv');
