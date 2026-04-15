@@ -44,7 +44,8 @@
         "MDR & IVDR Post-Market Surveillance",
         "Service Design Review (SDR)",
         "Service Network Architecture (SNA)",
-        "Field Root-Cause Analysis (FRA)"
+        "Field Root-Cause Analysis (FRA)",
+        "ISO 13485 Training Delivery"
       ],
       "industry": "Medical Device Engineering Consultancy"
     }
@@ -264,6 +265,7 @@
         .section-title h2 { font-size: 2.2rem; color: var(--navy); margin-bottom: 10px; }
         .section-subtitle { color: var(--slate); font-size: 1.1rem; }
         .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
+        .services-grid .service-card:last-child:nth-child(odd) { grid-column: 1 / 2; margin: 0 auto; width: 100%; max-width: 100%; }
         .service-card { background: var(--white); padding: 40px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: all 0.3s ease; border-top: 4px solid var(--blue); position: relative; overflow: hidden; display: flex; flex-direction: column; }
         .service-card:hover { transform: translateY(-5px); box-shadow: 0 12px 20px rgba(0,0,0,0.1); }
         .icon-box svg { width: 50px; height: 50px; margin-bottom: 20px; fill: none; stroke: var(--blue); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
@@ -393,6 +395,7 @@
             .dropdown-content a { margin: 5px 0; padding: 5px 0; font-size: 1rem; border: none; width: auto;}
 
             .contact-grid, .form-row, .services-grid { grid-template-columns: 1fr; }
+            .services-grid .service-card:last-child:nth-child(odd) { grid-column: auto; max-width: 100%; }
             .hero { padding: 80px 0; }
             .logo img { height: 60px; } 
             .modal-content { padding: 30px 20px; }
@@ -421,6 +424,7 @@
                         <div class="dropdown-content">
                             <a href="sdr.html">Service Design Review (SDR)</a>
                             <a href="authoring.html">Technical Authoring</a>
+                            <a href="authoring.html">Training Delivery</a>
                             <a href="sna.html">Service Network (SNA)</a>
                             <a href="fra.html">Reliability Analysis (FRA)</a>
                         </div>
@@ -515,9 +519,9 @@
                     <div class="icon-box">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
                     </div>
-                    <span class="service-tag">DOCUMENTATION | ISO 13485:7.5</span>
-                    <h3>Technical Authoring</h3>
-                    <p>Stop relying on tribal R&D knowledge. We convert complex mechanical assemblies into validated, highly visual work instructions and compliance frameworks for your field engineers.</p>
+                    <span class="service-tag">DOCUMENTATION & TRAINING | ISO 13485:7.5</span>
+                    <h3>Technical Authoring and Training Delivery</h3>
+                    <p>Stop relying on tribal R&D knowledge. We convert complex mechanical assemblies into validated, highly visual ISO 13485 work instructions, and deliver structured, assessed training programmes to certify the engineers who use them.</p>
                     <button class="expand-btn" onclick="toggleDetails(this, 'View Deliverables')">View Deliverables</button>
                     <div class="service-details">
                         <h4>What We Deliver:</h4>
@@ -526,9 +530,12 @@
                             <li><strong>FRU Work Instructions:</strong> Highly visual replacement guides for standard components.</li>
                             <li><strong>Complex Overhaul Procedures:</strong> Advanced instructions requiring proprietary jigs or software calibration.</li>
                             <li><strong>Validation Protocols:</strong> Site Readiness and IQ/OQ templates.</li>
+                            <li><strong>Training Package Development:</strong> Master Training Matrix and binary pass/fail grading rubrics built from your released service manual.</li>
+                            <li><strong>On-Site Training Delivery:</strong> Structured training delivered at your facility or your depot partner's site. Training is available as a standalone service where a formally released service manual already exists.</li>
+                            <li><strong>Engineer Certification:</strong> Signed training records for every engineer assessed, suitable for ISO 13485 QMS ingestion.</li>
                         </ul>
                     </div>
-                    <a href="authoring.html" class="btn full-service-btn">Full Authoring Briefing</a>
+                    <a href="authoring.html" class="btn full-service-btn">Full Authoring and Training Briefing</a>
                 </div>
 
                 <div class="service-card">
@@ -610,16 +617,19 @@
                 </div>
 
                 <div class="pricing-card">
-                    <h3>Technical Authoring</h3>
+                    <h3>Technical Authoring and Training Delivery</h3>
                     <div class="price">From £350</div>
                     <span class="price-sub">Per FRU Work Instruction</span>
                     <ul>
                         <li>Service Readiness Frameworks (From £3,500)</li>
-                        <li>Highly visual replacement guides</li>
-                        <li>Complex Overhaul Procedures (From £850)</li>
+                        <li>Highly visual FRU replacement guides (From £350 each)</li>
+                        <li>Complex Overhaul Procedures (From £850 each)</li>
                         <li>Auditor-ready ISO 13485 formatting</li>
+                        <li>Training Package Development (£1,500 fixed fee)</li>
+                        <li>On-site training delivery at £1,200 per day plus expenses</li>
+                        <li>Training available as a standalone service</li>
                     </ul>
-                    <a href="authoring.html" class="btn" style="width:100%; text-align:center; margin: 10px 0 0 0; padding: 12px 0;">View Authoring Scope</a>
+                    <a href="authoring.html" class="btn" style="width:100%; text-align:center; margin: 10px 0 0 0; padding: 12px 0;">View Authoring and Training Scope</a>
                 </div>
 
                 <div class="pricing-card">
